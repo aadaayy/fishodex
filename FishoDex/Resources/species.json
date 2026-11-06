@@ -1,0 +1,1846 @@
+{
+ "limitsCheckedOn": "2026-11-06",
+ "defaultRule": "Fish with no species rule: 2 fish or 100 lb per person per day, whichever is more.",
+ "species": [
+  {
+   "id": "bass",
+   "number": 1,
+   "name": "Florida bass",
+   "scientific": "Micropterus floridanus",
+   "rarity": "Common",
+   "habitat": "Freshwater",
+   "where": "Canals, lakes and ponds everywhere, plus Lake Okeechobee",
+   "about": "Florida's state freshwater fish, recognized by a jaw that reaches past the eye and a deep notch between its dorsal fins. Young eat tiny plankton, while adults ambush fish, crayfish and big insects near weeds and cover.",
+   "funFact": "Florida bass looks identical to a largemouth, yet it is its own species. Florida's official record of 17.27 lb has stood since 1986.",
+   "maxSize": "Florida record 17.27 lb",
+   "nonNative": false,
+   "aliases": [
+    "largemouth bass",
+    "black bass",
+    "bigmouth"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "No minimum length",
+    "bag": "5 per person per day",
+    "season": "Open all year",
+    "notes": "Only one of your 5 bass may be 16 inches or longer.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/largemouth-bass/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "peacock",
+   "number": 2,
+   "name": "Butterfly peacock bass",
+   "scientific": "Cichla ocellaris",
+   "rarity": "Uncommon",
+   "habitat": "Freshwater",
+   "where": "Miami-Dade and Broward canals, best in warm months",
+   "about": "A golden, hard-hitting Amazon cichlid with three dark bars and a yellow-ringed eyespot on the tail. It eats almost only fish, and both parents guard their young for weeks, sometimes months.",
+   "funFact": "Florida stocked peacock bass in Miami-area canals in 1984 to eat invasive tilapia. They hunt only by daylight and die if the water drops below about 60 F.",
+   "maxSize": "Florida record 9.11 lb",
+   "nonNative": true,
+   "aliases": [
+    "peacock bass",
+    "peacock"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "No minimum length",
+    "bag": "2 per person per day",
+    "season": "Open all year",
+    "notes": "Only one of the 2 may be 17 inches or longer.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/butterfly-peacock/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "sunshine",
+   "number": 3,
+   "name": "Sunshine bass",
+   "scientific": "Morone chrysops × saxatilis",
+   "rarity": "Rare",
+   "habitat": "Freshwater",
+   "where": "The Ida-Osborne chain of lakes in Palm Beach County, best in cool weather",
+   "about": "A stocky hybrid with broken stripes up front and straight stripes toward the tail. Schools roam open water at dawn and dusk, chasing threadfin and gizzard shad.",
+   "funFact": "Sunshine bass do not occur in nature. Every one in Florida is a hatchery cross of a female white bass and a male striped bass.",
+   "maxSize": "Florida record 16.31 lb",
+   "nonNative": false,
+   "aliases": [
+    "hybrid striped bass",
+    "hybrid bass"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "No minimum length",
+    "bag": "20 per day, shared with striped and white bass",
+    "season": "Open all year",
+    "notes": "No more than 6 of the 20 may be 24 inches or longer.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/sunshine-bass/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "bluegill",
+   "number": 4,
+   "name": "Bluegill",
+   "scientific": "Lepomis macrochirus",
+   "rarity": "Common",
+   "habitat": "Freshwater",
+   "where": "Ponds, lakes and canals, near docks and weeds",
+   "about": "A deep-bodied bream with a dark ear flap and a dark blotch at the back of the dorsal fin. It feeds mostly on insects and larvae and is common in lakes and ponds statewide.",
+   "funFact": "Bluegill nest in colonies. In summer you can find 30 to 40 round nests scooped side by side in a sandy shallow, like a honeycomb on the bottom.",
+   "maxSize": "Florida record 2.95 lb",
+   "nonNative": false,
+   "aliases": [
+    "bream",
+    "brim",
+    "sunfish"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "No minimum length",
+    "bag": "50 panfish per person per day (combined)",
+    "season": "Open all year",
+    "notes": "The 50 is shared across bluegill, redear, spotted sunfish, warmouth and other sunfish.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/bluegill/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "redear",
+   "number": 5,
+   "name": "Redear sunfish",
+   "scientific": "Lepomis microlophus",
+   "rarity": "Common",
+   "habitat": "Freshwater",
+   "where": "Lakes and ponds, near the bottom",
+   "about": "A big bream with a bright red mark on the back edge of the gill flap. It hugs hard bottoms in deeper water than bluegill, and its spawning peaks around the March and April full moons.",
+   "funFact": "The shellcracker earns its name: flat, grinding teeth in its throat crack open snails and small clams like a nutcracker.",
+   "maxSize": "Florida record 4.86 lb",
+   "nonNative": false,
+   "aliases": [
+    "shellcracker",
+    "bream",
+    "sunfish"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "No minimum length",
+    "bag": "50 panfish per person per day (combined)",
+    "season": "Open all year",
+    "notes": "The 50 is shared across bluegill, redear, spotted sunfish, warmouth and other sunfish.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/redear-sunfish/",
+    "https://mdc.mo.gov/discover-nature/field-guide/redear-sunfish"
+   ]
+  },
+  {
+   "id": "spottedsun",
+   "number": 6,
+   "name": "Spotted sunfish",
+   "scientific": "Lepomis punctatus",
+   "rarity": "Uncommon",
+   "habitat": "Freshwater",
+   "where": "Weedy lake edges and canals",
+   "about": "A chunky olive to brown sunfish with neat rows of small dark or red spots. It lives in rivers and lakes across Florida and eagerly hits tiny lures, worms and grass shrimp.",
+   "funFact": "The stumpknocker rarely tops a quarter pound, and the state record is under a pound, yet it aggressively guards its bed at spawning time.",
+   "maxSize": "Florida record 0.83 lb",
+   "nonNative": false,
+   "aliases": [
+    "stumpknocker",
+    "bream",
+    "sunfish"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "No minimum length",
+    "bag": "50 panfish per person per day (combined)",
+    "season": "Open all year",
+    "notes": "The 50 is shared across bluegill, redear, spotted sunfish, warmouth and other sunfish.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/spotted-sunfish/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "warmouth",
+   "number": 7,
+   "name": "Warmouth",
+   "scientific": "Lepomis gulosus",
+   "rarity": "Uncommon",
+   "habitat": "Freshwater",
+   "where": "Weedy canals and swampy edges",
+   "about": "A stout panfish with a red eye, a big mouth and three or four dark streaks fanning back from the eye. It tolerates muddy water and lurks near stumps, weeds and undercut banks.",
+   "funFact": "Warmouth seem to sleep at night. They do most of their eating in the morning, gulping crayfish and shrimp with an oversized mouth.",
+   "maxSize": "Florida record 2.44 lb",
+   "nonNative": false,
+   "aliases": [
+    "goggle eye",
+    "bream"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "No minimum length",
+    "bag": "50 panfish per person per day (combined)",
+    "season": "Open all year",
+    "notes": "The 50 is shared across bluegill, redear, spotted sunfish, warmouth and other sunfish.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/warmouth/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "crappie",
+   "number": 8,
+   "name": "Black crappie",
+   "scientific": "Pomoxis nigromaculatus",
+   "rarity": "Uncommon",
+   "habitat": "Freshwater",
+   "where": "Lake Okeechobee and deep holes in bigger lakes, mostly in winter",
+   "about": "A speckled, deep-bodied panfish whose dorsal and anal fins nearly mirror each other. Floridians call them specks, and they roam open lake water eating small fish, insects and crustaceans.",
+   "funFact": "Crappie nest in colonies in late winter, and the bigger the fish, the deeper it tends to nest. Schools also hold at one depth, so finding that depth is the trick.",
+   "maxSize": "Florida record 3.83 lb",
+   "nonNative": false,
+   "aliases": [
+    "speckled perch",
+    "specks",
+    "specs"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "No statewide minimum",
+    "bag": "25 per person per day",
+    "season": "Open all year",
+    "areas": [
+     {
+      "area": "Statewide",
+      "text": "25 per day, no minimum size"
+     },
+     {
+      "area": "Lake Okeechobee",
+      "text": "Release any crappie under 10 inches"
+     }
+    ],
+    "notes": "Crappie have their own 25-fish bag, separate from the 50 panfish.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/black-crappie/",
+    "https://myfwc.com/fishing/freshwater/state-records/",
+    "https://myfwc.com/fishing/freshwater/regulations/special/"
+   ]
+  },
+  {
+   "id": "pickerel",
+   "number": 9,
+   "name": "Chain pickerel",
+   "scientific": "Esox niger",
+   "rarity": "Uncommon",
+   "habitat": "Freshwater",
+   "where": "Weedy lakes, marshes and backwaters",
+   "about": "A long, toothy ambush hunter with its dorsal and anal fins set far back near the tail. It hides in weedy lakes and swamps statewide and slams spinnerbaits, spoons and topwater plugs.",
+   "funFact": "Chain pickerel are named for the dark, chain-link pattern on their sides. Females scatter large numbers of sticky eggs over flooded weeds and grass.",
+   "maxSize": "Florida record 6.96 lb",
+   "nonNative": false,
+   "aliases": [
+    "jackfish",
+    "pike"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Not on FWC's statewide bag list, so no daily limit applies.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/chain-pickerel/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "mayan",
+   "number": 10,
+   "name": "Mayan cichlid",
+   "scientific": "Mayaheros urophthalmus",
+   "rarity": "Common",
+   "habitat": "Freshwater",
+   "where": "Urban canals and Everglades edges",
+   "about": "A Central American cichlid with dark bars, a turquoise-ringed spot near the tail and often a red throat. It eats grass shrimp, snails, small fish and insects, and both parents guard the fry.",
+   "funFact": "Mayan cichlids handle fresh, brackish and salty water, and they were first found in Florida Bay in 1983. Some anglers call them atomic sunfish.",
+   "maxSize": "Florida record 2.37 lb",
+   "nonNative": true,
+   "aliases": [
+    "atomic sunfish",
+    "cichlid"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Nonnative and unregulated: keep as many as you like.",
+    "url": "https://myfwc.com/wildlifehabitats/profiles/freshwater/mayan-cichlid/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/mayan-cichlid/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "oscar",
+   "number": 11,
+   "name": "Oscar",
+   "scientific": "Astronotus ocellatus",
+   "rarity": "Common",
+   "habitat": "Freshwater",
+   "where": "Everglades and water conservation area canals",
+   "about": "A stout South American cichlid, olive and mustard with dark blotches and a red-ringed eyespot near the tail. It eats small fish, insects and crustaceans, and cold snaps can kill many.",
+   "funFact": "In South Florida's Everglades water conservation areas, oscars rank second only to largemouth bass in angler popularity.",
+   "maxSize": "Florida record 2.34 lb",
+   "nonNative": true,
+   "aliases": [
+    "cichlid"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Nonnative and unregulated: keep as many as you like.",
+    "url": "https://myfwc.com/wildlifehabitats/profiles/freshwater/oscar/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/oscar/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "jaguar",
+   "number": 12,
+   "name": "Jaguar guapote",
+   "scientific": "Parachromis managuensis",
+   "rarity": "Uncommon",
+   "habitat": "Freshwater",
+   "where": "Miami-Dade and Broward canals",
+   "about": "A Central American cichlid covered in purple to black spots, with a row of dark squares down its sides. It prowls canals in southeast Florida, mostly eating small fish and insects.",
+   "funFact": "The jaguar guapote can shoot its toothy jaw forward to grab prey, and it has even been found with lizards in its stomach.",
+   "maxSize": "Florida record 3.02 lb",
+   "nonNative": true,
+   "aliases": [
+    "jaguar cichlid",
+    "guapote",
+    "cichlid"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Nonnative and unregulated: keep as many as you like.",
+    "url": "https://myfwc.com/wildlifehabitats/profiles/freshwater/jaguar-guapote/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/jaguar-guapote/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "midas",
+   "number": 13,
+   "name": "Midas cichlid",
+   "scientific": "Amphilophus citrinellus",
+   "rarity": "Rare",
+   "habitat": "Freshwater",
+   "where": "Only the Black Creek and Cutler Drain canals in Miami-Dade, and it rarely bites",
+   "about": "A thick-bodied cichlid from Nicaragua and Costa Rica, usually brightly colored in Florida, and breeding fish may grow a forehead hump. It picks snails and insects off logs and rocks in clear canals.",
+   "funFact": "Midas cichlid parents produce a mucus coat on their skin that their babies feed on. Most start gray and turn orange, red or white at about 3 inches.",
+   "maxSize": "Just over 1 ft and about 2.5 lb",
+   "nonNative": true,
+   "aliases": [
+    "red devil",
+    "cichlid"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Nonnative and unregulated: keep as many as you like.",
+    "url": "https://myfwc.com/wildlifehabitats/profiles/freshwater/midas-cichlid/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/midas-cichlid/"
+   ]
+  },
+  {
+   "id": "acara",
+   "number": 14,
+   "name": "Black acara",
+   "scientific": "Cichlasoma bimaculatum",
+   "rarity": "Common",
+   "habitat": "Freshwater",
+   "where": "Roadside ditches and small ponds",
+   "about": "A small, stocky cichlid with one dark blotch mid-body and another near the tail. It thrives in stagnant ditches where few other fish live, and both parents guard the young.",
+   "funFact": "Black acara have lived wild around Miami since the 1950s after arriving through the pet trade. They also spawn all year, about 1,000 eggs at a time.",
+   "maxSize": "About 8 in and 4 oz",
+   "nonNative": true,
+   "aliases": [
+    "cichlid"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Nonnative and unregulated: keep as many as you like.",
+    "url": "https://myfwc.com/wildlifehabitats/profiles/freshwater/black-acara/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/science/identity-of-florida-invasive-fish-corrected/",
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/black-acara/"
+   ]
+  },
+  {
+   "id": "bluetilapia",
+   "number": 15,
+   "name": "Blue tilapia",
+   "scientific": "Oreochromis aureus",
+   "rarity": "Common",
+   "habitat": "Freshwater",
+   "where": "Canals and lakes, often bedding in the shallows",
+   "about": "A blue-gray fish from Africa and the Middle East with pink to red edges on its fins. It grazes on algae and detritus, and males dig wide circular nests in sandy shallows with their mouths.",
+   "funFact": "Blue tilapia are mouthbrooders. The female carries the eggs in her mouth until they hatch, and the fry dart back inside when danger shows up.",
+   "maxSize": "Florida record 10.09 lb (blue, Nile or hybrid tilapia)",
+   "nonNative": true,
+   "aliases": [
+    "tilapia"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Conditional nonnative; FWC's live-tilapia ban exempts blue tilapia.",
+    "url": "https://myfwc.com/wildlifehabitats/profiles/freshwater/blue-tilapia/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/blue-tilapia/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "spottedtilapia",
+   "number": 16,
+   "name": "Spotted tilapia",
+   "scientific": "Pelmatolapia mariae",
+   "rarity": "Common",
+   "habitat": "Freshwater",
+   "where": "Canals, ponds and lakes south of Lake Okeechobee",
+   "about": "A yellow to bronze West African fish whose bars turn into spots as it grows. It eats algae and detritus, and both parents fiercely guard their sticky eggs and fry.",
+   "funFact": "Spotted tilapia once made up about a quarter of all fish in Miami-Dade canals. That boom is why Florida brought in peacock bass to eat them.",
+   "maxSize": "About 13 in and 3 lb",
+   "nonNative": true,
+   "aliases": [
+    "tilapia"
+   ],
+   "limits": {
+    "kind": "prohibited",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Prohibited nonnative: you may kill and keep it, but never hold or move it alive.",
+    "url": "https://myfwc.com/wildlifehabitats/profiles/freshwater/spotted-tilapia/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/spotted-tilapia/",
+    "https://myfwc.com/wildlifehabitats/nonnatives/prohibited-species-list/"
+   ]
+  },
+  {
+   "id": "snakehead",
+   "number": 17,
+   "name": "Snakehead",
+   "scientific": "Channa aurolineata",
+   "rarity": "Rare",
+   "habitat": "Freshwater",
+   "where": "Only Broward canals around Margate, Coral Springs and Pompano Beach",
+   "about": "A torpedo-shaped Asian predator with toothy jaws, red eyes and a red-orange eyespot near the tail. It ambushes fish and crayfish, and parents herd schools of young in the shallows.",
+   "funFact": "Snakeheads breathe air, so they thrive in stagnant canals that would choke most fish. But water below about 50 F kills them, which keeps them in South Florida.",
+   "maxSize": "Largest FWC fish 31.5 in and 9.2 lb",
+   "nonNative": true,
+   "aliases": [
+    "bullseye snakehead",
+    "goldline snakehead",
+    "snakehead fish"
+   ],
+   "limits": {
+    "kind": "prohibited",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Prohibited nonnative: kill it and keep it dead; never release or move it alive.",
+    "url": "https://myfwc.com/wildlifehabitats/nonnatives/prohibited-species-list/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/bullseye-snakehead/",
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/bullseye-snakehead"
+   ]
+  },
+  {
+   "id": "knifefish",
+   "number": 18,
+   "name": "Clown knifefish",
+   "scientific": "Chitala ornata",
+   "rarity": "Rare",
+   "habitat": "Freshwater",
+   "where": "Only the Ida-Osborne lakes and nearby Palm Beach County canals",
+   "about": "A flat, silvery Asian fish with a tiny dorsal fin and a row of white-ringed black spots. In Florida it lives mainly in Lakes Osborne and Ida, eating small fish, insects and shrimp.",
+   "funFact": "The clown knifefish swims forward or backward with equal ease by rippling the long fin that runs along its belly. It also gulps air to survive low-oxygen water.",
+   "maxSize": "Largest Florida fish on file 31 in, nearly 10 lb",
+   "nonNative": true,
+   "aliases": [
+    "knife fish",
+    "featherback"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Invasive nongame fish with no limits; don't release it into new waters.",
+    "url": "https://myfwc.com/wildlifehabitats/profiles/freshwater/clown-knifefish/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/clown-knifefish/",
+    "https://myfwc.com/fishing/freshwater/regulations/general/"
+   ]
+  },
+  {
+   "id": "gar",
+   "number": 19,
+   "name": "Florida gar",
+   "scientific": "Lepisosteus platyrhincus",
+   "rarity": "Common",
+   "habitat": "Freshwater",
+   "where": "Canals and ponds, rolling at the surface",
+   "about": "A prehistoric-looking fish armored with hard, interlocking scales and covered in dark spots. It can breathe air in low-oxygen water and snaps up fish, shrimp and crayfish with a toothy snout.",
+   "funFact": "Newborn Florida gar have a sticky pad on the tip of the snout. They glue themselves to plants and hang there until they are about three quarters of an inch long.",
+   "maxSize": "Florida record 9.44 lb",
+   "nonNative": false,
+   "aliases": [
+    "garfish",
+    "gar fish"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Nongame fish, no limits. Alligator gar (Panhandle only) need a permit.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/florida-gar/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "bowfin",
+   "number": 20,
+   "name": "Bowfin",
+   "scientific": "Amia calva",
+   "rarity": "Uncommon",
+   "habitat": "Freshwater",
+   "where": "Everglades canals and swamps",
+   "about": "A long, powerful fish with a ribbon-like dorsal fin and a mouth full of small, sharp teeth. Males wear an orange-ringed black spot on the tail, and anglers often call it mudfish.",
+   "funFact": "The bowfin is the last living member of an ancient fish family. Its swim bladder works like a lung, and you can see it gulping air at the surface.",
+   "maxSize": "Florida record 19.0 lb",
+   "nonNative": false,
+   "aliases": [
+    "mudfish",
+    "grinnel",
+    "dogfish"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Nongame fish with no bag or size limits.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/bowfin/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "channelcat",
+   "number": 21,
+   "name": "Channel catfish",
+   "scientific": "Ictalurus punctatus",
+   "rarity": "Uncommon",
+   "habitat": "Freshwater",
+   "where": "Lake Okeechobee, stocked ponds and bigger canals",
+   "about": "A sleek catfish with a deeply forked tail and scattered black spots on its sides. It feeds most at dusk and at night on insects, crayfish, mussels and fish.",
+   "funFact": "A catfish is basically a swimming tongue. Taste buds cover its whole body, with the most on its whiskers, helping it track food in dark, muddy water.",
+   "maxSize": "Florida record 44.50 lb",
+   "nonNative": false,
+   "aliases": [
+    "catfish",
+    "channel cat"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Nongame fish; no statewide catfish limits.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://thenakedscientists.com/articles/interviews/catfish-super-taster-underwater-world",
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/channel-catfish/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "whitecat",
+   "number": 22,
+   "name": "White catfish",
+   "scientific": "Ameiurus catus",
+   "rarity": "Uncommon",
+   "habitat": "Freshwater",
+   "where": "Lake Okeechobee, a strong catfish lake",
+   "about": "A blue-gray catfish with a moderately forked tail and a short, rounded anal fin. It lives in rivers and streams statewide and eats mostly fish, plus insects, crustaceans and fish eggs.",
+   "funFact": "Unlike most catfish, the white catfish will push into slightly brackish coastal water, and it feeds by day more than its night-loving cousins.",
+   "maxSize": "Florida record 18.88 lb",
+   "nonNative": false,
+   "aliases": [
+    "catfish"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Nongame fish; no statewide catfish limits.",
+    "url": "https://myfwc.com/fishing/freshwater/regulations/general/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/white-catfish/",
+    "https://myfwc.com/fishing/freshwater/state-records/"
+   ]
+  },
+  {
+   "id": "walkingcat",
+   "number": 23,
+   "name": "Walking catfish",
+   "scientific": "Clarias batrachus",
+   "rarity": "Uncommon",
+   "habitat": "Freshwater",
+   "where": "Everglades canals and nearby ditches",
+   "about": "A long, scaleless gray catfish from Southeast Asia with four pairs of whiskers, and albinos turn up too. It eats nearly anything, including small fish, insects, plants and dead fish.",
+   "funFact": "The walking catfish can wriggle across land by pulling itself along with its pectoral fins, and it breathes air, so it can survive in water with almost no oxygen.",
+   "maxSize": "About 20 in and 3 lb",
+   "nonNative": true,
+   "aliases": [
+    "catfish"
+   ],
+   "limits": {
+    "kind": "prohibited",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "notes": "Nonnative (conditional list): keep only dead, illegal to hold or move alive.",
+    "url": "https://myfwc.com/wildlifehabitats/profiles/freshwater/walking-catfish/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/freshwater/walking-catfish/"
+   ]
+  },
+  {
+   "id": "snook",
+   "number": 24,
+   "name": "Common snook",
+   "scientific": "Centropomus undecimalis",
+   "rarity": "Uncommon",
+   "habitat": "Inshore",
+   "where": "Mangroves, inlets, bridges and beaches",
+   "about": "A sleek ambush hunter with a jutting lower jaw and a bold black stripe along its side. It faces into the current to grab passing bait, and cold water below about 60 F can kill it.",
+   "funFact": "Every snook starts life as a male. Somewhere around 18 to 22 inches long, some of them change into females.",
+   "maxSize": "Florida record 45 lb 12 oz",
+   "nonNative": false,
+   "aliases": [
+    "linesider",
+    "robalo"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "28 to 32 inches total length (slot)",
+    "bag": "1 per person per day",
+    "season": "Closed Dec 15 to Jan 31 and Jun 1 to Aug 31 (Southeast)",
+    "areas": [
+     {
+      "area": "Southeast (Palm Beach to Miami-Dade)",
+      "text": "28-32 in slot; closed Dec 15-Jan 31 and Jun 1-Aug 31"
+     },
+     {
+      "area": "Keys / Monroe (Southwest region)",
+      "text": "28-33 in slot; closed Dec 1-Feb 28 and May 1-Sep 30"
+     }
+    ],
+    "notes": "Needs a snook permit plus saltwater license; hook and line only.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/snook/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/snook/snook/"
+   ]
+  },
+  {
+   "id": "tarpon",
+   "number": 25,
+   "name": "Tarpon",
+   "scientific": "Megalops atlanticus",
+   "rarity": "Trophy",
+   "habitat": "Inshore",
+   "where": "Inlets, bridges, Biscayne Bay and the Everglades backcountry",
+   "about": "The silver king is a huge, big-scaled fish known for leaping fights. Its larvae are clear, ribbon-shaped and fanged, and adults can top 8 feet.",
+   "funFact": "Tarpon can live more than 50 years, and one in captivity reached 63. They can also gulp air at the surface when the water runs low on oxygen.",
+   "maxSize": "Up to about 8 ft and 280 lb",
+   "nonNative": false,
+   "aliases": [
+    "silver king",
+    "sabalo"
+   ],
+   "limits": {
+    "kind": "release",
+    "size": "Catch and release only",
+    "bag": "None (no harvest)",
+    "notes": "Tarpon over 40 inches stay in the water; a tag is sold only for record attempts.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/tarpon/"
+   },
+   "sources": [
+    "https://myfwc.com/research/saltwater/tarpon/information/facts/"
+   ]
+  },
+  {
+   "id": "redfish",
+   "number": 26,
+   "name": "Redfish",
+   "scientific": "Sciaenops ocellatus",
+   "rarity": "Uncommon",
+   "habitat": "Inshore",
+   "where": "Everglades and Florida Bay flats, scarcer on the east coast",
+   "about": "A copper-bronze fish with one or more black spots near the tail. It crushes crabs and shellfish with strong throat teeth and roams Florida estuaries until about 30 inches before moving nearshore.",
+   "funFact": "Red drum get their name from the drumming sound they make by vibrating special muscles against the swim bladder during spawning.",
+   "maxSize": "Florida record 52 lb 5 oz",
+   "nonNative": false,
+   "aliases": [
+    "red drum",
+    "red",
+    "puppy drum"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "18 to 27 inches total length (slot)",
+    "bag": "1 per person per day",
+    "season": "Open all year",
+    "notes": "Max 2 per boat; must stay whole until landed. Same in Southeast and Keys.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/red-drum/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/drums/red-drum/"
+   ]
+  },
+  {
+   "id": "seatrout",
+   "number": 27,
+   "name": "Spotted seatrout",
+   "scientific": "Cynoscion nebulosus",
+   "rarity": "Common",
+   "habitat": "Inshore",
+   "where": "Grass flats in Biscayne Bay and Florida Bay",
+   "about": "A silvery fish with a dark back and black spots on its back, dorsal fins and tail. It hunts baitfish, shrimp and crabs over seagrass and sand, and it is delicate, so release it quickly.",
+   "funFact": "Despite the name, spotted seatrout are not trout at all. They belong to the drum family and sport two large fangs at the tip of the upper jaw.",
+   "maxSize": "Florida record 17 lb 7 oz",
+   "nonNative": false,
+   "aliases": [
+    "speckled trout",
+    "trout",
+    "speck",
+    "yellowmouth"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "15 to 19 inches total length (slot)",
+    "bag": "3 per person per day",
+    "season": "Open all year",
+    "notes": "One fish over 19 in allowed per boat (or per shore angler), within the 3.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/spotted-seatrout/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/drums/spotted-seatrout/"
+   ]
+  },
+  {
+   "id": "bonefish",
+   "number": 28,
+   "name": "Bonefish",
+   "scientific": "Albula vulpes",
+   "rarity": "Rare",
+   "habitat": "Inshore",
+   "where": "Biscayne Bay and Keys flats",
+   "about": "A sleek silver flats fish nicknamed the grey ghost for its stealth and blazing speed. It can live more than 20 years and cruises the shallow flats of the Keys and Biscayne Bay.",
+   "funFact": "A University of Miami study valued a single Florida Keys bonefish at about 3,500 dollars a year to the local economy. Florida made it catch and release only in 2013.",
+   "maxSize": "Up to about 3 ft and 15 lb",
+   "nonNative": false,
+   "aliases": [
+    "gray ghost"
+   ],
+   "limits": {
+    "kind": "release",
+    "size": "Catch and release only",
+    "bag": "None (no harvest)",
+    "notes": "No harvest allowed anywhere; no tournament exemption.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/bonefish/"
+   },
+   "sources": [
+    "https://myfwc.com/fishing/saltwater/recreational/bonefish/"
+   ]
+  },
+  {
+   "id": "permit",
+   "number": 29,
+   "name": "Permit",
+   "scientific": "Trachinotus falcatus",
+   "rarity": "Trophy",
+   "habitat": "Inshore",
+   "where": "Keys flats and nearshore wrecks",
+   "about": "A tall, flat silver jack with a steep forehead and long, swept-back fins. Schools cruise shallow grass and sand flats inshore and also gather near offshore structure.",
+   "funFact": "Permit have a special hard plate in the back of the mouth that crushes crabs and clams, so a live crab is the classic bait.",
+   "maxSize": "Florida record 56 lb 2 oz",
+   "nonNative": false,
+   "aliases": [],
+   "limits": {
+    "kind": "limits",
+    "size": "22 inches fork length minimum (Special Permit Zone)",
+    "bag": "1 per person per day",
+    "season": "Closed Apr 1 to Jul 31 in the Special Permit Zone",
+    "areas": [
+     {
+      "area": "Special Permit Zone (Keys, S. Biscayne Bay)",
+      "text": "22 in FL min, 1 per person, 2 per boat; closed Apr 1-Jul 31"
+     },
+     {
+      "area": "Elsewhere (Broward, Palm Beach)",
+      "text": "11-22 in FL slot, 2 per person; one over 22 in, max 2 big per boat"
+     }
+    ],
+    "notes": "Keys and Biscayne Bay are in the Special Permit Zone; max 2 per boat.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/permit/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/jacks/permit/"
+   ]
+  },
+  {
+   "id": "graysnapper",
+   "number": 30,
+   "name": "Gray snapper",
+   "scientific": "Lutjanus griseus",
+   "rarity": "Common",
+   "habitat": "Inshore",
+   "where": "Docks, bridges, mangroves and reefs",
+   "about": "A brown to gray snapper, often called mangrove snapper, with two big fangs up front. It hangs around mangroves, seagrass and reefs, eating crabs, shrimp and small fish.",
+   "funFact": "Young gray snapper sometimes swim up into fresh water, and adults have an anchor-shaped patch of teeth on the roof of the mouth that helps tell them apart.",
+   "maxSize": "Commonly up to about 24 in and 10 lb",
+   "nonNative": false,
+   "aliases": [
+    "mangrove snapper",
+    "mango",
+    "snapper"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "10 inches total length (state waters)",
+    "bag": "5 per person per day (state waters)",
+    "season": "Open all year",
+    "areas": [
+     {
+      "area": "Atlantic state waters",
+      "text": "10 in TL min, 5 per person"
+     },
+     {
+      "area": "Atlantic federal waters",
+      "text": "12 in TL min, 10 per person in the snapper aggregate"
+     }
+    ],
+    "notes": "Counts toward the 10-snapper aggregate; Reef Fish Survey needed from a private boat.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/snappers/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/snapper/gray-snapper/"
+   ]
+  },
+  {
+   "id": "lanesnapper",
+   "number": 31,
+   "name": "Lane snapper",
+   "scientific": "Lutjanus synagris",
+   "rarity": "Common",
+   "habitat": "Inshore",
+   "where": "Channels, grass edges and nearshore reefs",
+   "about": "A small pinkish-red snapper with 8 to 10 yellow stripes and a dark spot about the size of its eye. It feeds on the bottom near structure, eating crustaceans, mollusks and small fish.",
+   "funFact": "Lane snapper are also called candy snapper, and they can start spawning when they are only about 6 inches long.",
+   "maxSize": "Florida record 6 lb 6 oz",
+   "nonNative": false,
+   "aliases": [
+    "candy snapper",
+    "snapper"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "8 inches total length",
+    "bag": "10 per person per day",
+    "season": "Open all year",
+    "notes": "Atlantic rule; counts toward the 10-snapper aggregate.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/snappers/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/snapper/lane-snapper/"
+   ]
+  },
+  {
+   "id": "muttonsnapper",
+   "number": 32,
+   "name": "Mutton snapper",
+   "scientific": "Lutjanus analis",
+   "rarity": "Uncommon",
+   "habitat": "Inshore",
+   "where": "Channels, reef edges and Keys flats",
+   "about": "An olive-green snapper with reddish lower fins and a small dark spot above the lateral line. It hunts fish, crabs and snails near reefs and other structure and can top 20 pounds.",
+   "funFact": "Mutton and lane snapper look alike, but the mutton's anal fin comes to a point while the lane's is rounded. Muttons also have a blue line under the eye.",
+   "maxSize": "Florida record 30 lb 4 oz",
+   "nonNative": false,
+   "aliases": [
+    "mutton",
+    "snapper"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "18 inches total length",
+    "bag": "5 per person per day",
+    "season": "Open all year",
+    "notes": "Counts toward the 10-snapper aggregate; special rules in Biscayne NP.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/snappers/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/snapper/mutton-snapper/"
+   ]
+  },
+  {
+   "id": "sheepshead",
+   "number": 33,
+   "name": "Sheepshead",
+   "scientific": "Archosargus probatocephalus",
+   "rarity": "Common",
+   "habitat": "Inshore",
+   "where": "Docks, bridges and jetties, mostly in winter",
+   "about": "A deep-bodied porgy with bold black vertical bars, nicknamed the convict fish. It hangs around docks, pilings, seawalls and oyster bars, and most are around 13 inches.",
+   "funFact": "Sheepshead have startlingly human-looking teeth, with front incisors, molars and rounded grinders for crunching crabs, barnacles and other hard-shelled prey.",
+   "maxSize": "Florida record 15 lb 2 oz",
+   "nonNative": false,
+   "aliases": [
+    "convict fish"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "12 inches total length",
+    "bag": "8 per person per day",
+    "season": "Open all year",
+    "notes": "In March and April each boat is capped at 50 sheepshead.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/sheepshead/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/porgy/sheepshead/"
+   ]
+  },
+  {
+   "id": "blackdrum",
+   "number": 34,
+   "name": "Black drum",
+   "scientific": "Pogonias cromis",
+   "rarity": "Uncommon",
+   "habitat": "Inshore",
+   "where": "Bridges, inlets and deep docks",
+   "about": "A high-backed gray to black drum with chin barbels and big scales; young fish wear dark bars that fade. Heavy throat teeth let it crush oysters, mussels and crabs.",
+   "funFact": "Black drum make a deep drumming sound by vibrating their swim bladder with special muscles, and they can live 35 years or more.",
+   "maxSize": "Florida record 96 lb",
+   "nonNative": false,
+   "aliases": [
+    "drum"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "14 to 24 inches total length (slot)",
+    "bag": "5 per person per day",
+    "season": "Open all year",
+    "notes": "You may keep one fish over 24 inches as part of the 5.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/black-drum/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/drums/black-drum/",
+    "https://www.chesapeakebay.net/discover/field-guide/entry/black-drum"
+   ]
+  },
+  {
+   "id": "crevalle",
+   "number": 35,
+   "name": "Crevalle jack",
+   "scientific": "Caranx hippos",
+   "rarity": "Common",
+   "habitat": "Inshore",
+   "where": "Inlets, beaches and bays, in roaming schools",
+   "about": "A thick, blunt-headed jack with a black spot on the gill cover and one at the base of each pectoral fin. Schools pin baitfish against the surface in noisy blitzes.",
+   "funFact": "A crevalle jack often croaks when you land it. It makes the noise by rasping its upper and lower teeth together while its air bladder amplifies the sound.",
+   "maxSize": "Florida record 57 lb",
+   "nonNative": false,
+   "aliases": [
+    "jack",
+    "jack crevalle"
+   ],
+   "limits": {
+    "kind": "default",
+    "bag": "2 fish or 100 lb per person per day, whichever is more",
+    "notes": "No species rule; FWC's default limit for unregulated fish applies.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/unregulated/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/crevalle-jack/",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/jacks/crevalle-jack"
+   ]
+  },
+  {
+   "id": "ladyfish",
+   "number": 36,
+   "name": "Ladyfish",
+   "scientific": "Elops saurus",
+   "rarity": "Common",
+   "habitat": "Inshore",
+   "where": "Bays, inlets and lit docks at night",
+   "about": "A long, slender, bright silver fish with a deeply forked tail, famous for wild jumps and skipping across the surface. It swallows small fish and shrimp whole.",
+   "funFact": "Baby ladyfish start as clear, ribbon-like larvae that breathe through their skin, then actually shrink in length before growing into a fish.",
+   "maxSize": "Up to about 3 ft and 15 lb",
+   "nonNative": false,
+   "aliases": [
+    "skipjack",
+    "poor mans tarpon"
+   ],
+   "limits": {
+    "kind": "default",
+    "bag": "2 fish or 100 lb per person per day, whichever is more",
+    "notes": "No species rule; FWC's default limit for unregulated fish applies.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/unregulated/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/ladyfish"
+   ]
+  },
+  {
+   "id": "pompano",
+   "number": 37,
+   "name": "Florida pompano",
+   "scientific": "Trachinotus carolinus",
+   "rarity": "Uncommon",
+   "habitat": "Inshore",
+   "where": "Beaches and inlets in winter",
+   "about": "A deep, silvery jack with a yellow belly and throat that cruises the surf, inlets and flats in schools. Its moves follow the tides locally and water temperature by season.",
+   "funFact": "Florida pompano lose their small teeth completely by the time they reach about 8 inches long, yet they still crush sand fleas and small shellfish.",
+   "maxSize": "Florida record 8 lb 4 oz",
+   "nonNative": false,
+   "aliases": [],
+   "limits": {
+    "kind": "limits",
+    "size": "11 inches fork length",
+    "bag": "6 per person per day",
+    "season": "Open all year",
+    "notes": "Hook and line, cast net or beach seine only; no snatching.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/permit/"
+   },
+   "sources": [
+    "https://www.vims.edu/research/units/programs/multispecies_fisheries_research/speciesofinterest/florida-pompano.php",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/jacks/florida-pompano/"
+   ]
+  },
+  {
+   "id": "spanishmack",
+   "number": 38,
+   "name": "Spanish mackerel",
+   "scientific": "Scomberomorus maculatus",
+   "rarity": "Common",
+   "habitat": "Inshore",
+   "where": "Beaches, inlets and nearshore water in winter",
+   "about": "A sleek, toothy mackerel with a blue-green back and gold spots on silver sides. Fast-moving schools chase small fish over grass beds, reefs and along the beaches.",
+   "funFact": "Spanish mackerel follow the thermometer: schools head north in spring and slide back south once the water drops below about 70 F.",
+   "maxSize": "Florida record 12 lb",
+   "nonNative": false,
+   "aliases": [
+    "spanish",
+    "mackerel"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "12 inches fork length",
+    "bag": "15 per person per day",
+    "season": "Open all year",
+    "notes": "Same state rule on both coasts.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/spanish-mackerel/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/mackerel/spanish-mackerel"
+   ]
+  },
+  {
+   "id": "barracuda",
+   "number": 39,
+   "name": "Great barracuda",
+   "scientific": "Sphyraena barracuda",
+   "rarity": "Common",
+   "habitat": "Inshore",
+   "where": "Flats, channels and reefs",
+   "about": "A long, silver ambush hunter with a jutting lower jaw. Young fish change color to match their surroundings, and big adults can chop large prey in half.",
+   "funFact": "Barracuda have two sets of razor teeth, small outer ones plus inner fangs. They are curious and often trail snorkelers, drawn to anything shiny.",
+   "maxSize": "Over 5 ft and 100 lb",
+   "nonNative": false,
+   "aliases": [
+    "cuda",
+    "barracuda"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "15 to 36 inches fork length (slot)",
+    "bag": "2 per person, 6 per boat per day",
+    "season": "Open all year",
+    "notes": "South Florida rule (Martin to Monroe); one fish over 36 in allowed per person or boat.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/barracuda/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/great-barracuda"
+   ]
+  },
+  {
+   "id": "bluefish",
+   "number": 40,
+   "name": "Bluefish",
+   "scientific": "Pomatomus saltatrix",
+   "rarity": "Uncommon",
+   "habitat": "Inshore",
+   "where": "Beaches and inlets in winter, less often this far south",
+   "about": "A stout, blue-green predator with a big mouth full of sharp, flattened teeth. It roams surf beaches and inlets in loose groups and is known to bite when handled.",
+   "funFact": "Bluefish packs tear into schools of mullet and other baitfish, often killing far more fish than they could ever eat.",
+   "maxSize": "World record about 31.7 lb",
+   "nonNative": false,
+   "aliases": [
+    "snapper blue",
+    "chopper"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "12 inches fork length",
+    "bag": "3 per person per day (Atlantic state waters)",
+    "season": "Open all year",
+    "areas": [
+     {
+      "area": "Atlantic (Palm Beach to Miami-Dade)",
+      "text": "12 in FL min, 3 per person"
+     },
+     {
+      "area": "Keys / Gulf",
+      "text": "12 in FL min, 10 per person"
+     }
+    ],
+    "notes": "Monroe County uses the Gulf limit of 10 per person.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/bluefish/"
+   },
+   "sources": [
+    "https://fishbase.se/summary/SpeciesSummary.php?id=364",
+    "https://www.vims.edu/research/units/programs/multispecies_fisheries_research/speciesofinterest/bluefish.php"
+   ]
+  },
+  {
+   "id": "gafftop",
+   "number": 41,
+   "name": "Gafftopsail catfish",
+   "scientific": "Bagre marinus",
+   "rarity": "Common",
+   "habitat": "Inshore",
+   "where": "Bays, inlets and passes",
+   "about": "A bluish-green saltwater catfish with long, flat whiskers and tall fins tipped with trailing filaments. Its three sharp spines can give a painful jab, so handle it carefully.",
+   "funFact": "Male gafftopsail catfish are mouthbrooders. They carry a clutch of marble-sized eggs, up to about 40 of them, inside their mouths.",
+   "maxSize": "Florida record 8 lb 14 oz",
+   "nonNative": false,
+   "aliases": [
+    "gafftopsail",
+    "sail cat",
+    "catfish"
+   ],
+   "limits": {
+    "kind": "default",
+    "bag": "2 fish or 100 lb per person per day, whichever is more",
+    "notes": "No species rule; FWC's default limit for unregulated fish applies.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/unregulated/"
+   },
+   "sources": [
+    "https://cienciasmarinas.com.mx/index.php/cmarinas/article/view/2136",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/catfish/gafftopsail-catfish"
+   ]
+  },
+  {
+   "id": "lookdown",
+   "number": 42,
+   "name": "Lookdown",
+   "scientific": "Selene vomer",
+   "rarity": "Uncommon",
+   "habitat": "Inshore",
+   "where": "Bridges and docks under lights at night",
+   "about": "A paper-thin, plate-shaped jack with a steep forehead and iridescent silver sides. Long trailing filaments stream from its dorsal and anal fins.",
+   "funFact": "The lookdown's skin has tiny reflective platelets that bounce polarized light, helping it blend into open water better than a mirror would.",
+   "maxSize": "Up to about 12 inches",
+   "nonNative": false,
+   "aliases": [
+    "moonfish"
+   ],
+   "limits": {
+    "kind": "default",
+    "bag": "2 fish or 100 lb per person per day, whichever is more",
+    "notes": "FWC has no lookdown rule, so the default limit for unregulated fish applies.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/unregulated/"
+   },
+   "sources": [
+    "https://news.utexas.edu/2015/11/19/fish-skin-provides-invisibility-in-open-ocean/",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/jacks/lookdown"
+   ]
+  },
+  {
+   "id": "goliath",
+   "number": 43,
+   "name": "Goliath grouper",
+   "scientific": "Epinephelus itajara",
+   "rarity": "Legendary",
+   "habitat": "Inshore",
+   "where": "Bridges, wrecks and deep mangrove edges",
+   "about": "The largest grouper in the western Atlantic, mottled brown with tiny dark spots and small eyes. It mostly eats crabs and lobsters and is protected from harvest without a permit.",
+   "funFact": "Goliath grouper boom. They contract muscles on the swim bladder to make a low rumble that carries far underwater and helps them find each other.",
+   "maxSize": "Florida record 680 lb",
+   "nonNative": false,
+   "aliases": [
+    "jewfish",
+    "grouper"
+   ],
+   "limits": {
+    "kind": "release",
+    "size": "Release only in South Florida",
+    "bag": "None in South Florida",
+    "notes": "Harvest is closed from Martin County through the Keys; keep big ones in the water.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/goliath/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/goliath-grouper/",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/grouper/goliath-grouper/"
+   ]
+  },
+  {
+   "id": "mahi",
+   "number": 44,
+   "name": "Mahi-mahi",
+   "scientific": "Coryphaena hippurus",
+   "rarity": "Common",
+   "habitat": "Offshore",
+   "where": "Weed lines and floating debris offshore",
+   "about": "A blazing blue-green and gold offshore fish; bulls have a steep, squared forehead. It hunts flying fish and squid around weed lines and floating debris.",
+   "funFact": "Mahi-mahi grow amazingly fast, around 5 inches a month, and most do not live past about 5 years.",
+   "maxSize": "Florida record 81 lb",
+   "nonNative": false,
+   "aliases": [
+    "dolphin",
+    "dorado",
+    "mahi mahi"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "20 inches fork length",
+    "bag": "5 per person, max 30 per boat",
+    "season": "Open all year",
+    "notes": "Atlantic rule; captain and crew can't keep a bag limit on charters.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/dolphinfish/"
+   },
+   "sources": [
+    "https://lsu.edu/seagrantfish/biological/dolphins/dolphin.htm",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/dolphinfish/"
+   ]
+  },
+  {
+   "id": "sailfish",
+   "number": 45,
+   "name": "Sailfish",
+   "scientific": "Istiophorus platypterus",
+   "rarity": "Trophy",
+   "habitat": "Offshore",
+   "where": "The Gulf Stream edge, best in winter",
+   "about": "A dark blue billfish with a huge spotted sail and a spear-like upper jaw. Famous off southeast Florida for fast runs and jumps, it is almost always released.",
+   "funFact": "Sailfish grow incredibly fast, reaching 4 to 5 feet within their first year, and their colors shift with their excitement level.",
+   "maxSize": "Florida record 126 lb",
+   "nonNative": false,
+   "aliases": [
+    "sail",
+    "billfish"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "63 inches lower jaw fork length",
+    "bag": "1 billfish per person per day",
+    "season": "Open all year",
+    "notes": "Federal HMS permit needed offshore; report any landing to NOAA within 24 hours.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/billfish-tuna/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/billfish/sailfish/",
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/istiophorus-platypterus"
+   ]
+  },
+  {
+   "id": "kingmack",
+   "number": 46,
+   "name": "King mackerel",
+   "scientific": "Scomberomorus cavalla",
+   "rarity": "Uncommon",
+   "habitat": "Offshore",
+   "where": "Reefs, wrecks and the Gulf Stream edge",
+   "about": "A long, silvery mackerel whose lateral line dips sharply below the second dorsal fin. Kings travel in schools and feed on menhaden, mullet, herring and squid.",
+   "funFact": "King mackerel often launch out of the water while chasing bait, a move anglers call skyrocketing. They can live up to about 26 years.",
+   "maxSize": "Florida record 90 lb",
+   "nonNative": false,
+   "aliases": [
+    "kingfish",
+    "king",
+    "smoker"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "24 inches fork length",
+    "bag": "2 per person per day (Atlantic)",
+    "season": "Open all year",
+    "areas": [
+     {
+      "area": "Atlantic (Palm Beach to Miami-Dade)",
+      "text": "24 in FL min, 2 per person"
+     },
+     {
+      "area": "Keys / Monroe and Gulf",
+      "text": "24 in FL min, 3 per person"
+     }
+    ],
+    "notes": "Monroe County follows the Gulf limit of 3 per person.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/king-mackerel/"
+   },
+   "sources": [
+    "https://www.deq.nc.gov/about/divisions/marine-fisheries/public-information-and-education/species-profiles/king-mackerel",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/mackerel/king-mackerel/"
+   ]
+  },
+  {
+   "id": "wahoo",
+   "number": 47,
+   "name": "Wahoo",
+   "scientific": "Acanthocybium solandri",
+   "rarity": "Rare",
+   "habitat": "Offshore",
+   "where": "Gulf Stream drop-offs and Keys humps",
+   "about": "A long, torpedo-shaped mackerel cousin with 24 or more wavy cobalt bars on its sides. It hunts open-water fish like tunas, flyingfish and dolphinfish.",
+   "funFact": "A wahoo's beak-like jaws are lined with triangular, finely serrated teeth, a built-in steak knife for slicing through fish and squid.",
+   "maxSize": "Up to about 180 lb",
+   "nonNative": false,
+   "aliases": [
+    "ono"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "No minimum",
+    "bag": "2 per person per day",
+    "season": "Open all year",
+    "notes": "Hook and line or spear.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/wahoo/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/wahoo/"
+   ]
+  },
+  {
+   "id": "blackfin",
+   "number": 48,
+   "name": "Blackfin tuna",
+   "scientific": "Thunnus atlanticus",
+   "rarity": "Uncommon",
+   "habitat": "Offshore",
+   "where": "The Gulf Stream and Keys humps",
+   "about": "One of the smaller tunas, with a bronze side stripe and dark finlets edged in white. It schools with skipjack and eats small fish, squid and shrimp.",
+   "funFact": "The all-tackle world record blackfin tuna, 45 lb 8 oz, was caught off Florida, though most blackfin landed weigh closer to 7 lb.",
+   "maxSize": "World record 45 lb 8 oz",
+   "nonNative": false,
+   "aliases": [
+    "tuna"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "No minimum",
+    "bag": "2 per person or 10 per boat, whichever is more",
+    "season": "Open all year",
+    "notes": "No federal HMS permit needed for blackfin.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/billfish-tuna/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/blackfin-tuna/",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/tuna/blackfin-tuna"
+   ]
+  },
+  {
+   "id": "yellowfin",
+   "number": 49,
+   "name": "Yellowfin tuna",
+   "scientific": "Thunnus albacares",
+   "rarity": "Rare",
+   "habitat": "Offshore",
+   "where": "Deep water well offshore",
+   "about": "A sleek tuna with a gold side stripe and long, bright yellow fins in larger fish. Fast-growing and short-lived, it travels the open ocean feeding on fish and squid.",
+   "funFact": "During spawning season a female yellowfin can spawn about every three days, releasing 1 to 4 million eggs each time.",
+   "maxSize": "Up to about 400 lb",
+   "nonNative": false,
+   "aliases": [
+    "tuna",
+    "ahi"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "27 inches curved fork length",
+    "bag": "3 per person per day",
+    "season": "Open all year",
+    "notes": "Federal rules apply even in state waters; boat needs an HMS permit.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/billfish-tuna/"
+   },
+   "sources": [
+    "https://www.fisheries.noaa.gov/species/atlantic-yellowfin-tuna",
+    "https://www.fisheries.noaa.gov/atlantic-highly-migratory-species/recreational-atlantic-bigeye-albacore-yellowfin-and-skipjack-tuna"
+   ]
+  },
+  {
+   "id": "littletunny",
+   "number": 50,
+   "name": "Little tunny",
+   "scientific": "Euthynnus alletteratus",
+   "rarity": "Common",
+   "habitat": "Offshore",
+   "where": "Reefs and the Gulf Stream edge, in schools",
+   "about": "A compact, torpedo-shaped tuna with wavy dark lines on its back and 3 to 7 dark spots below the pectoral fin. Fast schools blitz herring and sardines at the surface.",
+   "funFact": "Look under the pectoral fin for a few dark spots, like a thumbprint. Its oily flesh also makes it a favorite bait for sharks and marlin.",
+   "maxSize": "Up to about 35 lb",
+   "nonNative": false,
+   "aliases": [
+    "bonito",
+    "false albacore",
+    "tuna"
+   ],
+   "limits": {
+    "kind": "default",
+    "bag": "2 fish or 100 lb per person per day, whichever is more",
+    "notes": "Not federally managed, so FWC's default limit applies; no HMS permit.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/billfish-tuna/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/little-tunny/",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/tuna/little-tunny"
+   ]
+  },
+  {
+   "id": "cobia",
+   "number": 51,
+   "name": "Cobia",
+   "scientific": "Rachycentron canadum",
+   "rarity": "Uncommon",
+   "habitat": "Offshore",
+   "where": "Around rays, buoys and wrecks",
+   "about": "A long, dark brown fish with a flat head that looks a bit like a small shark from the side. It loves crabs, earning the nickname crabeater, and often swallows prey whole.",
+   "funFact": "Cobia have no swim bladder, and they like to shadow rays, sea turtles and sharks to grab scraps those animals leave behind.",
+   "maxSize": "Record about 135 lb",
+   "nonNative": false,
+   "aliases": [
+    "ling",
+    "lemonfish"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "36 inches fork length",
+    "bag": "1 per person, max 2 per boat",
+    "season": "Open all year",
+    "notes": "Same rule in state and federal waters on both coasts.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/cobia/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/cobia/"
+   ]
+  },
+  {
+   "id": "amberjack",
+   "number": 52,
+   "name": "Greater amberjack",
+   "scientific": "Seriola dumerili",
+   "rarity": "Uncommon",
+   "habitat": "Offshore",
+   "where": "Wrecks and deep reefs",
+   "about": "The biggest jack, olive to brown on top with silver sides, found around wrecks and reefs. It is known for brute strength and long, dogged fights.",
+   "funFact": "Greater amberjack have a dark stripe running from the nose to the dorsal fin that seems to light up when the fish switches into feeding mode.",
+   "maxSize": "Florida record 142 lb",
+   "nonNative": false,
+   "aliases": [
+    "aj",
+    "reef donkey",
+    "amberjack"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "28 inches fork length",
+    "bag": "1 per person per day",
+    "season": "Closed in April (Atlantic)",
+    "notes": "Gulf waters differ: 34 in FL and a short fall season.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/amberjack/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/jacks/greater-amberjack/"
+   ]
+  },
+  {
+   "id": "almaco",
+   "number": 53,
+   "name": "Almaco jack",
+   "scientific": "Seriola rivoliana",
+   "rarity": "Uncommon",
+   "habitat": "Offshore",
+   "where": "Wrecks and deep reefs",
+   "about": "A deep-bodied, often dark jack with a tall, pointed dorsal fin. It roams reefs, wrecks and open water and is often caught by accident while fishing for other species.",
+   "funFact": "The almaco is one of four fish that anglers lump together as amberjack, and it has been reported to live up to 22 years.",
+   "maxSize": "Florida record 35 lb 8 oz",
+   "nonNative": false,
+   "aliases": [
+    "jack"
+   ],
+   "limits": {
+    "kind": "default",
+    "bag": "2 fish or 100 lb per person per day, whichever is more",
+    "notes": "FWC lists almaco as unregulated in state waters; federal rules may differ.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/amberjack/"
+   },
+   "sources": [
+    "https://blogs.ifas.ufl.edu/collierco/2022/02/17/fish-of-florida-almaco-jack-seriola-rivoliana-species-profile/",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/jacks/almaco-jack/"
+   ]
+  },
+  {
+   "id": "africanpompano",
+   "number": 54,
+   "name": "African pompano",
+   "scientific": "Alectis ciliaris",
+   "rarity": "Rare",
+   "habitat": "Offshore",
+   "where": "Wrecks and deep reefs",
+   "about": "A deep, flat, metallic blue-silver jack with a steep, rounded head. Adults gather over reefs, wrecks and ledges and are prized as hard fighters.",
+   "funFact": "Young African pompano trail long threadlike streamers from their fins. Adults lose them as they grow, so a big one looks like a different fish.",
+   "maxSize": "Up to about 40 lb",
+   "nonNative": false,
+   "aliases": [
+    "threadfish",
+    "pompano"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "24 inches fork length",
+    "bag": "2 per person, max 2 per boat",
+    "season": "Open all year",
+    "notes": "Hook and line only in state waters; spearing allowed in federal waters.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/permit/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/jacks/african-pompano/",
+    "https://reefsmartguides.com/african-pompano/"
+   ]
+  },
+  {
+   "id": "yellowtail",
+   "number": 55,
+   "name": "Yellowtail snapper",
+   "scientific": "Ocyurus chrysurus",
+   "rarity": "Common",
+   "habitat": "Offshore",
+   "where": "Reefs, especially in the Keys",
+   "about": "A trim snapper with a bright yellow stripe from snout to its deeply forked yellow tail. It schools above the reef and eats crabs, shrimp, squid and small fish.",
+   "funFact": "Yellowtail snapper are mainly night hunters with sharp eyesight, and the oldest one ever aged was 28 years old.",
+   "maxSize": "Up to about 30 inches",
+   "nonNative": false,
+   "aliases": [
+    "flag",
+    "snapper"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "12 inches total length",
+    "bag": "10 per person per day",
+    "season": "Open all year",
+    "notes": "Counts toward the 10-snapper aggregate; Reef Fish Survey needed from a private boat.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/snappers/"
+   },
+   "sources": [
+    "https://blogs.ifas.ufl.edu/collierco/2021/06/29/fish-of-florida-yellowtail-snapper-ocyurus-chrysurus-species-profile/",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/snapper/yellowtail-snapper"
+   ]
+  },
+  {
+   "id": "vermilion",
+   "number": 56,
+   "name": "Vermilion snapper",
+   "scientific": "Rhomboplites aurorubens",
+   "rarity": "Uncommon",
+   "habitat": "Offshore",
+   "where": "Deeper reefs and ledges",
+   "about": "A rosy-red, slim snapper with large red eyes and sometimes faint yellow lines on its sides. It forms big schools over offshore ledges and grows slowly.",
+   "funFact": "Anglers call it beeliner or mingo. Unlike red snapper it lacks big canine teeth, and its diet includes tiny drifting plankton along with fish and shrimp.",
+   "maxSize": "Florida record 6.19 lb",
+   "nonNative": false,
+   "aliases": [
+    "beeliner",
+    "b liner",
+    "snapper"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "12 inches total length",
+    "bag": "5 per person per day",
+    "season": "Open all year",
+    "notes": "Atlantic rule; not part of the 10-snapper aggregate.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/snappers/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/snapper/vermilion-snapper/",
+    "https://www.fishbase.org/summary/SpeciesSummary.php?id=213"
+   ]
+  },
+  {
+   "id": "redgrouper",
+   "number": 57,
+   "name": "Red grouper",
+   "scientific": "Epinephelus morio",
+   "rarity": "Uncommon",
+   "habitat": "Offshore",
+   "where": "Reefs and hard bottom",
+   "about": "A brownish-red grouper with pale blotches and a scarlet-orange mouth lining. It lives on hard and muddy bottoms, eats fish and crabs, and can live at least 25 years.",
+   "funFact": "Red grouper act like underwater bulldozers, clearing sand and debris out of holes in the limestone bottom, and other reef fish then move in.",
+   "maxSize": "Florida record 42 lb 4 oz",
+   "nonNative": false,
+   "aliases": [
+    "grouper"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "20 inches total length",
+    "bag": "3 per person per day (grouper aggregate)",
+    "season": "Closed Jan 1 to Apr 30 (Atlantic, all Keys state waters)",
+    "notes": "Counts toward the 3-grouper aggregate; Reef Fish Survey required.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/groupers/"
+   },
+   "sources": [
+    "https://repository.library.noaa.gov/view/noaa/51241",
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/grouper/red-grouper/"
+   ]
+  },
+  {
+   "id": "blackgrouper",
+   "number": 58,
+   "name": "Black grouper",
+   "scientific": "Mycteroperca bonaci",
+   "rarity": "Rare",
+   "habitat": "Offshore",
+   "where": "Keys reefs and deep ledges",
+   "about": "An olive to gray grouper marked with rectangular dark blotches and brassy spots, with black-edged fins. Big ones move to deeper reefs and feed on fish and squid.",
+   "funFact": "Black grouper start life mostly as females, and many change into males as they grow larger and older.",
+   "maxSize": "Florida record 113 lb 6 oz",
+   "nonNative": false,
+   "aliases": [
+    "grouper"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "24 inches total length",
+    "bag": "1 gag or black per person per day",
+    "season": "Closed Jan 1 to Apr 30 (Atlantic, all Keys state waters)",
+    "notes": "Max 2 gag or black per boat; charter captain and crew can't keep one.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/groupers/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/profiles/saltwater/grouper/black-grouper/"
+   ]
+  },
+  {
+   "id": "hogfish",
+   "number": 59,
+   "name": "Hogfish",
+   "scientific": "Lachnolaimus maximus",
+   "rarity": "Uncommon",
+   "habitat": "Offshore",
+   "where": "Reefs and hard bottom, often speared",
+   "about": "A large wrasse with three long trailing dorsal spines and bright red eyes. Big dominant females can turn into males, which guard a harem of females.",
+   "funFact": "Hogfish get their name from their long, pig-like snout, which they use to root through sand for crabs and clams just like a hog.",
+   "maxSize": "Up to about 22 lb",
+   "nonNative": false,
+   "aliases": [
+    "hog snapper"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "16 inches fork length",
+    "bag": "1 per person per day",
+    "season": "Open May 1 to Oct 31 (closed Nov 1 to Apr 30)",
+    "notes": "Atlantic and Keys rule; Gulf side north of Cape Sable is 14 in FL and 5 per person.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/hogfish/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/hogfish/"
+   ]
+  },
+  {
+   "id": "trigger",
+   "number": 60,
+   "name": "Gray triggerfish",
+   "scientific": "Balistes capriscus",
+   "rarity": "Uncommon",
+   "habitat": "Offshore",
+   "where": "Reefs and wrecks",
+   "about": "A tough-skinned, gray reef fish with a locking first dorsal spine and chisel-like teeth. It guards its sand nest boldly and will nip at divers who get close.",
+   "funFact": "Gray triggerfish hover over the sand and blow jets of water to uncover buried sand dollars, then flip them over and crunch the soft center.",
+   "maxSize": "Up to about 13 lb",
+   "nonNative": false,
+   "aliases": [
+    "triggerfish"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "12 inches fork length",
+    "bag": "10 per person per day",
+    "season": "Open all year in Atlantic state waters",
+    "areas": [
+     {
+      "area": "Atlantic state waters",
+      "text": "12 in FL min, 10 per person, open all year"
+     },
+     {
+      "area": "Atlantic federal waters",
+      "text": "12 in FL min, 10 within 20-fish aggregate; Mar-May and Aug-Dec"
+     }
+    ],
+    "notes": "Atlantic federal waters open only Mar 1-May 31 and Aug 1-Dec 31.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/triggerfish/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/gray-triggerfish/",
+    "https://www.aces.edu/blog/topics/coastal-programs/life-history-of-the-gray-triggerfish/"
+   ]
+  },
+  {
+   "id": "lionfish",
+   "number": 61,
+   "name": "Lionfish",
+   "scientific": "Pterois volitans",
+   "rarity": "Common",
+   "habitat": "Offshore",
+   "where": "Reefs and wrecks, mostly speared",
+   "about": "A striped red and white invasive fish with fanlike fins and 18 venomous spines. It eats fish more than half its own length, and FWC encourages anglers to remove it.",
+   "funFact": "In warm water a lionfish can spawn about every four days, releasing two egg masses of 12,000 to 15,000 eggs each, which helps explain its invasion.",
+   "maxSize": "Usually 12 to 15 inches; can top 18 inches",
+   "nonNative": true,
+   "aliases": [
+    "red lionfish"
+   ],
+   "limits": {
+    "kind": "none",
+    "size": "No minimum",
+    "bag": "No bag limit",
+    "season": "Open all year",
+    "notes": "Removal encouraged; no license needed with a pole spear, sling or hand net.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/lionfish/"
+   },
+   "sources": [
+    "https://myfwc.com/wildlifehabitats/nonnatives/marine-fish/scorpionfish-and-lionfish/lionfish/"
+   ]
+  },
+  {
+   "id": "bluemarlin",
+   "number": 62,
+   "name": "Blue marlin",
+   "scientific": "Makaira nigricans",
+   "rarity": "Legendary",
+   "habitat": "Offshore",
+   "where": "Deep blue water well offshore",
+   "about": "The biggest billfish, dark blue above and silver below with rows of pale blue spots. It hunts tunas, mackerels, dolphinfish and squid near the surface by day.",
+   "funFact": "Female blue marlin are often far bigger than males, and the largest females approach 14 feet and about a ton.",
+   "maxSize": "Up to about 14 ft and 2,000 lb",
+   "nonNative": false,
+   "aliases": [
+    "marlin",
+    "billfish"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "99 inches lower jaw fork length",
+    "bag": "1 billfish per person per day",
+    "season": "Open all year",
+    "notes": "Federal HMS permit needed offshore; report any landing to NOAA within 24 hours.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/billfish-tuna/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/blue-marlin/"
+   ]
+  },
+  {
+   "id": "swordfish",
+   "number": 63,
+   "name": "Swordfish",
+   "scientific": "Xiphias gladius",
+   "rarity": "Legendary",
+   "habitat": "Offshore",
+   "where": "Deep daytime drops off Miami and the Keys",
+   "about": "A huge billfish with a long, flat sword and no scales or teeth as an adult. It dives deep after fish and squid, and prey often shows slash marks from its bill.",
+   "funFact": "Swordfish have a special heater organ beside their eye muscles that warms the brain, helping them hunt in near-freezing water far below the surface.",
+   "maxSize": "World record 1,182 lb",
+   "nonNative": false,
+   "aliases": [
+    "sword",
+    "broadbill"
+   ],
+   "limits": {
+    "kind": "limits",
+    "size": "47 inches lower jaw fork length",
+    "bag": "1 per person, max 4 per private boat",
+    "season": "Open all year",
+    "notes": "Hook and line only; HMS permit offshore and report landings to NOAA in 24 hours.",
+    "url": "https://myfwc.com/fishing/saltwater/recreational/billfish-tuna/"
+   },
+   "sources": [
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/swordfish/"
+   ]
+  }
+ ]
+}
