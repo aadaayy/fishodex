@@ -172,6 +172,7 @@ struct UnlockView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .sticker()
         .opacity(showXP ? 1 : 0)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("unlock-patches")
     }
 

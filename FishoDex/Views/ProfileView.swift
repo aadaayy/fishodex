@@ -178,6 +178,7 @@ struct BadgesPanel: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .sticker()
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("badges-panel")
     }
 }
@@ -297,6 +298,7 @@ struct SettingsPanel: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .sticker()
         .onChange(of: store.catches.count) { backup = nil }
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("settings-panel")
     }
 }

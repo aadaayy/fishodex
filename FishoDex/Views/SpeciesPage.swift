@@ -330,6 +330,7 @@ struct RulesPanel: View {
                 }
             }
         }
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("rules-panel")
     }
 
