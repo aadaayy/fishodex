@@ -213,9 +213,9 @@ struct NotCaughtPanel: View {
                     Text("Your first one is worth \(xp) XP.")
                         .font(Fonts.body(15, .extraBold))
                         .foregroundStyle(Color.white.opacity(0.85))
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 0)
-                Pill(text: "+\(xp) XP", fill: Palette.sun)
             }
             Button("Log this fish", action: onLog)
                 .buttonStyle(ChunkyButtonStyle(expand: true))

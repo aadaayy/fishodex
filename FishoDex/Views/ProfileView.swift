@@ -129,12 +129,12 @@ struct TitlesPanel: View {
         let level = store.progress.level
         VStack(alignment: .leading, spacing: 12) {
             PanelTitle(text: "Title patches", symbol: "rosette")
-            HStack(alignment: .top, spacing: 4) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4, alignment: .top), count: 5), spacing: 8) {
                 ForEach(Leveling.titles, id: \.level) { t in
                     let earned = level >= t.level
                     VStack(spacing: 6) {
                         PatchView(shape: .circle, text: "\(t.level)", earned: earned,
-                                  color: earned ? Palette.sun : Palette.paperShade, size: 52)
+                                  color: earned ? Palette.sun : Palette.paperShade, size: 44)
                         Text(t.title)
                             .font(Fonts.body(11, .black, relativeTo: .caption))
                             .foregroundStyle(earned ? Palette.ink : Palette.muted)

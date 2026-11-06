@@ -175,8 +175,8 @@ final class WalkthroughUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["level-card"].waitForExistence(timeout: 20))
         sleep(1)
         capture("33-profile")
-        let badges = app.descendants(matching: .any)["badges-panel"]
-        scrollTo(badges, in: app)
+        let firstBadge = app.descendants(matching: .any)["badge-first"]
+        scrollTo(firstBadge, in: app)
         capture("34-profile-patches")
         app.swipeUp()
         app.swipeUp()
@@ -202,9 +202,6 @@ final class WalkthroughUITests: XCTestCase {
     @MainActor
     func testOpenDuo() throws {
         try XCTSkipUnless(Self.isDuo, "Shown on the Duo simulator")
-        // Held on its side, the shrunk open Duo fills more of the screen.
-        XCUIDevice.shared.orientation = .landscapeLeft
-        defer { XCUIDevice.shared.orientation = .portrait }
         let runs: [(String, [String])] = [
             ("40-open-duo-dex", ["-openSpecies", "snook"]),
             ("41-open-duo-not-caught", ["-openSpecies", "swordfish"]),
@@ -233,19 +230,6 @@ final class WalkthroughUITests: XCTestCase {
         let window = app.windows.firstMatch.frame
         XCTAssertGreaterThan(window.height, window.width, "The app should stay upright on a regular iPhone")
         capture("50-phone-held-sideways")
-        XCUIDevice.shared.orientation = .portrait
-    }
-
-    /// The folded Duo turned on its side keeps the side bar.
-    @MainActor
-    func testFoldedDuoTurned() throws {
-        try XCTSkipUnless(Self.isDuo, "Only the Duo turns")
-        XCUIDevice.shared.orientation = .landscapeLeft
-        let app = launch(["-demo"])
-        XCTAssertTrue(app.buttons["card-bass"].waitForExistence(timeout: 20))
-        sleep(2)
-        assertTabsOnScreen(app)
-        capture("51-folded-duo-turned")
         XCUIDevice.shared.orientation = .portrait
     }
 

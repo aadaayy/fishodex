@@ -81,39 +81,45 @@ struct CatchRow: View {
 
     var body: some View {
         let species = store.catalog[item.speciesID]
-        HStack(spacing: 12) {
+        HStack(alignment: .top, spacing: 12) {
             if showFish {
-                FishThumb(id: item.isTrophyBass ? SpeciesCatalog.trophyBassID : item.speciesID, size: 64)
+                FishThumb(id: item.isTrophyBass ? SpeciesCatalog.trophyBassID : item.speciesID, size: 56)
             }
             VStack(alignment: .leading, spacing: 3) {
-                HStack(spacing: 6) {
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
                     // On a fish's own page the name is already at the top, so the date leads.
                     Text(showFish ? (species?.name ?? item.speciesID) : item.date.formatted(date: .abbreviated, time: .omitted))
-                        .font(Fonts.title(18)).foregroundStyle(Palette.ink).lineLimit(1)
-                    if item.isTrophyBass { Pill(text: "Trophy", fill: Rarity.trophy.color, textColor: .white, size: 10) }
+                        .font(Fonts.title(18)).foregroundStyle(Palette.ink)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: 4)
+                    if let xp = store.progress.awards[item.id]?.xp {
+                        Text("+\(xp)").font(Fonts.title(16)).foregroundStyle(Palette.ink)
+                            .padding(.horizontal, 8).padding(.vertical, 3)
+                            .background(Capsule().fill(Palette.sun))
+                            .overlay(Capsule().strokeBorder(Palette.ink, lineWidth: 2))
+                            .fixedSize()
+                            .accessibilityLabel("\(xp) XP")
+                    }
                 }
+                if item.isTrophyBass { Pill(text: "Trophy", fill: Rarity.trophy.color, textColor: .white, size: 10) }
                 Text(showFish ? item.date.formatted(date: .abbreviated, time: .shortened) : item.date.formatted(date: .omitted, time: .shortened))
                     .font(Fonts.body(13, .bold)).foregroundStyle(Palette.muted)
-                HStack(spacing: 6) {
-                    if let size = store.sizeText(item) {
-                        Text(size).font(Fonts.body(14, .extraBold)).foregroundStyle(Palette.ink)
-                    }
-                    if item.released {
-                        Text("Released").font(Fonts.body(12, .black)).foregroundStyle(Palette.good)
+                let size = store.sizeText(item)
+                if size != nil || item.released {
+                    HStack(spacing: 6) {
+                        if let size {
+                            Text(size).font(Fonts.body(14, .extraBold)).foregroundStyle(Palette.ink)
+                        }
+                        if item.released {
+                            Text("Released").font(Fonts.body(12, .black)).foregroundStyle(Palette.good).fixedSize()
+                        }
                     }
                 }
                 if let place = item.placeName, !place.isEmpty {
                     Label(place, systemImage: "mappin")
                         .font(Fonts.body(13, .bold)).foregroundStyle(Palette.muted).lineLimit(1)
                 }
-            }
-            Spacer(minLength: 0)
-            if let xp = store.progress.awards[item.id]?.xp {
-                Text("+\(xp)").font(Fonts.title(18)).foregroundStyle(Palette.ink)
-                    .padding(.horizontal, 8).padding(.vertical, 4)
-                    .background(Capsule().fill(Palette.sun))
-                    .overlay(Capsule().strokeBorder(Palette.ink, lineWidth: 2))
-                    .accessibilityLabel("\(xp) XP")
             }
         }
         .contentShape(Rectangle())

@@ -149,8 +149,13 @@ jobs:
                   except Exception as error:
                       print(f"::warning title=Screenshot skipped::{error}")
           PYNAME
-          # Simulator screenshots are always upright; turn the Duo held on its side
-          for f in publish/*duo-turned*.png publish/*open-duo*.png; do sips -r 90 "$f" >/dev/null || echo "::warning title=Not turned::$f"; done
+          # The open Duo is drawn shrunk in the middle of the folded screen; cut
+          # away the black above and below (the open Duo is 951 by 669 points).
+          for f in publish/*open-duo*.png; do
+            w=$(sips -g pixelWidth "$f" | awk '/pixelWidth/ {print $2}')
+            h=$(( w * 669 / 951 + 2 ))
+            sips -c "$h" "$w" "$f" >/dev/null || echo "::warning title=Not cropped::$f"
+          done
           files=(publish/*.png)
           echo "::notice title=Screenshots::${#files[@]} exported on ${{ matrix.phone }}"
 

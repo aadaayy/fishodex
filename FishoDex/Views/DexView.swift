@@ -72,25 +72,42 @@ struct DexHeader: View {
                     .foregroundStyle(Palette.ink)
                     .accessibilityLabel("\(p.caught.count) of \(total) fish caught")
             }
-            HStack(spacing: 8) {
-                Pill(text: "Lv \(p.level)", fill: Palette.sun)
-                Text(p.title)
-                    .font(Fonts.body(15, .black))
-                    .foregroundStyle(Palette.ink)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-                Spacer(minLength: 4)
-                Text(xpText(p))
-                    .font(Fonts.body(13, .extraBold))
-                    .foregroundStyle(Palette.muted)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
+            // Side by side when there's room, the XP on its own line when not.
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 8) {
+                    levelLine(p)
+                    Spacer(minLength: 4)
+                    xpLine(p)
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    levelLine(p)
+                    xpLine(p)
+                }
             }
             XPBar(fraction: Leveling.fraction(for: p.totalXP))
         }
         .padding(14)
         .sticker()
         .accessibilityElement(children: .combine)
+    }
+
+    private func levelLine(_ p: DexProgress) -> some View {
+        HStack(spacing: 8) {
+            Pill(text: "Lv \(p.level)", fill: Palette.sun)
+            Text(p.title)
+                .font(Fonts.body(15, .black))
+                .foregroundStyle(Palette.ink)
+                .lineLimit(1)
+                .fixedSize()
+        }
+    }
+
+    private func xpLine(_ p: DexProgress) -> some View {
+        Text(xpText(p))
+            .font(Fonts.body(13, .extraBold))
+            .foregroundStyle(Palette.muted)
+            .lineLimit(1)
+            .fixedSize()
     }
 
     private func xpText(_ p: DexProgress) -> String {
