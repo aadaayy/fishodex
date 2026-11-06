@@ -4,31 +4,72 @@ import MapKit
 import CoreLocation
 import ImageIO
 
-/// Log a catch: pick the fish (Identify from photo comes later), then the
+/// Log a catch: identify the fish from a photo or pick it by name, then the
 /// details, with what the catch is worth in XP before you save it.
 struct LogCatchFlow: View {
     var preset: String?
     var onDone: (SaveResult?) -> Void
 
-    enum Step: Hashable { case picker, details(String) }
+    enum Step: Hashable { case picker, identify, details(String) }
     @State private var path: [Step] = []
+    /// The photo from photo ID, carried into the details so it stays with the catch.
+    @State private var scanPhoto: UIImage?
+    @State private var scanPhotoInfo: PhotoInfo?
+    @State private var scanGuesses: [String] = []
 
     var body: some View {
         NavigationStack(path: $path) {
-            ChooseMethodView(onPick: { path.append(.picker) }, onClose: { onDone(nil) })
+            ChooseMethodView(
+                onPick: {
+                    clearScan()
+                    path.append(.picker)
+                },
+                onPhoto: { image, info in
+                    scanPhoto = image
+                    scanPhotoInfo = info
+                    scanGuesses = []
+                    path.append(.identify)
+                },
+                onClose: { onDone(nil) })
                 .navigationDestination(for: Step.self) { step in
                     switch step {
                     case .picker:
                         SpeciesPickerView(onChoose: { path.append(.details($0)) }, onClose: { onDone(nil) })
+                    case .identify:
+                        if let scanPhoto {
+                            PhotoIDView(photo: scanPhoto,
+                                        onChoose: { id, guesses in
+                                            scanGuesses = guesses
+                                            path.append(.details(id))
+                                        },
+                                        onPickByName: { guesses in
+                                            scanGuesses = guesses
+                                            path.append(.picker)
+                                        },
+                                        onClose: { onDone(nil) })
+                        }
                     case .details(let id):
-                        CatchDetailsForm(speciesID: id, onSave: onDone, onClose: { onDone(nil) })
+                        CatchDetailsForm(speciesID: id, initialPhoto: scanPhoto, initialPhotoInfo: scanPhotoInfo,
+                                         scanGuesses: scanPhoto == nil ? [] : scanGuesses,
+                                         onSave: onDone, onClose: { onDone(nil) })
                     }
                 }
         }
         .tint(Palette.ink)
         .onAppear {
-            if let preset, path.isEmpty { path = [.details(preset)] }
+            if let preset, path.isEmpty {
+                path = [.details(preset)]
+            } else if path.isEmpty, let sample = LaunchOptions.takeScanSample() {
+                scanPhoto = sample
+                path = [.identify]
+            }
         }
+    }
+
+    private func clearScan() {
+        scanPhoto = nil
+        scanPhotoInfo = nil
+        scanGuesses = []
     }
 }
 
@@ -79,7 +120,13 @@ struct FlowHeader: View {
 
 struct ChooseMethodView: View {
     var onPick: () -> Void
+    var onPhoto: (UIImage, PhotoInfo?) -> Void
     var onClose: () -> Void
+    @State private var photoItem: PhotosPickerItem?
+    @State private var showCamera = false
+    @State private var loading = false
+
+    private var hasCamera: Bool { UIImagePickerController.isSourceTypeAvailable(.camera) }
 
     var body: some View {
         ScrollView {
@@ -89,49 +136,30 @@ struct ChooseMethodView: View {
                     Spacer()
                     CloseButton(action: onClose)
                 }
+                identifyCard
                 Button(action: onPick) {
                     HStack(spacing: 14) {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 26, weight: .black))
                             .frame(width: 56, height: 56)
-                            .background(Circle().fill(.white.opacity(0.25)))
+                            .background(Circle().fill(Palette.paperShade))
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Pick the fish").font(Fonts.title(24))
                             Text("Type its name or browse by water")
                                 .font(Fonts.body(15, .extraBold))
-                                .opacity(0.9)
+                                .foregroundStyle(Palette.muted)
                         }
                         Spacer(minLength: 0)
                         Image(systemName: "chevron.right").font(.system(size: 18, weight: .black))
                     }
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Palette.ink)
                     .padding(16)
-                    .sticker(Palette.orange)
+                    .sticker(Palette.paper)
                 }
                 .buttonStyle(CardPressStyle())
                 .accessibilityIdentifier("pick-fish")
 
-                HStack(spacing: 14) {
-                    Image(systemName: "camera.viewfinder")
-                        .font(.system(size: 26, weight: .black))
-                        .frame(width: 56, height: 56)
-                        .background(Circle().fill(Palette.paperShade))
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Identify from photo").font(Fonts.title(22))
-                        Pill(text: "Coming later", fill: Palette.paperShade)
-                    }
-                    Spacer(minLength: 0)
-                    Image(systemName: "lock.fill").font(.system(size: 18, weight: .black))
-                }
-                .foregroundStyle(Palette.muted)
-                .padding(16)
-                .sticker(Palette.paper)
-                .opacity(0.8)
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("Identify from photo, coming later")
-                .accessibilityIdentifier("identify-locked")
-
-                Text("Catches are private and stay on this phone.")
+                Text("Catches and photos are private and stay on this phone.")
                     .font(Fonts.body(14, .extraBold))
                     .foregroundStyle(Palette.ink)
                     .padding(.top, 4)
@@ -142,6 +170,59 @@ struct ChooseMethodView: View {
         }
         .background(WaterBackground())
         .toolbar(.hidden, for: .navigationBar)
+        .fullScreenCover(isPresented: $showCamera) {
+            CameraPicker { image in onPhoto(image, nil) }
+                .ignoresSafeArea()
+        }
+        .onChange(of: photoItem) { _, item in
+            guard let item else { return }
+            loading = true
+            Task {
+                defer { loading = false; photoItem = nil }
+                guard let data = try? await item.loadTransferable(type: Data.self),
+                      let image = UIImage(data: data) else { return }
+                onPhoto(image, PhotoInfo(data: data))
+            }
+        }
+    }
+
+    private var identifyCard: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 14) {
+                Image(systemName: "camera.viewfinder")
+                    .font(.system(size: 26, weight: .black))
+                    .frame(width: 56, height: 56)
+                    .background(Circle().fill(.white.opacity(0.25)))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Identify from photo").font(Fonts.title(24))
+                    Text("Snap your fish and FishoDex names it")
+                        .font(Fonts.body(15, .extraBold))
+                        .opacity(0.9)
+                }
+                Spacer(minLength: 0)
+            }
+            .foregroundStyle(.white)
+            .accessibilityElement(children: .combine)
+            HStack(spacing: 10) {
+                if hasCamera {
+                    Button { showCamera = true } label: { Label("Take photo", systemImage: "camera.fill") }
+                        .buttonStyle(ChunkyButtonStyle(fill: Palette.sun, text: Palette.ink, size: 17, expand: true))
+                        .accessibilityIdentifier("identify-camera")
+                }
+                PhotosPicker(selection: $photoItem, matching: .images) {
+                    if loading {
+                        ProgressView().tint(Palette.ink)
+                    } else {
+                        Label(hasCamera ? "Choose" : "Choose photo", systemImage: "photo.on.rectangle")
+                    }
+                }
+                .buttonStyle(ChunkyButtonStyle(fill: Palette.paper, text: Palette.ink, size: 17, expand: true))
+                .accessibilityIdentifier("identify-choose")
+            }
+        }
+        .padding(16)
+        .sticker(Palette.orange)
+        .accessibilityIdentifier("identify-card")
     }
 }
 
@@ -247,6 +328,11 @@ struct CatchDetailsForm: View {
     @Environment(CatchStore.self) private var store
     @Environment(\.layoutShape) private var layout
     var speciesID: String
+    /// The photo photo ID looked at, if the fish was identified from one.
+    var initialPhoto: UIImage? = nil
+    var initialPhotoInfo: PhotoInfo? = nil
+    /// What photo ID suggested, saved with the catch.
+    var scanGuesses: [String] = []
     var onSave: (SaveResult?) -> Void
     var onClose: () -> Void
 
@@ -263,6 +349,7 @@ struct CatchDetailsForm: View {
     @State private var photoItem: PhotosPickerItem?
     @State private var photoInfo: PhotoInfo?
     @State private var showCamera = false
+    @State private var usedInitialPhoto = false
     @State private var showPin = false
     @State private var locator = Locator()
     @FocusState private var focused: Field?
@@ -278,7 +365,9 @@ struct CatchDetailsForm: View {
               lengthInches: UnitSystem.parse(lengthText).map(store.units.inches(fromTyped:)),
               weightPounds: UnitSystem.parse(weightText).map(store.units.pounds(fromTyped:)),
               released: released,
-              note: note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : note)
+              note: note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : note,
+              addedBy: initialPhoto == nil ? .hand : .scan,
+              scanSuggestions: initialPhoto == nil ? [] : scanGuesses)
     }
 
     var body: some View {
@@ -331,6 +420,13 @@ struct CatchDetailsForm: View {
         .onChange(of: photoItem) { _, item in
             Task { await loadPhoto(item) }
         }
+        .onAppear {
+            if photo == nil, let initialPhoto, !usedInitialPhoto {
+                usedInitialPhoto = true
+                photo = initialPhoto
+                photoInfo = initialPhotoInfo
+            }
+        }
         .onChange(of: locator.result) { _, result in
             guard let result else { return }
             latitude = result.latitude
@@ -346,11 +442,16 @@ struct CatchDetailsForm: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(s.name).font(Fonts.title(24)).foregroundStyle(Palette.ink).lineLimit(2)
                     .minimumScaleFactor(0.7)
-                if caught {
-                    Text("You've caught \(store.progress.catchCount[s.id] ?? 0) so far")
-                        .font(Fonts.body(14, .extraBold)).foregroundStyle(Palette.muted)
-                } else {
-                    Pill(text: "New species", fill: Palette.sun)
+                HStack(spacing: 6) {
+                    if caught {
+                        Text("You've caught \(store.progress.catchCount[s.id] ?? 0) so far")
+                            .font(Fonts.body(14, .extraBold)).foregroundStyle(Palette.muted)
+                    } else {
+                        Pill(text: "New species", fill: Palette.sun)
+                    }
+                    if initialPhoto != nil {
+                        Pill(text: "Photo ID", fill: Palette.waterLight, size: 11)
+                    }
                 }
             }
             Spacer(minLength: 0)

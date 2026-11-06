@@ -1,5 +1,6 @@
 import CoreGraphics
 import Foundation
+import UIKit
 
 /// Settings the automatic checks pass when they launch the app, so the
 /// screenshots show the same data every time. Normal launches use none.
@@ -23,6 +24,10 @@ struct LaunchOptions {
     var showUnlock: String?
     /// The weight in pounds for that catch, e.g. 10.6 for a trophy bass.
     var unlockPounds: Double?
+    /// Open Log a catch on photo ID with a sample photo, as if just chosen.
+    /// The checks pass the photo itself in FISHODEX_SCAN_SAMPLE (base64 JPEG),
+    /// because the simulator has no camera.
+    var scanSample = false
 
     static let current = LaunchOptions(arguments: ProcessInfo.processInfo.arguments)
 
@@ -39,11 +44,24 @@ struct LaunchOptions {
         logSpecies = value(after: "-logSpecies")
         showUnlock = value(after: "-showUnlock")
         unlockPounds = value(after: "-unlockPounds").flatMap(Double.init)
+        scanSample = arguments.contains("-scanSample")
         if arguments.contains("-openDuoPreview") {
             previewSize = CGSize(width: 951, height: 669)
         } else if let text = value(after: "-previewSize") {
             let parts = text.split(separator: "x").compactMap { Double($0) }
             if parts.count == 2 { previewSize = CGSize(width: parts[0], height: parts[1]) }
         }
+    }
+
+    @MainActor private static var scanSampleTaken = false
+
+    /// The sample photo for photo ID, once per launch.
+    @MainActor
+    static func takeScanSample() -> UIImage? {
+        guard current.scanSample, !scanSampleTaken,
+              let text = ProcessInfo.processInfo.environment["FISHODEX_SCAN_SAMPLE"],
+              let data = Data(base64Encoded: text), let image = UIImage(data: data) else { return nil }
+        scanSampleTaken = true
+        return image
     }
 }

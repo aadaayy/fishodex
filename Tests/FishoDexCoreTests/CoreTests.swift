@@ -171,4 +171,41 @@ final class CoreTests: XCTestCase {
         XCTAssertEqual(decoded.first?.addedBy, .hand)
         XCTAssertEqual(decoded.first?.spotSharing, .hidden)
     }
+
+    // MARK: Photo ID
+
+    func testScanKeepsTopThreeDexFishAndDropsOther() {
+        let result = ScanResult.make(from: [("other", 0.05), ("snook", 0.81), ("tarpon", 0.08),
+                                            ("notafish", 0.03), ("ladyfish", 0.02), ("redfish", 0.01)], catalog: catalog)
+        XCTAssertEqual(result.guesses.map(\.speciesID), ["snook", "tarpon", "ladyfish"])
+        XCTAssertEqual(result.verdict, .sure)
+        XCTAssertEqual(result.guesses.first?.percentText, "81%")
+        XCTAssertEqual(result.suggestionIDs, ["snook", "tarpon", "ladyfish"])
+    }
+
+    func testScanIsUnsureWhenGuessesAreClose() {
+        let result = ScanResult.make(from: [("graysnapper", 0.41), ("muttonsnapper", 0.38), ("lanesnapper", 0.2)], catalog: catalog)
+        XCTAssertEqual(result.verdict, .unsure)
+        XCTAssertEqual(result.guesses.count, 3)
+    }
+
+    func testScanSaysNotInDexForOtherFish() {
+        let result = ScanResult.make(from: [("other", 0.72), ("bluegill", 0.2), ("redear", 0.05)], catalog: catalog)
+        XCTAssertEqual(result.verdict, .notInDex)
+        XCTAssertEqual(result.guesses.first?.speciesID, "bluegill", "Dex guesses still show, to pick from")
+        XCTAssertEqual(ScanResult.make(from: [], catalog: catalog).verdict, .notInDex)
+    }
+
+    func testPercentNeverReadsCertain() {
+        XCTAssertEqual(ScanGuess(speciesID: "snook", confidence: 0.999).percentText, "99%")
+        XCTAssertEqual(ScanGuess(speciesID: "snook", confidence: 0.001).percentText, "1%")
+    }
+
+    func testScannedCatchRemembersTheGuesses() throws {
+        let c = Catch(speciesID: "bass", weightPounds: 10.4, addedBy: .scan, scanSuggestions: ["bass", "peacock"])
+        let decoded = try JSONDecoder().decode(Catch.self, from: JSONEncoder().encode(c))
+        XCTAssertEqual(decoded.addedBy, .scan)
+        XCTAssertEqual(decoded.scanSuggestions, ["bass", "peacock"])
+        XCTAssertTrue(decoded.isTrophyBass, "A scanned 10 lb bass still unlocks the Trophy card")
+    }
 }

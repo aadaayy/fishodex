@@ -199,6 +199,88 @@ final class WalkthroughUITests: XCTestCase {
         capture("12-unlock-trophy-bass")
     }
 
+    /// Photo ID: a sample photo (the simulator has no camera) is named, the
+    /// right fish is tapped, the photo carries into the details, and saving
+    /// unlocks the card. Nothing unlocks until the catch is saved.
+    @MainActor
+    func testIdentifyFromPhoto() throws {
+        let (sample, expected) = try Self.scanSample()
+        let app = launch(["-scanSample"], environment: ["FISHODEX_SCAN_SAMPLE": sample])
+        let headline = app.descendants(matching: .any)["scan-headline"]
+        let unavailable = app.descendants(matching: .any)["scan-unavailable"]
+        XCTAssertTrue(app.descendants(matching: .any)["scan-photo"].waitForExistence(timeout: 20), "Photo ID didn't open")
+        let deadline = Date().addingTimeInterval(40)
+        while !headline.exists && !unavailable.exists && Date() < deadline { usleep(300_000) }
+        XCTAssertFalse(unavailable.exists, "Photo ID couldn't name the sample photo (no model in the build?)")
+        XCTAssertTrue(headline.exists, "Photo ID never showed its guesses")
+        sleep(1)
+        capture("13-photo-id-guesses")
+        let guess = app.buttons["scan-guess-\(expected)"]
+        XCTAssertTrue(guess.exists, "\(expected) should be among the top three guesses for its sample photo")
+        XCTAssertLessThanOrEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'scan-guess-'")).count, 3,
+                                 "At most three guesses")
+        XCTAssertTrue(app.buttons["scan-pick-by-name"].exists, "There should always be a way to pick by name")
+        // The card isn't unlocked just by scanning.
+        XCTAssertFalse(app.buttons["unlock-continue"].exists)
+        scrollTo(app.buttons["scan-pick-by-name"], in: app)
+        capture("14-photo-id-pick-by-name")
+        scrollTo(guess, in: app)
+        guess.tap()
+
+        let weight = app.textFields["weight-field"]
+        XCTAssertTrue(weight.waitForExistence(timeout: 5), "Tapping a guess should open the details")
+        sleep(1)
+        capture("15-photo-id-details")
+        let removePhoto = app.buttons["Remove photo"]
+        scrollTo(removePhoto, in: app)
+        XCTAssertTrue(removePhoto.exists, "The scanned photo should carry into the details")
+        capture("16-photo-id-photo-kept")
+        let save = app.buttons["save-catch"]
+        scrollTo(save, in: app)
+        save.tap()
+        let next = app.buttons["unlock-continue"]
+        XCTAssertTrue(next.waitForExistence(timeout: 5), "Saving should show the unlock")
+        sleep(2)
+        capture("17-photo-id-unlock")
+        next.tap()
+        XCTAssertTrue(next.waitForNonExistence(timeout: 5))
+        app.buttons["tab-logbook"].tap()
+        XCTAssertTrue(app.buttons["logbook-row"].firstMatch.waitForExistence(timeout: 5), "The scanned catch should be in the Logbook")
+    }
+
+    /// From photo ID, "None of these" goes to picking by name, and the photo comes along.
+    @MainActor
+    func testPhotoIDPickByName() throws {
+        let (sample, _) = try Self.scanSample()
+        let app = launch(["-scanSample"], environment: ["FISHODEX_SCAN_SAMPLE": sample])
+        let pick = app.buttons["scan-pick-by-name"]
+        XCTAssertTrue(pick.waitForExistence(timeout: 40), "Photo ID should offer picking by name")
+        scrollTo(pick, in: app)
+        pick.tap()
+        let search = app.textFields["species-search"]
+        XCTAssertTrue(search.waitForExistence(timeout: 5), "The fish picker didn't open")
+        search.tap()
+        search.typeText("tarpon")
+        let row = app.buttons["species-row-tarpon"]
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        row.tap()
+        let removePhoto = app.buttons["Remove photo"]
+        XCTAssertTrue(app.textFields["weight-field"].waitForExistence(timeout: 5))
+        scrollTo(removePhoto, in: app)
+        XCTAssertTrue(removePhoto.exists, "The photo should come along when picking by name")
+    }
+
+    /// The sample photo for photo ID, from this test bundle, and the fish it shows.
+    private static func scanSample() throws -> (String, String) {
+        let bundle = Bundle(for: WalkthroughUITests.self)
+        guard let url = bundle.urls(forResourcesWithExtension: "jpg", subdirectory: nil)?
+            .filter({ $0.lastPathComponent.hasPrefix("scan-sample-") }).sorted(by: { $0.path < $1.path }).first else {
+            throw XCTSkip("No sample photo in the test bundle")
+        }
+        let id = url.deletingPathExtension().lastPathComponent.replacingOccurrences(of: "scan-sample-", with: "")
+        return (try Data(contentsOf: url).base64EncodedString(), id)
+    }
+
     /// The open iPhone Duo: the dex on the left half and the fish's card, or
     /// Log a catch, on the right. The checks can't unfold the simulator, so
     /// the app draws itself at the open Duo's size, shrunk to fit.
@@ -212,9 +294,14 @@ final class WalkthroughUITests: XCTestCase {
             ("43-open-duo-logbook", ["-tab", "logbook", "-openSpecies", "tarpon"]),
             ("44-open-duo-profile", ["-tab", "profile", "-openSpecies", "trophybass"]),
             ("45-open-duo-unlock", ["-showUnlock", "goliath"]),
+            ("46-open-duo-photo-id", ["-scanSample", "-openSpecies", "snook"]),
         ]
+        let sample = (try? Self.scanSample())?.0 ?? ""
         for (name, extra) in runs {
-            let app = launch(["-openDuoPreview", "-demo"] + extra)
+            let app = launch(["-openDuoPreview", "-demo"] + extra, environment: ["FISHODEX_SCAN_SAMPLE": sample])
+            if extra.contains("-scanSample") {
+                _ = app.descendants(matching: .any)["scan-headline"].waitForExistence(timeout: 40)
+            }
             XCTAssertTrue(app.buttons["log-button"].waitForExistence(timeout: 20), "\(name) didn't open")
             sleep(2)
             capture(name)
@@ -239,9 +326,10 @@ final class WalkthroughUITests: XCTestCase {
     // MARK: - Helpers
 
     @MainActor
-    private func launch(_ arguments: [String]) -> XCUIApplication {
+    private func launch(_ arguments: [String], environment: [String: String] = [:]) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["-uiTesting", "-still"] + arguments
+        app.launchEnvironment = environment
         app.launch()
         return app
     }

@@ -64,5 +64,6 @@ final class AppModel {
             selected = .species(first)
         }
         if let id = options.logSpecies, catalog[id] != nil { startLog(preset: id) }
+        if options.scanSample { startLog() }
     }
 }
