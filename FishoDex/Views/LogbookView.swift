@@ -87,11 +87,12 @@ struct CatchRow: View {
             }
             VStack(alignment: .leading, spacing: 3) {
                 HStack(spacing: 6) {
-                    Text(species?.name ?? item.speciesID)
+                    // On a fish's own page the name is already at the top, so the date leads.
+                    Text(showFish ? (species?.name ?? item.speciesID) : item.date.formatted(date: .abbreviated, time: .omitted))
                         .font(Fonts.title(18)).foregroundStyle(Palette.ink).lineLimit(1)
                     if item.isTrophyBass { Pill(text: "Trophy", fill: Rarity.trophy.color, textColor: .white, size: 10) }
                 }
-                Text(item.date.formatted(date: .abbreviated, time: .shortened))
+                Text(showFish ? item.date.formatted(date: .abbreviated, time: .shortened) : item.date.formatted(date: .omitted, time: .shortened))
                     .font(Fonts.body(13, .bold)).foregroundStyle(Palette.muted)
                 HStack(spacing: 6) {
                     if let size = store.sizeText(item) {
