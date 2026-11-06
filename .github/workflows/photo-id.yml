@@ -1,0 +1,120 @@
+# Builds FishoDex's photo ID model.
+#  1. Collect (Linux): finds openly licensed fish photos on Wikimedia Commons
+#     and GBIF (never iNaturalist), checks each license, and makes contact sheets.
+#  2. Train (Mac): trains the model with Create ML and tests it on held-back photos.
+#  3. Publish: puts the model, the test report, the photo credits and the
+#     contact sheets on the photo-id-model-<branch> branch, to review before
+#     the model goes into the app.
+# Settings for a run (which fish, how many photos) are in Tools/photo_id/run.json.
+name: Photo ID model
+
+on:
+  push:
+    branches: ['claude/**']
+    paths: ['Tools/photo_id/**', '.github/workflows/photo-id.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: photo-id-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  collect:
+    name: Collect photos
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore photos from earlier runs
+        uses: actions/cache/restore@v4
+        with:
+          path: photo-id-data/images
+          key: photo-id-images-v1-${{ github.run_id }}
+          restore-keys: photo-id-images-v1-
+      - name: Collect
+        run: |
+          pip install --quiet Pillow
+          only=$(python3 -c "import json;print(json.load(open('Tools/photo_id/run.json')).get('only',''))")
+          cap=$(python3 -c "import json;print(json.load(open('Tools/photo_id/run.json')).get('cap',180))")
+          minutes=$(python3 -c "import json;print(json.load(open('Tools/photo_id/run.json')).get('minutes',140))")
+          python3 Tools/photo_id/collect.py --out photo-id-data --only "$only" --cap "$cap" --minutes "$minutes"
+      - name: Save photos for the next run
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: photo-id-data/images
+          key: photo-id-images-v1-${{ github.run_id }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: photo-id-data
+          path: photo-id-data
+          retention-days: 3
+
+  train:
+    name: Train and test
+    needs: collect
+    runs-on: xcode-27
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: photo-id-data
+          path: photo-id-data
+      - name: Sort photos into train and test
+        run: python3 Tools/photo_id/prepare.py --data photo-id-data --out photo-id-split
+      - name: Train
+        run: |
+          iterations=$(python3 -c "import json;print(json.load(open('Tools/photo_id/run.json')).get('iterations',120))")
+          xcrun swiftc -O Tools/photo_id/Train.swift -o train
+          ./train photo-id-split/train photo-id-split/test photo-id-model "$iterations"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: photo-id-model
+          path: |
+            photo-id-model
+            photo-id-split/left_out.json
+          retention-days: 3
+
+  publish:
+    name: Publish model and report
+    needs: [collect, train]
+    if: always() && needs.collect.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # only to push the results branch
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: photo-id-data
+          path: photo-id-data
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: photo-id-model
+          path: photo-id-results
+      - name: Write the report
+        run: |
+          mkdir -p publish
+          model=photo-id-results/photo-id-model
+          split=photo-id-results/photo-id-split
+          python3 Tools/photo_id/report.py --data photo-id-data --model "$model" --split "$split" --out publish
+          cp -r photo-id-data/sheets photo-id-data/CREDITS.md photo-id-data/counts.json photo-id-data/manifest.json publish/
+          [ -f "$model/FishID.mlmodel" ] && cp "$model/FishID.mlmodel" "$model/evaluation.json" publish/ || true
+          [ -f "$split/left_out.json" ] && cp "$split/left_out.json" publish/ || true
+          cat publish/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Push to the results branch
+        run: |
+          cd publish
+          target="photo-id-model-${GITHUB_REF_NAME//\//-}"
+          git init -q -b "$target"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Photo ID model from ${GITHUB_SHA::7}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$target"
+          echo "::notice title=Photo ID::published to $target"

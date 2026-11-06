@@ -1,0 +1,510 @@
+{
+ "classes": [
+  {
+   "id": "bass",
+   "name": "Florida bass",
+   "taxa": [
+    "Micropterus floridanus",
+    "Micropterus salmoides",
+    "Micropterus nigricans"
+   ],
+   "note": "Florida bass and northern largemouth bass look the same in photos, so both are used."
+  },
+  {
+   "id": "peacock",
+   "name": "Butterfly peacock bass",
+   "taxa": [
+    "Cichla ocellaris"
+   ]
+  },
+  {
+   "id": "sunshine",
+   "name": "Sunshine bass",
+   "taxa": [
+    "Morone chrysops × Morone saxatilis",
+    "Morone saxatilis",
+    "Morone chrysops"
+   ],
+   "note": "Few photos of the hybrid itself, so its parents (striped bass and white bass) are used as stand-ins."
+  },
+  {
+   "id": "bluegill",
+   "name": "Bluegill",
+   "taxa": [
+    "Lepomis macrochirus"
+   ]
+  },
+  {
+   "id": "redear",
+   "name": "Redear sunfish",
+   "taxa": [
+    "Lepomis microlophus"
+   ]
+  },
+  {
+   "id": "spottedsun",
+   "name": "Spotted sunfish",
+   "taxa": [
+    "Lepomis punctatus"
+   ]
+  },
+  {
+   "id": "warmouth",
+   "name": "Warmouth",
+   "taxa": [
+    "Lepomis gulosus"
+   ]
+  },
+  {
+   "id": "crappie",
+   "name": "Black crappie",
+   "taxa": [
+    "Pomoxis nigromaculatus"
+   ]
+  },
+  {
+   "id": "pickerel",
+   "name": "Chain pickerel",
+   "taxa": [
+    "Esox niger"
+   ]
+  },
+  {
+   "id": "mayan",
+   "name": "Mayan cichlid",
+   "taxa": [
+    "Mayaheros urophthalmus",
+    "Cichlasoma urophthalmus"
+   ]
+  },
+  {
+   "id": "oscar",
+   "name": "Oscar",
+   "taxa": [
+    "Astronotus ocellatus"
+   ]
+  },
+  {
+   "id": "jaguar",
+   "name": "Jaguar guapote",
+   "taxa": [
+    "Parachromis managuensis"
+   ]
+  },
+  {
+   "id": "midas",
+   "name": "Midas cichlid",
+   "taxa": [
+    "Amphilophus citrinellus",
+    "Amphilophus labiatus"
+   ],
+   "note": "Includes red devil cichlid photos, which look the same."
+  },
+  {
+   "id": "acara",
+   "name": "Black acara",
+   "taxa": [
+    "Cichlasoma bimaculatum"
+   ]
+  },
+  {
+   "id": "bluetilapia",
+   "name": "Blue tilapia",
+   "taxa": [
+    "Oreochromis aureus"
+   ]
+  },
+  {
+   "id": "spottedtilapia",
+   "name": "Spotted tilapia",
+   "taxa": [
+    "Pelmatolapia mariae",
+    "Tilapia mariae"
+   ]
+  },
+  {
+   "id": "snakehead",
+   "name": "Snakehead",
+   "taxa": [
+    "Channa aurolineata",
+    "Channa marulius"
+   ],
+   "note": "Includes bullseye snakehead photos, which look very close to the goldline snakehead."
+  },
+  {
+   "id": "knifefish",
+   "name": "Clown knifefish",
+   "taxa": [
+    "Chitala ornata"
+   ]
+  },
+  {
+   "id": "gar",
+   "name": "Florida gar",
+   "taxa": [
+    "Lepisosteus platyrhincus"
+   ]
+  },
+  {
+   "id": "bowfin",
+   "name": "Bowfin",
+   "taxa": [
+    "Amia calva"
+   ]
+  },
+  {
+   "id": "channelcat",
+   "name": "Channel catfish",
+   "taxa": [
+    "Ictalurus punctatus"
+   ]
+  },
+  {
+   "id": "whitecat",
+   "name": "White catfish",
+   "taxa": [
+    "Ameiurus catus"
+   ]
+  },
+  {
+   "id": "walkingcat",
+   "name": "Walking catfish",
+   "taxa": [
+    "Clarias batrachus"
+   ]
+  },
+  {
+   "id": "snook",
+   "name": "Common snook",
+   "taxa": [
+    "Centropomus undecimalis"
+   ]
+  },
+  {
+   "id": "tarpon",
+   "name": "Tarpon",
+   "taxa": [
+    "Megalops atlanticus"
+   ]
+  },
+  {
+   "id": "redfish",
+   "name": "Redfish",
+   "taxa": [
+    "Sciaenops ocellatus"
+   ]
+  },
+  {
+   "id": "seatrout",
+   "name": "Spotted seatrout",
+   "taxa": [
+    "Cynoscion nebulosus"
+   ]
+  },
+  {
+   "id": "bonefish",
+   "name": "Bonefish",
+   "taxa": [
+    "Albula vulpes"
+   ]
+  },
+  {
+   "id": "permit",
+   "name": "Permit",
+   "taxa": [
+    "Trachinotus falcatus"
+   ]
+  },
+  {
+   "id": "graysnapper",
+   "name": "Gray snapper",
+   "taxa": [
+    "Lutjanus griseus"
+   ]
+  },
+  {
+   "id": "lanesnapper",
+   "name": "Lane snapper",
+   "taxa": [
+    "Lutjanus synagris"
+   ]
+  },
+  {
+   "id": "muttonsnapper",
+   "name": "Mutton snapper",
+   "taxa": [
+    "Lutjanus analis"
+   ]
+  },
+  {
+   "id": "sheepshead",
+   "name": "Sheepshead",
+   "taxa": [
+    "Archosargus probatocephalus"
+   ]
+  },
+  {
+   "id": "blackdrum",
+   "name": "Black drum",
+   "taxa": [
+    "Pogonias cromis"
+   ]
+  },
+  {
+   "id": "crevalle",
+   "name": "Crevalle jack",
+   "taxa": [
+    "Caranx hippos"
+   ]
+  },
+  {
+   "id": "ladyfish",
+   "name": "Ladyfish",
+   "taxa": [
+    "Elops saurus"
+   ]
+  },
+  {
+   "id": "pompano",
+   "name": "Florida pompano",
+   "taxa": [
+    "Trachinotus carolinus"
+   ]
+  },
+  {
+   "id": "spanishmack",
+   "name": "Spanish mackerel",
+   "taxa": [
+    "Scomberomorus maculatus"
+   ]
+  },
+  {
+   "id": "barracuda",
+   "name": "Great barracuda",
+   "taxa": [
+    "Sphyraena barracuda"
+   ]
+  },
+  {
+   "id": "bluefish",
+   "name": "Bluefish",
+   "taxa": [
+    "Pomatomus saltatrix"
+   ]
+  },
+  {
+   "id": "gafftop",
+   "name": "Gafftopsail catfish",
+   "taxa": [
+    "Bagre marinus"
+   ]
+  },
+  {
+   "id": "lookdown",
+   "name": "Lookdown",
+   "taxa": [
+    "Selene vomer"
+   ]
+  },
+  {
+   "id": "goliath",
+   "name": "Goliath grouper",
+   "taxa": [
+    "Epinephelus itajara"
+   ]
+  },
+  {
+   "id": "mahi",
+   "name": "Mahi-mahi",
+   "taxa": [
+    "Coryphaena hippurus"
+   ]
+  },
+  {
+   "id": "sailfish",
+   "name": "Sailfish",
+   "taxa": [
+    "Istiophorus platypterus"
+   ]
+  },
+  {
+   "id": "kingmack",
+   "name": "King mackerel",
+   "taxa": [
+    "Scomberomorus cavalla"
+   ]
+  },
+  {
+   "id": "wahoo",
+   "name": "Wahoo",
+   "taxa": [
+    "Acanthocybium solandri"
+   ]
+  },
+  {
+   "id": "blackfin",
+   "name": "Blackfin tuna",
+   "taxa": [
+    "Thunnus atlanticus"
+   ]
+  },
+  {
+   "id": "yellowfin",
+   "name": "Yellowfin tuna",
+   "taxa": [
+    "Thunnus albacares"
+   ]
+  },
+  {
+   "id": "littletunny",
+   "name": "Little tunny",
+   "taxa": [
+    "Euthynnus alletteratus"
+   ]
+  },
+  {
+   "id": "cobia",
+   "name": "Cobia",
+   "taxa": [
+    "Rachycentron canadum"
+   ]
+  },
+  {
+   "id": "amberjack",
+   "name": "Greater amberjack",
+   "taxa": [
+    "Seriola dumerili"
+   ]
+  },
+  {
+   "id": "almaco",
+   "name": "Almaco jack",
+   "taxa": [
+    "Seriola rivoliana"
+   ]
+  },
+  {
+   "id": "africanpompano",
+   "name": "African pompano",
+   "taxa": [
+    "Alectis ciliaris"
+   ]
+  },
+  {
+   "id": "yellowtail",
+   "name": "Yellowtail snapper",
+   "taxa": [
+    "Ocyurus chrysurus"
+   ]
+  },
+  {
+   "id": "vermilion",
+   "name": "Vermilion snapper",
+   "taxa": [
+    "Rhomboplites aurorubens"
+   ]
+  },
+  {
+   "id": "redgrouper",
+   "name": "Red grouper",
+   "taxa": [
+    "Epinephelus morio"
+   ]
+  },
+  {
+   "id": "blackgrouper",
+   "name": "Black grouper",
+   "taxa": [
+    "Mycteroperca bonaci"
+   ]
+  },
+  {
+   "id": "hogfish",
+   "name": "Hogfish",
+   "taxa": [
+    "Lachnolaimus maximus"
+   ]
+  },
+  {
+   "id": "trigger",
+   "name": "Gray triggerfish",
+   "taxa": [
+    "Balistes capriscus"
+   ]
+  },
+  {
+   "id": "lionfish",
+   "name": "Lionfish",
+   "taxa": [
+    "Pterois volitans",
+    "Pterois miles"
+   ],
+   "note": "Red and devil lionfish look the same, so both are used."
+  },
+  {
+   "id": "bluemarlin",
+   "name": "Blue marlin",
+   "taxa": [
+    "Makaira nigricans"
+   ]
+  },
+  {
+   "id": "swordfish",
+   "name": "Swordfish",
+   "taxa": [
+    "Xiphias gladius"
+   ]
+  },
+  {
+   "id": "other",
+   "name": "Not in the dex",
+   "taxa": [
+    "Lagodon rhomboides",
+    "Haemulon plumierii",
+    "Haemulon sciurus",
+    "Haemulon flavolineatum",
+    "Orthopristis chrysoptera",
+    "Calamus arctifrons",
+    "Calamus bajonado",
+    "Archosargus rhomboidalis",
+    "Ariopsis felis",
+    "Caranx crysos",
+    "Caranx ruber",
+    "Strongylura marina",
+    "Tylosurus crocodilus",
+    "Mugil cephalus",
+    "Micropogonias undulatus",
+    "Menticirrhus americanus",
+    "Leiostomus xanthurus",
+    "Paralichthys albigutta",
+    "Opsanus beta",
+    "Hypanus sabinus",
+    "Carcharhinus limbatus",
+    "Ginglymostoma cirratum",
+    "Negaprion brevirostris",
+    "Sphoeroides nephelus",
+    "Lutjanus apodus",
+    "Mycteroperca microlepis",
+    "Epinephelus guttatus",
+    "Lepomis auritus",
+    "Dorosoma cepedianum",
+    "Ameiurus nebulosus",
+    "Pterygoplichthys disjunctivus",
+    "Hoplosternum littorale",
+    "Hemichromis letourneuxi",
+    "Sarda sarda",
+    "Abudefduf saxatilis",
+    "Pomacanthus arcuatus",
+    "Holacanthus ciliaris",
+    "Sparisoma viride",
+    "Scarus coeruleus",
+    "Acanthurus chirurgus",
+    "Diplodus holbrookii",
+    "Chaetodipterus faber",
+    "Gymnothorax funebris"
+   ],
+   "perTaxonCap": 14,
+   "note": "Common South Florida fish that are not in the dex, so photos of them do not get named as a dex fish."
+  }
+ ]
+}
