@@ -77,10 +77,14 @@ struct DexHeader: View {
                 Text(p.title)
                     .font(Fonts.body(15, .black))
                     .foregroundStyle(Palette.ink)
-                Spacer()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                Spacer(minLength: 4)
                 Text(xpText(p))
                     .font(Fonts.body(13, .extraBold))
                     .foregroundStyle(Palette.muted)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
             }
             XPBar(fraction: Leveling.fraction(for: p.totalXP))
         }
@@ -126,11 +130,12 @@ struct HabitatFilter: View {
                     .font(Fonts.body(12, .black, relativeTo: .caption))
                     .foregroundStyle(Palette.ink)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.6)
+                    .minimumScaleFactor(0.5)
             }
+            .padding(.horizontal, 5)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
-            .sticker(on ? Palette.sun.opacity(0.55) : Palette.paper, radius: 14, lift: on ? 2 : 4)
+            .sticker(on ? Palette.sun : Palette.paper, radius: 14, lift: on ? 2 : 4)
             .offset(y: on ? 2 : 0)
         }
         .buttonStyle(.plain)

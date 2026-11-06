@@ -202,6 +202,9 @@ final class WalkthroughUITests: XCTestCase {
     @MainActor
     func testOpenDuo() throws {
         try XCTSkipUnless(Self.isDuo, "Shown on the Duo simulator")
+        // Held on its side, the shrunk open Duo fills more of the screen.
+        XCUIDevice.shared.orientation = .landscapeLeft
+        defer { XCUIDevice.shared.orientation = .portrait }
         let runs: [(String, [String])] = [
             ("40-open-duo-dex", ["-openSpecies", "snook"]),
             ("41-open-duo-not-caught", ["-openSpecies", "swordfish"]),

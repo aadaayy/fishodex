@@ -124,23 +124,25 @@ struct BigCard: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        ZStack {
-            if glowing {
-                Sunburst(color: rarity.color.opacity(0.55))
-                    .frame(width: 420, height: 420)
-                    .rotationEffect(.degrees(spin ? 360 : 0))
-                    .animation(reduceMotion ? nil : .linear(duration: 60).repeatForever(autoreverses: false), value: spin)
-                    .onAppear { spin = true }
-                    .accessibilityHidden(true)
+        Image(image)
+            .resizable()
+            .aspectRatio(600 / 780, contentMode: .fit)
+            .frame(maxWidth: 290)
+            .shadow(color: Palette.ink.opacity(0.35), radius: 0, x: 0, y: 6)
+            .frame(maxWidth: .infinity)
+            .frame(height: 380)
+            .background {
+                // The sunburst sits behind the card and never widens the page.
+                if glowing {
+                    Sunburst(color: rarity.color.opacity(0.55))
+                        .frame(width: 420, height: 420)
+                        .rotationEffect(.degrees(spin ? 360 : 0))
+                        .animation(reduceMotion ? nil : .linear(duration: 60).repeatForever(autoreverses: false), value: spin)
+                        .onAppear { spin = true }
+                        .accessibilityHidden(true)
+                }
             }
-            Image(image)
-                .resizable()
-                .aspectRatio(600 / 780, contentMode: .fit)
-                .frame(maxWidth: 290)
-                .shadow(color: Palette.ink.opacity(0.35), radius: 0, x: 0, y: 6)
-        }
-        .frame(height: 380)
-        .clipped()
+            .clipped()
     }
 }
 

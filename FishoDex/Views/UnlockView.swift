@@ -77,29 +77,32 @@ struct UnlockView: View {
     // MARK: Parts
 
     private var card: some View {
-        ZStack {
+        let width: CGFloat = isUnlock ? 240 : 170
+        return ZStack {
+            CardBack()
+                .opacity(flipped ? 0 : 1)
+            Image(cardImage)
+                .resizable()
+                .aspectRatio(600 / 780, contentMode: .fit)
+                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                .opacity(flipped ? 1 : 0)
+        }
+        .frame(width: width, height: width * 780 / 600)
+        .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0), perspective: 0.5)
+        .shadow(color: .black.opacity(0.35), radius: 0, x: 0, y: 6)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(result.species.name) card, \(rarity.rawValue)")
+        .accessibilityIdentifier("unlock-card")
+        .frame(maxWidth: .infinity)
+        .frame(height: isUnlock ? 340 : 240)
+        .background {
+            // Behind the card, so it never widens the screen.
             Sunburst(color: rarity.color.opacity(isUnlock ? 0.7 : 0.35))
                 .frame(width: 440, height: 440)
                 .rotationEffect(.degrees(spin ? 360 : 0))
                 .opacity(flipped ? 1 : 0)
                 .accessibilityHidden(true)
-            ZStack {
-                CardBack()
-                    .opacity(flipped ? 0 : 1)
-                Image(cardImage)
-                    .resizable()
-                    .aspectRatio(600 / 780, contentMode: .fit)
-                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                    .opacity(flipped ? 1 : 0)
-            }
-            .frame(width: isUnlock ? 240 : 170, height: (isUnlock ? 240 : 170) * 780 / 600)
-            .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0), perspective: 0.5)
-            .shadow(color: .black.opacity(0.35), radius: 0, x: 0, y: 6)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel("\(result.species.name) card, \(rarity.rawValue)")
-            .accessibilityIdentifier("unlock-card")
         }
-        .frame(height: isUnlock ? 340 : 240)
         .clipped()
     }
 

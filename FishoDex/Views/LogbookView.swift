@@ -11,7 +11,7 @@ struct LogbookView: View {
             HStack {
                 Text("Logbook").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink)
                 Spacer()
-                Text("\(store.catches.count) catches").font(Fonts.body(15, .black)).foregroundStyle(Palette.ink)
+                Text(store.catches.count == 1 ? "1 catch" : "\(store.catches.count) catches").font(Fonts.body(15, .black)).foregroundStyle(Palette.ink)
             }
             .padding(.horizontal, 16)
             .padding(.top, 8)

@@ -19,9 +19,9 @@ struct LogCatchFlow: View {
                 .navigationDestination(for: Step.self) { step in
                     switch step {
                     case .picker:
-                        SpeciesPickerView { path.append(.details($0)) }
+                        SpeciesPickerView(onChoose: { path.append(.details($0)) }, onClose: { onDone(nil) })
                     case .details(let id):
-                        CatchDetailsForm(speciesID: id, onSave: onDone)
+                        CatchDetailsForm(speciesID: id, onSave: onDone, onClose: { onDone(nil) })
                     }
                 }
         }
@@ -44,6 +44,34 @@ struct CloseButton: View {
         }
         .accessibilityLabel("Close")
         .accessibilityIdentifier("close-log")
+    }
+}
+
+/// The top of each step: back, the step's name and close. Drawn by the app
+/// rather than the system bar so it sits the same on every phone.
+struct FlowHeader: View {
+    @Environment(\.dismiss) private var dismiss
+    var title: String
+    var onClose: () -> Void
+
+    var body: some View {
+        HStack {
+            Button { dismiss() } label: {
+                Image(systemName: "chevron.left").font(.system(size: 16, weight: .black))
+                    .foregroundStyle(Palette.ink)
+                    .frame(width: 34, height: 34)
+                    .background(Circle().fill(Palette.paper))
+                    .overlay(Circle().strokeBorder(Palette.ink, lineWidth: 2.5))
+            }
+            .accessibilityLabel("Back")
+            .accessibilityIdentifier("log-back")
+            Spacer()
+            Text(title).font(Fonts.title(22)).foregroundStyle(Palette.ink)
+                .accessibilityAddTraits(.isHeader)
+            Spacer()
+            CloseButton(action: onClose)
+        }
+        .padding(.top, 14)
     }
 }
 
@@ -122,6 +150,7 @@ struct ChooseMethodView: View {
 struct SpeciesPickerView: View {
     @Environment(CatchStore.self) private var store
     var onChoose: (String) -> Void
+    var onClose: () -> Void
     @State private var query = ""
     @State private var habitat: Habitat?
     @FocusState private var searching: Bool
@@ -130,6 +159,7 @@ struct SpeciesPickerView: View {
         let list = store.catalog.search(query, habitat: habitat)
         ScrollView {
             VStack(spacing: 12) {
+                FlowHeader(title: "Pick the fish", onClose: onClose)
                 SearchField(text: $query, prompt: "Fish name, like snook or mangrove snapper", identifier: "species-search")
                     .focused($searching)
                 HStack(spacing: 8) {
@@ -162,11 +192,7 @@ struct SpeciesPickerView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .background(WaterBackground())
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .principal) { Text("Pick the fish").font(Fonts.title(20)).foregroundStyle(Palette.ink) }
-        }
+        .toolbar(.hidden, for: .navigationBar)
     }
 
     private func chip(_ h: Habitat?, _ title: String, _ color: Color) -> some View {
@@ -222,6 +248,7 @@ struct CatchDetailsForm: View {
     @Environment(\.layoutShape) private var layout
     var speciesID: String
     var onSave: (SaveResult?) -> Void
+    var onClose: () -> Void
 
     @State private var draftID = UUID()
     @State private var date = Date()
@@ -258,6 +285,7 @@ struct CatchDetailsForm: View {
         ScrollView {
             if let s = species {
                 VStack(spacing: 14) {
+                    FlowHeader(title: "Details", onClose: onClose)
                     header(s)
                     whenAndWhere
                     sizeSection(s)
@@ -281,10 +309,8 @@ struct CatchDetailsForm: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .background(WaterBackground())
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
+        .toolbar(.hidden, for: .navigationBar)
         .toolbar {
-            ToolbarItem(placement: .principal) { Text("Details").font(Fonts.title(20)).foregroundStyle(Palette.ink) }
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 Button("Done") { focused = nil }

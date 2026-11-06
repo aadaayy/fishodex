@@ -149,8 +149,8 @@ jobs:
                   except Exception as error:
                       print(f"::warning title=Screenshot skipped::{error}")
           PYNAME
-          # Simulator screenshots are always upright; turn the folded Duo held on its side
-          for f in publish/*duo-turned*.png; do sips -r 270 "$f" >/dev/null || echo "::warning title=Not turned::$f"; done
+          # Simulator screenshots are always upright; turn the Duo held on its side
+          for f in publish/*duo-turned*.png publish/*open-duo*.png; do sips -r 90 "$f" >/dev/null || echo "::warning title=Not turned::$f"; done
           files=(publish/*.png)
           echo "::notice title=Screenshots::${#files[@]} exported on ${{ matrix.phone }}"
 

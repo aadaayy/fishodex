@@ -81,6 +81,8 @@ struct PhoneLayout: View {
             TabContent()
             BottomBar()
         }
+        // The keyboard covers the bar instead of pushing it up over the dex.
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .sheet(isPresented: $model.logging) {
             LogCatchFlow(preset: model.logPreset) { model.finishLog($0) }
                 .presentationDragIndicator(.visible)
