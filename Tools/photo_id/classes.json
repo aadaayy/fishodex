@@ -8,13 +8,20 @@
     "Micropterus salmoides",
     "Micropterus nigricans"
    ],
-   "note": "Florida bass and northern largemouth bass look the same in photos, so both are used."
+   "note": "Florida bass and northern largemouth bass look the same in photos, so both are used.",
+   "search": [
+    "intitle:\"largemouth bass\"",
+    "intitle:\"florida bass\""
+   ]
   },
   {
    "id": "peacock",
    "name": "Butterfly peacock bass",
    "taxa": [
     "Cichla ocellaris"
+   ],
+   "search": [
+    "intitle:\"peacock bass\""
    ]
   },
   {
@@ -32,6 +39,9 @@
    "name": "Bluegill",
    "taxa": [
     "Lepomis macrochirus"
+   ],
+   "search": [
+    "intitle:bluegill"
    ]
   },
   {
@@ -39,6 +49,9 @@
    "name": "Redear sunfish",
    "taxa": [
     "Lepomis microlophus"
+   ],
+   "search": [
+    "intitle:\"redear sunfish\""
    ]
   },
   {
@@ -53,6 +66,9 @@
    "name": "Warmouth",
    "taxa": [
     "Lepomis gulosus"
+   ],
+   "search": [
+    "intitle:warmouth"
    ]
   },
   {
@@ -60,6 +76,9 @@
    "name": "Black crappie",
    "taxa": [
     "Pomoxis nigromaculatus"
+   ],
+   "search": [
+    "intitle:\"black crappie\""
    ]
   },
   {
@@ -67,6 +86,9 @@
    "name": "Chain pickerel",
    "taxa": [
     "Esox niger"
+   ],
+   "search": [
+    "intitle:\"chain pickerel\""
    ]
   },
   {
@@ -75,6 +97,9 @@
    "taxa": [
     "Mayaheros urophthalmus",
     "Cichlasoma urophthalmus"
+   ],
+   "search": [
+    "intitle:\"mayan cichlid\""
    ]
   },
   {
@@ -82,6 +107,9 @@
    "name": "Oscar",
    "taxa": [
     "Astronotus ocellatus"
+   ],
+   "search": [
+    "intitle:\"oscar fish\""
    ]
   },
   {
@@ -89,6 +117,10 @@
    "name": "Jaguar guapote",
    "taxa": [
     "Parachromis managuensis"
+   ],
+   "search": [
+    "intitle:\"jaguar guapote\"",
+    "intitle:\"jaguar cichlid\""
    ]
   },
   {
@@ -136,6 +168,10 @@
    "name": "Clown knifefish",
    "taxa": [
     "Chitala ornata"
+   ],
+   "search": [
+    "intitle:\"clown knifefish\"",
+    "intitle:\"clown featherback\""
    ]
   },
   {
@@ -143,6 +179,9 @@
    "name": "Florida gar",
    "taxa": [
     "Lepisosteus platyrhincus"
+   ],
+   "search": [
+    "intitle:\"florida gar\""
    ]
   },
   {
@@ -150,6 +189,9 @@
    "name": "Bowfin",
    "taxa": [
     "Amia calva"
+   ],
+   "search": [
+    "intitle:bowfin"
    ]
   },
   {
@@ -157,6 +199,9 @@
    "name": "Channel catfish",
    "taxa": [
     "Ictalurus punctatus"
+   ],
+   "search": [
+    "intitle:\"channel catfish\""
    ]
   },
   {
@@ -178,6 +223,9 @@
    "name": "Common snook",
    "taxa": [
     "Centropomus undecimalis"
+   ],
+   "search": [
+    "intitle:snook"
    ]
   },
   {
@@ -185,6 +233,9 @@
    "name": "Tarpon",
    "taxa": [
     "Megalops atlanticus"
+   ],
+   "search": [
+    "intitle:tarpon"
    ]
   },
   {
@@ -192,6 +243,10 @@
    "name": "Redfish",
    "taxa": [
     "Sciaenops ocellatus"
+   ],
+   "search": [
+    "intitle:\"red drum\"",
+    "intitle:redfish intitle:florida"
    ]
   },
   {
@@ -199,6 +254,10 @@
    "name": "Spotted seatrout",
    "taxa": [
     "Cynoscion nebulosus"
+   ],
+   "search": [
+    "intitle:\"spotted seatrout\"",
+    "intitle:\"speckled trout\""
    ]
   },
   {
@@ -206,6 +265,9 @@
    "name": "Bonefish",
    "taxa": [
     "Albula vulpes"
+   ],
+   "search": [
+    "intitle:bonefish"
    ]
   },
   {
@@ -213,6 +275,9 @@
    "name": "Permit",
    "taxa": [
     "Trachinotus falcatus"
+   ],
+   "search": [
+    "intitle:\"permit fish\""
    ]
   },
   {
@@ -220,6 +285,10 @@
    "name": "Gray snapper",
    "taxa": [
     "Lutjanus griseus"
+   ],
+   "search": [
+    "intitle:\"mangrove snapper\"",
+    "intitle:\"gray snapper\""
    ]
   },
   {
@@ -227,6 +296,9 @@
    "name": "Lane snapper",
    "taxa": [
     "Lutjanus synagris"
+   ],
+   "search": [
+    "intitle:\"lane snapper\""
    ]
   },
   {
@@ -234,6 +306,9 @@
    "name": "Mutton snapper",
    "taxa": [
     "Lutjanus analis"
+   ],
+   "search": [
+    "intitle:\"mutton snapper\""
    ]
   },
   {
@@ -241,6 +316,9 @@
    "name": "Sheepshead",
    "taxa": [
     "Archosargus probatocephalus"
+   ],
+   "search": [
+    "intitle:sheepshead intitle:fish"
    ]
   },
   {
@@ -248,6 +326,9 @@
    "name": "Black drum",
    "taxa": [
     "Pogonias cromis"
+   ],
+   "search": [
+    "intitle:\"black drum\""
    ]
   },
   {
@@ -255,6 +336,10 @@
    "name": "Crevalle jack",
    "taxa": [
     "Caranx hippos"
+   ],
+   "search": [
+    "intitle:\"crevalle jack\"",
+    "intitle:\"jack crevalle\""
    ]
   },
   {
@@ -262,6 +347,9 @@
    "name": "Ladyfish",
    "taxa": [
     "Elops saurus"
+   ],
+   "search": [
+    "intitle:ladyfish"
    ]
   },
   {
@@ -269,6 +357,9 @@
    "name": "Florida pompano",
    "taxa": [
     "Trachinotus carolinus"
+   ],
+   "search": [
+    "intitle:\"florida pompano\""
    ]
   },
   {
@@ -276,6 +367,9 @@
    "name": "Spanish mackerel",
    "taxa": [
     "Scomberomorus maculatus"
+   ],
+   "search": [
+    "intitle:\"spanish mackerel\""
    ]
   },
   {
@@ -283,6 +377,9 @@
    "name": "Great barracuda",
    "taxa": [
     "Sphyraena barracuda"
+   ],
+   "search": [
+    "intitle:\"great barracuda\""
    ]
   },
   {
@@ -304,6 +401,9 @@
    "name": "Lookdown",
    "taxa": [
     "Selene vomer"
+   ],
+   "search": [
+    "intitle:lookdown intitle:fish"
    ]
   },
   {
@@ -311,6 +411,9 @@
    "name": "Goliath grouper",
    "taxa": [
     "Epinephelus itajara"
+   ],
+   "search": [
+    "intitle:\"goliath grouper\""
    ]
   },
   {
@@ -318,6 +421,10 @@
    "name": "Mahi-mahi",
    "taxa": [
     "Coryphaena hippurus"
+   ],
+   "search": [
+    "intitle:\"mahi mahi\"",
+    "intitle:mahi-mahi"
    ]
   },
   {
@@ -325,6 +432,9 @@
    "name": "Sailfish",
    "taxa": [
     "Istiophorus platypterus"
+   ],
+   "search": [
+    "intitle:sailfish"
    ]
   },
   {
@@ -332,6 +442,9 @@
    "name": "King mackerel",
    "taxa": [
     "Scomberomorus cavalla"
+   ],
+   "search": [
+    "intitle:\"king mackerel\""
    ]
   },
   {
@@ -339,6 +452,9 @@
    "name": "Wahoo",
    "taxa": [
     "Acanthocybium solandri"
+   ],
+   "search": [
+    "intitle:wahoo intitle:fish"
    ]
   },
   {
@@ -346,6 +462,9 @@
    "name": "Blackfin tuna",
    "taxa": [
     "Thunnus atlanticus"
+   ],
+   "search": [
+    "intitle:\"blackfin tuna\""
    ]
   },
   {
@@ -353,6 +472,9 @@
    "name": "Yellowfin tuna",
    "taxa": [
     "Thunnus albacares"
+   ],
+   "search": [
+    "intitle:\"yellowfin tuna\""
    ]
   },
   {
@@ -367,6 +489,9 @@
    "name": "Cobia",
    "taxa": [
     "Rachycentron canadum"
+   ],
+   "search": [
+    "intitle:cobia"
    ]
   },
   {
@@ -374,6 +499,9 @@
    "name": "Greater amberjack",
    "taxa": [
     "Seriola dumerili"
+   ],
+   "search": [
+    "intitle:\"greater amberjack\""
    ]
   },
   {
@@ -395,6 +523,9 @@
    "name": "Yellowtail snapper",
    "taxa": [
     "Ocyurus chrysurus"
+   ],
+   "search": [
+    "intitle:\"yellowtail snapper\""
    ]
   },
   {
@@ -402,6 +533,9 @@
    "name": "Vermilion snapper",
    "taxa": [
     "Rhomboplites aurorubens"
+   ],
+   "search": [
+    "intitle:\"vermilion snapper\""
    ]
   },
   {
@@ -409,6 +543,9 @@
    "name": "Red grouper",
    "taxa": [
     "Epinephelus morio"
+   ],
+   "search": [
+    "intitle:\"red grouper\""
    ]
   },
   {
@@ -416,6 +553,9 @@
    "name": "Black grouper",
    "taxa": [
     "Mycteroperca bonaci"
+   ],
+   "search": [
+    "intitle:\"black grouper\""
    ]
   },
   {
@@ -423,6 +563,9 @@
    "name": "Hogfish",
    "taxa": [
     "Lachnolaimus maximus"
+   ],
+   "search": [
+    "intitle:hogfish"
    ]
   },
   {
@@ -430,6 +573,10 @@
    "name": "Gray triggerfish",
    "taxa": [
     "Balistes capriscus"
+   ],
+   "search": [
+    "intitle:\"gray triggerfish\"",
+    "intitle:\"grey triggerfish\""
    ]
   },
   {
@@ -439,13 +586,19 @@
     "Pterois volitans",
     "Pterois miles"
    ],
-   "note": "Red and devil lionfish look the same, so both are used."
+   "note": "Red and devil lionfish look the same, so both are used.",
+   "search": [
+    "intitle:lionfish"
+   ]
   },
   {
    "id": "bluemarlin",
    "name": "Blue marlin",
    "taxa": [
     "Makaira nigricans"
+   ],
+   "search": [
+    "intitle:\"blue marlin\""
    ]
   },
   {
@@ -453,6 +606,9 @@
    "name": "Swordfish",
    "taxa": [
     "Xiphias gladius"
+   ],
+   "search": [
+    "intitle:swordfish"
    ]
   },
   {

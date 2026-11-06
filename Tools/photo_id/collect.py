@@ -64,6 +64,8 @@ BAD_CATEGORY_WORDS = [
 
 _lock = threading.Lock()
 _last_call = {}
+# GBIF asks scripts to use one connection at a time.
+_one_at_a_time = {"api.gbif.org": threading.Lock()}
 
 
 def log(*parts):
@@ -83,8 +85,15 @@ def get(url, params=None, host_gap=0.3, timeout=40, raw=False, tries=6):
             time.sleep(wait)
         request = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Encoding": "identity"})
         try:
-            with urllib.request.urlopen(request, timeout=timeout) as response:
-                data = response.read(25_000_000)
+            single = _one_at_a_time.get(host)
+            if single:
+                single.acquire()
+            try:
+                with urllib.request.urlopen(request, timeout=timeout) as response:
+                    data = response.read(25_000_000)
+            finally:
+                if single:
+                    single.release()
             return data if raw else json.loads(data)
         except urllib.error.HTTPError as error:
             if error.code in (429, 500, 502, 503, 504):
@@ -206,6 +215,23 @@ def commons_depicts_files(qid, limit=300):
     return out
 
 
+def commons_search_files(query, limit=250):
+    """Files whose title matches a search like intitle:"red drum", for photos that
+    were never put in the fish's own category (anglers' catch photos often aren't)."""
+    out, params = [], {"action": "query", "list": "search", "srsearch": f"{query} filetype:bitmap",
+                       "srnamespace": 6, "srlimit": 100, "format": "json"}
+    while len(out) < limit:
+        r = get(COMMONS, params)
+        if not r:
+            break
+        out += [h["title"] for h in r.get("query", {}).get("search", [])]
+        if "continue" in r:
+            params.update(r["continue"])
+        else:
+            break
+    return out
+
+
 def commons_info(titles):
     """License, author and a 500 px thumbnail for each file."""
     out = []
@@ -229,10 +255,14 @@ def commons_info(titles):
     return out
 
 
-def from_commons(taxon):
-    qid, category = wikidata_item(taxon)
+def from_commons(taxon, search=None):
+    """Photos for a taxon (its category and files marked as depicting it), or,
+    with search, files whose title matches that search."""
+    qid, category = (None, None) if search else wikidata_item(taxon)
     titles = []
-    if category:
+    if search:
+        titles += commons_search_files(search)
+    elif category:
         titles += commons_category_files(category)
     else:
         titles += commons_category_files(taxon)
@@ -251,7 +281,10 @@ def from_commons(taxon):
         photos.append({"key": key, "source": "Wikimedia Commons", "url": f["thumb"], "page": f["page"],
                        "title": f["title"].removeprefix("File:"), "license": license_name(f["licenseShort"] or lic),
                        "licenseUrl": f["licenseUrl"], "author": f["author"][:200] or "Unknown", "taxon": taxon})
-    log(f"  Commons {taxon}: {len(photos)} usable of {len(titles)} files (item {qid}, category {category})")
+    if search:
+        log(f"  Commons search {search}: {len(photos)} usable of {len(titles)} files")
+    else:
+        log(f"  Commons {taxon}: {len(photos)} usable of {len(titles)} files (item {qid}, category {category})")
     return photos
 
 
@@ -288,9 +321,11 @@ def from_gbif(taxon, limit=250):
                     if not license_ok(lic):
                         continue
                     author = media.get("creator") or media.get("rightsHolder") or rec.get("recordedBy") or rec.get("institutionCode") or "Unknown"
+                    # GBIF's own resized copy is far quicker than the museum's full-size original.
+                    thumb = f"{GBIF}/image/cache/500x/occurrence/{rec.get('key')}/media/{hashlib.md5(url.encode()).hexdigest()}"
                     photos.append({
                         "key": "gb-" + hashlib.sha1(url.encode()).hexdigest()[:16], "source": "GBIF",
-                        "url": url, "page": f"https://www.gbif.org/occurrence/{rec.get('key')}",
+                        "url": url, "thumb": thumb, "page": f"https://www.gbif.org/occurrence/{rec.get('key')}",
                         "title": f"{rec.get('datasetName') or rec.get('institutionCode') or 'GBIF record'} {rec.get('key')}",
                         "license": license_name(lic), "licenseUrl": lic if lic.startswith("http") else "",
                         "author": str(author)[:200], "taxon": taxon, "dataset": dataset,
@@ -332,7 +367,11 @@ def fetch(photo, folder):
                 return path, dhash(img), "cached"
         except Exception:
             os.remove(path)
-    data = get(photo["url"], raw=True, host_gap=0.12, timeout=60, tries=4)
+    data = None
+    if photo.get("thumb"):
+        data = get(photo["thumb"], raw=True, host_gap=0.1, timeout=30, tries=2)
+    if not data:
+        data = get(photo["url"], raw=True, host_gap=0.12, timeout=25, tries=2)
     if not data:
         return None, None, "download failed"
     try:
@@ -404,14 +443,19 @@ def main():
             if per_taxon_cap:
                 found = found[:per_taxon_cap * 2]
             candidates += [dict(p, perTaxonCap=per_taxon_cap) for p in found]
+        for query in c.get("search", []):
+            candidates += [dict(p, perTaxonCap=None) for p in from_commons(c["taxa"][0], search=query)]
         candidates = list({p["key"]: p for p in candidates}.values())
         # Commons first (thumbnails are light), then GBIF, in a steady order.
         candidates.sort(key=lambda p: (p["source"] != "Wikimedia Commons", hashlib.sha1(p["key"].encode()).hexdigest()))
         kept, per_taxon = [], {}
         folder = os.path.join(images, c["id"])
+        # Share the time left fairly among the fish still to do, so one slow site can't starve the rest.
+        left = len(classes) - classes.index(c)
+        class_deadline = time.time() + max(240, (args.minutes * 60 - (time.time() - start)) / left * 1.5)
         with futures.ThreadPoolExecutor(max_workers=4) as pool:
             for i in range(0, len(candidates), 16):
-                if len(kept) >= args.cap or time.time() - start > args.minutes * 60:
+                if len(kept) >= args.cap or time.time() - start > args.minutes * 60 or time.time() > class_deadline:
                     break
                 batch = []
                 for p in candidates[i:i + 16]:
