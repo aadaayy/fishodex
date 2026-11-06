@@ -122,6 +122,7 @@ struct BigCard: View {
     var glowing: Bool
     @State private var spin = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    private var still: Bool { reduceMotion || LaunchOptions.current.still }
 
     var body: some View {
         Image(image)
@@ -137,8 +138,8 @@ struct BigCard: View {
                     Sunburst(color: rarity.color.opacity(0.55))
                         .frame(width: 420, height: 420)
                         .rotationEffect(.degrees(spin ? 360 : 0))
-                        .animation(reduceMotion ? nil : .linear(duration: 60).repeatForever(autoreverses: false), value: spin)
-                        .onAppear { spin = true }
+                        .animation(still ? nil : .linear(duration: 60).repeatForever(autoreverses: false), value: spin)
+                        .onAppear { if !still { spin = true } }
                         .accessibilityHidden(true)
                 }
             }

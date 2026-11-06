@@ -23,6 +23,7 @@ final class WalkthroughUITests: XCTestCase {
         capture("01-dex-empty")
         assertTabsOnScreen(app)
 
+        XCTAssertTrue(app.buttons["log-button"].waitForExistence(timeout: 10))
         app.buttons["log-button"].tap()
         let pick = app.buttons["pick-fish"]
         XCTAssertTrue(pick.waitForExistence(timeout: 5), "Log a catch didn't open")
@@ -166,7 +167,9 @@ final class WalkthroughUITests: XCTestCase {
         sleep(1)
         capture("31-catch-detail")
         app.navigationBars.buttons.firstMatch.tap()
-        app.buttons["Spots map"].tap()
+        let spots = app.buttons["Spots map"]
+        XCTAssertTrue(spots.waitForExistence(timeout: 10), "The Spots map button is missing")
+        spots.tap()
         sleep(4)
         capture("32-spots-map")
         app.terminate()
