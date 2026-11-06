@@ -145,18 +145,22 @@ def has_bad_word(text, words):
 # ---------- Wikimedia Commons ----------
 
 def wikidata_item(taxon):
-    q = get(WIKIDATA, {"action": "query", "list": "search", "srsearch": f'haswbstatement:P225="{taxon}"',
-                       "format": "json", "srlimit": 3})
-    hits = (q or {}).get("query", {}).get("search", [])
-    if not hits:
+    """The Wikidata item whose taxon name (P225) is exactly this, and its Commons category."""
+    r = get(WIKIDATA, {"action": "wbsearchentities", "search": taxon, "language": "en", "type": "item",
+                       "limit": 7, "format": "json"})
+    ids = [h["id"] for h in (r or {}).get("search", [])]
+    if not ids:
         return None, None
-    qid = hits[0]["title"]
-    e = get(WIKIDATA, {"action": "wbgetentities", "ids": qid, "props": "claims", "format": "json"})
-    claims = (e or {}).get("entities", {}).get(qid, {}).get("claims", {})
-    category = None
-    for c in claims.get("P373", []):
-        category = c.get("mainsnak", {}).get("datavalue", {}).get("value")
-    return qid, category
+    e = get(WIKIDATA, {"action": "wbgetentities", "ids": "|".join(ids), "props": "claims", "format": "json"})
+    for qid in ids:
+        claims = (e or {}).get("entities", {}).get(qid, {}).get("claims", {})
+        names = [c.get("mainsnak", {}).get("datavalue", {}).get("value") for c in claims.get("P225", [])]
+        if taxon in names:
+            category = None
+            for c in claims.get("P373", []):
+                category = c.get("mainsnak", {}).get("datavalue", {}).get("value")
+            return qid, category
+    return None, None
 
 
 def commons_category_files(category, depth=2, limit=700):
@@ -373,6 +377,7 @@ def main():
     ap.add_argument("--cap", type=int, default=180, help="most photos per class")
     ap.add_argument("--minutes", type=float, default=95, help="stop downloading after this long")
     ap.add_argument("--only", default="", help="comma-separated class ids, for a quick try")
+    ap.add_argument("--no-filter", action="store_true", help="skip the real-fish-photo check")
     args = ap.parse_args()
 
     start = time.time()
@@ -384,6 +389,11 @@ def main():
     os.makedirs(os.path.join(args.out, "sheets"), exist_ok=True)
 
     manifest, hashes, reasons = [], {}, {}
+    photo_filter = None
+    if not args.no_filter:
+        from photo_filter import PhotoFilter
+        os.makedirs(images, exist_ok=True)
+        photo_filter = PhotoFilter(os.path.join(images, "filter_scores.json"))
     for c in classes:
         log(f"{c['id']} ({c['name']})")
         candidates = []
@@ -407,11 +417,23 @@ def main():
                 for p in candidates[i:i + 16]:
                     if per_taxon_cap and per_taxon.get(p["taxon"], 0) >= per_taxon_cap:
                         continue
+                    if photo_filter and not photo_filter.keep(p["key"] + ".jpg"):
+                        reasons["not a fish photo (seen before)"] = reasons.get("not a fish photo (seen before)", 0) + 1
+                        continue
                     batch.append((p, pool.submit(fetch, p, folder)))
+                fetched = []
                 for p, job in batch:
                     path, h, why = job.result()
                     reasons[why] = reasons.get(why, 0) + 1
-                    if not path:
+                    if path:
+                        fetched.append((p, path, h))
+                if photo_filter:
+                    photo_filter.score([path for _, path, _ in fetched])
+                for p, path, h in fetched:
+                    if photo_filter and not photo_filter.keep(path):
+                        os.remove(path)
+                        why = "not a fish photo: " + photo_filter.label(path)
+                        reasons[why] = reasons.get(why, 0) + 1
                         continue
                     dupe = any(bin(oh ^ h).count("1") <= 4 for oh in hashes.values())
                     too_many = len(kept) >= args.cap or (per_taxon_cap and per_taxon.get(p["taxon"], 0) >= per_taxon_cap)
@@ -423,6 +445,8 @@ def main():
                     hashes[path] = h
                     per_taxon[p["taxon"]] = per_taxon.get(p["taxon"], 0) + 1
                     kept.append(dict(p, file=os.path.relpath(path, args.out), cls=c["id"]))
+        if photo_filter:
+            photo_filter.save()
         # Hold back about 15% for testing, chosen by a hash so it never changes.
         kept.sort(key=lambda p: hashlib.sha1(p["key"].encode()).hexdigest())
         n_test = max(2, round(len(kept) * 0.15)) if len(kept) >= 10 else (1 if len(kept) >= 4 else 0)

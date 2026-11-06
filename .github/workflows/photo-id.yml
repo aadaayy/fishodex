@@ -25,7 +25,7 @@ jobs:
   collect:
     name: Collect photos
     runs-on: ubuntu-latest
-    timeout-minutes: 170
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
       - name: Restore photos from earlier runs
@@ -36,10 +36,11 @@ jobs:
           restore-keys: photo-id-images-v1-
       - name: Collect
         run: |
-          pip install --quiet Pillow
+          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet Pillow transformers
           only=$(python3 -c "import json;print(json.load(open('Tools/photo_id/run.json')).get('only',''))")
           cap=$(python3 -c "import json;print(json.load(open('Tools/photo_id/run.json')).get('cap',180))")
-          minutes=$(python3 -c "import json;print(json.load(open('Tools/photo_id/run.json')).get('minutes',140))")
+          minutes=$(python3 -c "import json;print(json.load(open('Tools/photo_id/run.json')).get('minutes',200))")
           python3 Tools/photo_id/collect.py --out photo-id-data --only "$only" --cap "$cap" --minutes "$minutes"
       - name: Save photos for the next run
         if: always()
