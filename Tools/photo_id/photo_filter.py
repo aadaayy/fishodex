@@ -45,6 +45,17 @@ BAD = [
 ]
 
 
+
+def as_tensor(out):
+    """Newer transformers return an output object here instead of a tensor."""
+    if hasattr(out, "norm"):
+        return out
+    for name in ("text_embeds", "image_embeds", "pooler_output"):
+        value = getattr(out, name, None)
+        if value is not None:
+            return value
+    return out[0]
+
 class PhotoFilter:
     def __init__(self, cache_path, threshold=0.45):
         torch.set_num_threads(os.cpu_count() or 4)
@@ -52,7 +63,7 @@ class PhotoFilter:
         self.processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
         with torch.no_grad():
             text = self.processor(text=GOOD + BAD, return_tensors="pt", padding=True)
-            t = self.model.get_text_features(**text)
+            t = as_tensor(self.model.get_text_features(**text))
             self.text = t / t.norm(dim=-1, keepdim=True)
         self.cache_path = cache_path
         self.threshold = threshold
@@ -77,7 +88,7 @@ class PhotoFilter:
                     images.append(Image.new("RGB", (224, 224)))
             with torch.no_grad():
                 pixels = self.processor(images=images, return_tensors="pt")
-                f = self.model.get_image_features(**pixels)
+                f = as_tensor(self.model.get_image_features(**pixels))
                 f = f / f.norm(dim=-1, keepdim=True)
                 probs = (100.0 * f @ self.text.T).softmax(dim=-1)
             for p, row in zip(batch, probs):
