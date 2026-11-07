@@ -1,0 +1,21 @@
+# Gathers the station list and sample responses for auto conditions (run by hand).
+name: Conditions data
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/**']
+    paths: ['Tools/conditions/**', '.github/workflows/conditions-data.yml']
+permissions:
+  contents: read
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 Tools/conditions/fetch_reference.py out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: conditions-data
+          path: out
+          retention-days: 7

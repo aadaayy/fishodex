@@ -12,7 +12,7 @@ name: Checks
 on:
   push:
     branches: [main, 'claude/**']
-    paths-ignore: ['**.md', 'Tools/photo_id/**', '.github/workflows/photo-id.yml']
+    paths-ignore: ['**.md', 'Tools/photo_id/**', '.github/workflows/photo-id.yml', 'Tools/conditions/**', '.github/workflows/conditions-data.yml']
   workflow_dispatch:
 
 permissions:
