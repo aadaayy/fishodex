@@ -9,10 +9,10 @@ Everything stays on the phone. There are no accounts and nothing goes to a serve
 ## What's in it
 
 1. **Dex:** all 64 cards in number order, rings to filter by water, a search box, your level and XP.
-2. **Fish page:** the card (with a sunburst once caught), your stats, a fun fact, about the fish, Florida's rules with a link to FWC, and your catches of it.
+2. **Fish page:** the card (with a sunburst once caught), your stats, your best bite times once you've logged 5 of it, a fun fact, about the fish, Florida's rules with a link to FWC, and your catches of it.
 3. **Log a catch:** Identify from photo (take one or choose one) or pick the fish by name, then details: date, place (typed, your location, or a dropped pin), weight and length (both optional), kept or released, a note and a photo. It shows what the catch is worth in XP before you save.
 4. **Unlock:** a new fish flips its card over, with confetti, the XP, any level up and any new patches.
-5. **Logbook:** every catch, newest first, and a map of your spots that only you can see.
+5. **Logbook:** every catch, newest first, with its tide, moon, wind and water temperature, and a map of your spots that only you can see.
 6. **Events:** South Florida's fishing seasons as yearly events (see below), the year at a glance, the limited event cards and which fish are closed today.
 7. **Profile:** level and title, XP to the next level, each water's ring, the five title patches, the nine badge patches and settings (units, saving photos to Photos, a backup file).
 
@@ -58,6 +58,23 @@ Eight events come back every year on the same dates, built into the app so they 
 Each finished event earns its limited card and its XP once per year. No event ever rewards keeping a fish out of season: a fish caught while its season is closed anywhere in South Florida, or one Florida says always goes back (like tarpon), counts only if it was released, and the log warns before you save a kept one. The closed seasons (snook, permit, greater amberjack, red and black grouper, hogfish) were checked with FWC on November 7, 2026. The event cards were drawn for the app, like the fish cards.
 
 For steady screenshots the app takes `-today yyyy-MM-dd` as the day it is.
+
+## Auto conditions
+
+Each catch saves the conditions it was caught in by itself:
+
+1. **Moon and time of day:** worked out on the phone the moment you save, with no internet. Time of day goes by the sun at the spot (dawn and dusk are the hour either side of sunrise and sunset), so it means the same in December as in June.
+2. **Tide:** the stage (low, rising, high or falling) from NOAA's tide predictions at the nearest tide station within 25 miles. Within an hour of a high or low counts as that slack tide. Freshwater catches skip it.
+3. **Water temperature:** the nearest NOAA station within 30 miles for salt water, or the nearest USGS gauge within 15 miles for fresh water.
+4. **Wind:** the nearest National Weather Service station within 30 miles (it keeps a week of readings), or a NOAA coastal station for older catches.
+
+Your spot never leaves the phone. The app ships the station lists (`FishoDex/Resources/conditions-stations.json`, rebuilt by the **Conditions data** workflow from `Tools/conditions`), picks the nearest station on the phone, and asks only for that station and the hour. All three sources are US government data, free to use with no key; FishoDex credits them on each catch.
+
+With no signal, the catch saves anyway with its moon and time of day, and the rest fills in by itself when the phone is back online (the app also checks when it opens and every few minutes). A catch from the last 20 minutes waits for the stations to post their reading. After 6 tries that reached a source, anything still missing shows as no reading close by. A catch with no spot keeps just the moon and time of day.
+
+**Your best bite** shows on a fish's page once you've logged 5 of it. For each of tide, time of day, moon, wind and water temperature it shows the one that most of those catches share, when at least 3 have that reading, at least 2 share it and nothing ties it. The code is in `FishoDex/Core/Conditions.swift`, `Sky.swift`, `ConditionsSources.swift` and `BiteInsights.swift`.
+
+The checks never go online for conditions: they use made-up readings at the real nearest stations, and `-offline` shows a catch still waiting for signal.
 
 ## Photo ID
 

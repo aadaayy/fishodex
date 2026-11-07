@@ -6,13 +6,25 @@ struct FishoDexApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var store: CatchStore
     @State private var model = AppModel()
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         let options = LaunchOptions.current
         let catalog = CatchStore.makeCatalog()
+        // The checks never go online: they use made-up readings, or none with -offline.
+        let mode: CatchStore.ConditionsMode = options.testing ? (options.offline ? .offline : .demo) : .live
         let store = CatchStore(catalog: catalog, persists: !options.testing,
-                               defaults: options.testing ? UserDefaults(suiteName: "uitesting") ?? .standard : .standard)
-        if options.demo { store.replaceAll(with: DemoData.catches()) }
+                               defaults: options.testing ? UserDefaults(suiteName: "uitesting") ?? .standard : .standard,
+                               conditions: mode)
+        if options.demo {
+            var catches = DemoConditions.attach(to: DemoData.catches(), catalog: catalog, stations: store.stations)
+            // With -offline, the newest sample catch is still waiting for signal.
+            if options.offline, let newest = catches.indices.max(by: { catches[$0].date < catches[$1].date }) {
+                catches[newest].conditions = CatchConditions.offline(for: catches[newest],
+                                                                    habitat: catalog[catches[newest].speciesID]?.habitat)
+            }
+            store.replaceAll(with: catches)
+        }
         _store = State(initialValue: store)
         if options.still { UIView.setAnimationsEnabled(false) }
     }
@@ -29,6 +41,16 @@ struct FishoDexApp: App {
             .environment(store)
             .environment(model)
             .preferredColorScheme(.light)
+            .onChange(of: scenePhase) { _, phase in
+                if phase == .active { store.fillWaiting() }
+            }
+            .task {
+                // Catches logged in the last few minutes wait for the stations to post their readings.
+                while !Task.isCancelled {
+                    store.fillWaiting()
+                    try? await Task.sleep(nanoseconds: 5 * 60 * 1_000_000_000)
+                }
+            }
             .onAppear {
                 model.applyLaunchOptions(catalog: store.catalog)
                 let options = LaunchOptions.current

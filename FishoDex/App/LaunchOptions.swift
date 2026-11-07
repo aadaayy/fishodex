@@ -31,6 +31,8 @@ struct LaunchOptions {
     /// Pretend today is this day (yyyy-MM-dd), so the events and the sample
     /// catches line up the same way in every run, e.g. "-today 2026-11-07".
     var today: Date?
+    /// Act as if there's no signal: tide, wind and water temperature wait.
+    var offline = false
 
     static let current = LaunchOptions(arguments: ProcessInfo.processInfo.arguments)
 
@@ -48,6 +50,7 @@ struct LaunchOptions {
         showUnlock = value(after: "-showUnlock")
         unlockPounds = value(after: "-unlockPounds").flatMap(Double.init)
         scanSample = arguments.contains("-scanSample")
+        offline = arguments.contains("-offline")
         if let text = value(after: "-today") {
             let parts = text.split(separator: "-").compactMap { Int($0) }
             if parts.count == 3 {

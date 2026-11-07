@@ -55,6 +55,7 @@ struct SpeciesPage: View {
                 StatTile(title: "Biggest", value: store.biggestText(for: s.id) ?? "None")
                 StatTile(title: "XP earned", value: "\(store.progress.xpBySpecies[s.id] ?? 0)")
             }
+            BestBitePanel(species: s)
         } else {
             NotCaughtPanel(xp: s.rarity.newSpeciesXP, rarity: s.rarity) { model.startLog(preset: s.id) }
         }

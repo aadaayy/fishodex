@@ -16,6 +16,10 @@ enum DemoData {
                   createdAt: day(daysAgo, hour))
         }
         return [
+            // Five snook, so its page shows best bite times.
+            c("snook", 45, 7, place: "Haulover Inlet", 25.9008, -80.1224, len: 26, released: true),
+            c("snook", 28, 7, place: "Haulover Inlet", 25.9011, -80.1219, len: 27, lb: 7.1, released: true),
+            c("snook", 12, 7, place: "Haulover Inlet", 25.9006, -80.1226, len: 24, released: true),
             c("bass", 40, 7, place: "Tamiami Canal", 25.7617, -80.5300, len: 16, lb: 2.4, released: true),
             c("peacock", 38, 9, place: "Snapper Creek Canal", 25.7101, -80.3440, len: 15, lb: 2.1),
             c("bluegill", 38, 10, place: "Snapper Creek Canal", 25.7104, -80.3452, len: 7),

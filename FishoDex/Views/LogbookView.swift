@@ -120,6 +120,9 @@ struct CatchRow: View {
                     Label(place, systemImage: "mappin")
                         .font(Fonts.body(13, .bold)).foregroundStyle(Palette.muted).lineLimit(1)
                 }
+                if let cond = item.conditions {
+                    ConditionChips(conditions: cond, hasSpot: item.hasSpot).padding(.top, 3)
+                }
             }
         }
         .contentShape(Rectangle())
@@ -224,6 +227,7 @@ struct CatchDetailView: View {
                             }
                         }
                     }
+                    ConditionsPanel(item: c)
                     Button(role: .destructive) { confirmDelete = true } label: {
                         Label("Delete this catch", systemImage: "trash.fill")
                     }

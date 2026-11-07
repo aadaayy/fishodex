@@ -502,8 +502,17 @@ struct CatchDetailsForm: View {
                         Button("Remove") { latitude = nil; longitude = nil }
                             .font(Fonts.body(14, .black)).foregroundStyle(Palette.ink)
                     }
-                } else if let error = locator.error {
-                    Text(error).font(Fonts.body(13, .bold)).foregroundStyle(Palette.muted)
+                    Text("FishoDex saves the tide, wind and water temperature for this spot.")
+                        .font(Fonts.body(13, .bold)).foregroundStyle(Palette.muted)
+                        .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    if let error = locator.error {
+                        Text(error).font(Fonts.body(13, .bold)).foregroundStyle(Palette.muted)
+                    }
+                    Text("Add a spot and FishoDex saves the tide, wind and water temperature with this catch.")
+                        .font(Fonts.body(13, .bold)).foregroundStyle(Palette.muted)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("spot-conditions-hint")
                 }
             }
         }

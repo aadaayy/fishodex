@@ -132,6 +132,11 @@ final class WalkthroughUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["big-card"].waitForExistence(timeout: 20))
         sleep(1)
         capture("23-fish-caught")
+        // Five sample snook, so the page shows when they bite best.
+        let bite = app.descendants(matching: .any)["best-bite"]
+        scrollToTop(of: bite, in: app)
+        XCTAssertTrue(app.staticTexts["best-bite-headline"].exists, "Five snook should show a best bite headline")
+        capture("29-fish-best-bite")
         let fact = app.descendants(matching: .any)["fun-fact"]
         scrollTo(fact, in: app)
         XCTAssertTrue(fact.exists, "Every fish should have a fun fact")
@@ -162,9 +167,15 @@ final class WalkthroughUITests: XCTestCase {
         XCTAssertTrue(row.waitForExistence(timeout: 20))
         sleep(1)
         capture("30-logbook")
+        XCTAssertTrue(["moon", "Crescent", "Gibbous"].contains { row.label.contains($0) },
+                      "Each catch should show its conditions in the Logbook: \(row.label)")
         row.tap()
         sleep(1)
         capture("31-catch-detail")
+        let panel = app.descendants(matching: .any)["conditions-panel"]
+        scrollToTop(of: panel, in: app)
+        XCTAssertTrue(panel.exists, "The catch should show its conditions")
+        capture("36-catch-conditions")
         app.navigationBars.buttons.firstMatch.tap()
         let spots = app.buttons["Spots map"]
         XCTAssertTrue(spots.waitForExistence(timeout: 10), "The Spots map button is missing")
@@ -184,6 +195,22 @@ final class WalkthroughUITests: XCTestCase {
         app.swipeUp()
         sleep(1)
         capture("35-profile-settings")
+    }
+
+    /// A catch saved with no signal keeps its moon and time of day and waits for the rest.
+    @MainActor
+    func testConditionsWaitForSignal() throws {
+        let app = launch(["-demo", "-offline", "-tab", "logbook"])
+        let row = app.buttons["logbook-row"].firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 20))
+        XCTAssertTrue(row.label.contains("More soon"), "With no signal the newest catch should be waiting: \(row.label)")
+        row.tap()
+        let panel = app.descendants(matching: .any)["conditions-panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 5))
+        scrollToTop(of: panel, in: app)
+        let coming = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS 'Coming soon'"))
+        XCTAssertGreaterThan(coming.count, 0, "Tide, wind and water should say they're coming")
+        capture("37-catch-conditions-waiting")
     }
 
     /// The unlock moment for a trophy bass, with a level up and a new patch.
@@ -415,7 +442,8 @@ final class WalkthroughUITests: XCTestCase {
         // Pinned to one day, so the events and sample catches match every run.
         let day = arguments.contains("-today") ? [] : ["-today", "2026-11-07"]
         app.launchArguments = ["-uiTesting", "-still"] + day + arguments
-        app.launchEnvironment = environment
+        // Miami time, so the sample catches' times of day match every run.
+        app.launchEnvironment = ["TZ": "America/New_York"].merging(environment) { _, new in new }
         app.launch()
         return app
     }

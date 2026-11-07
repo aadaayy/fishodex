@@ -2,6 +2,7 @@ import Foundation
 import Observation
 import UIKit
 import Photos
+import Network
 
 /// What saving a catch did: XP, any card unlocks, level ups and new patches.
 struct SaveResult: Identifiable {
@@ -36,15 +37,76 @@ final class CatchStore {
     private let persists: Bool
     private let defaults: UserDefaults
 
-    init(catalog: SpeciesCatalog, folder: URL? = nil, persists: Bool = true, defaults: UserDefaults = .standard) {
+    /// Where tide, wind and water temperature come from.
+    enum ConditionsMode {
+        /// NOAA, the National Weather Service and USGS, over the internet.
+        case live
+        /// Made-up readings, for the automatic checks.
+        case demo
+        /// As if there were no signal, for the automatic checks.
+        case offline
+    }
+
+    typealias ConditionsLookup = @Sendable (Catch, Habitat?) async -> CatchConditions
+
+    /// The tide, weather and water stations the app ships with.
+    let stations: ConditionStations
+    private let lookup: ConditionsLookup
+    private var filling = false
+    private var monitor: NWPathMonitor?
+
+    init(catalog: SpeciesCatalog, folder: URL? = nil, persists: Bool = true, defaults: UserDefaults = .standard,
+         conditions mode: ConditionsMode = .live) {
         self.catalog = catalog
         self.persists = persists
         self.defaults = defaults
         self.folder = folder ?? FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         units = UnitSystem(rawValue: defaults.string(forKey: "units") ?? "") ?? .us
         saveToPhotos = defaults.bool(forKey: "saveToPhotos")
+        let stations = Self.makeStations()
+        self.stations = stations
+        switch mode {
+        case .live:
+            let filler = ConditionsFiller(stations: stations, fetch: Self.fetch)
+            lookup = { c, habitat in await filler.fill(c, habitat: habitat) }
+        case .demo:
+            lookup = { c, habitat in DemoConditions.filled(c, habitat: habitat, stations: stations) }
+        case .offline:
+            lookup = { c, habitat in
+                var cond = c.conditions ?? CatchConditions.offline(for: c, habitat: habitat)
+                cond.lastTry = Date()
+                return cond
+            }
+        }
         if persists { load() }
+        addMissingConditions()
         refresh()
+        if mode == .live { watchForSignal() }
+    }
+
+    static func makeStations() -> ConditionStations {
+        guard let url = Bundle.main.url(forResource: "conditions-stations", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let stations = try? ConditionStations(data: data) else {
+            assertionFailure("conditions-stations.json is missing or broken")
+            return ConditionStations()
+        }
+        return stations
+    }
+
+    /// One request to a conditions source. Only a station and a time are in
+    /// the address, never the spot.
+    private static let fetch: ConditionsFiller.Fetch = { url in
+        var request = URLRequest(url: url, timeoutInterval: 20)
+        request.setValue(ConditionsSources.userAgent, forHTTPHeaderField: "User-Agent")
+        request.setValue("application/geo+json, application/json", forHTTPHeaderField: "Accept")
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let http = response as? HTTPURLResponse, http.statusCode == 429 || http.statusCode >= 500 {
+            throw URLError(.badServerResponse)
+        }
+        // NOAA asks apps to space out their requests.
+        try? await Task.sleep(nanoseconds: 250_000_000)
+        return data
     }
 
     static func makeCatalog() -> SpeciesCatalog {
@@ -100,15 +162,73 @@ final class CatchStore {
             c.photoFile = name
             if saveToPhotos { Self.copyToPhotosApp(photo) }
         }
+        c.conditions = CatchConditions.offline(for: c, habitat: species.habitat)
         let levelBefore = progress.level
         let earnedBefore = Set(badges.filter(\.earned).map(\.id))
         catches.append(c)
         refresh()
         save()
         let newBadges = badges.filter { $0.earned && !earnedBefore.contains($0.id) }
+        fillWaiting()
         guard let award = progress.awards[c.id] else { return nil }
         return SaveResult(savedCatch: c, species: species, award: award, levelBefore: levelBefore,
                           levelAfter: progress.level, xpAfter: progress.totalXP, newBadges: newBadges)
+    }
+
+    // MARK: Conditions
+
+    /// Catches saved before conditions came in get their moon and time of day
+    /// now, and look up the rest when there's signal.
+    private func addMissingConditions() {
+        var changed = false
+        for i in catches.indices where catches[i].conditions == nil {
+            catches[i].conditions = CatchConditions.offline(for: catches[i], habitat: catalog[catches[i].speciesID]?.habitat)
+            changed = true
+        }
+        if changed { save() }
+    }
+
+    /// Looks up the tide, wind and water temperature for every catch still
+    /// waiting on them. Safe to call often: it runs one pass at a time and
+    /// skips catches tried in the last two minutes.
+    func fillWaiting() {
+        guard !filling else { return }
+        let now = Date()
+        let due = catches.filter { c in
+            guard c.hasSpot, let cond = c.conditions, cond.waiting else { return false }
+            if let last = cond.lastTry, now.timeIntervalSince(last) < 120, last <= now { return false }
+            return true
+        }
+        .map(\.id)
+        guard !due.isEmpty else { return }
+        filling = true
+        Task {
+            for id in due {
+                guard let c = catches.first(where: { $0.id == id }) else { continue }
+                let cond = await lookup(c, catalog[c.speciesID]?.habitat)
+                if let i = catches.firstIndex(where: { $0.id == id }) {
+                    catches[i].conditions = cond
+                    save()
+                }
+            }
+            filling = false
+        }
+    }
+
+    /// When the phone gets signal again, fill in what's waiting.
+    private func watchForSignal() {
+        let monitor = NWPathMonitor()
+        monitor.pathUpdateHandler = { [weak self] path in
+            guard path.status == .satisfied else { return }
+            Task { @MainActor in self?.fillWaiting() }
+        }
+        monitor.start(queue: DispatchQueue(label: "FishoDex.signal"))
+        self.monitor = monitor
+    }
+
+    /// When this fish bites best for this person.
+    func biteInsight(for speciesID: String) -> BiteInsight {
+        BiteInsights.insight(for: speciesID, in: catches)
     }
 
     func delete(_ c: Catch) {
