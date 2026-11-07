@@ -1,0 +1,44 @@
+# Lists every iPhone simulator type the Mac runner can make, with its screen
+# size in points, so the walk-through can cover each distinct size once.
+name: Simulator sizes
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/**']
+    paths: ['.github/workflows/devices.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  sizes:
+    runs-on: xcode-27
+    timeout-minutes: 15
+    steps:
+      - name: List iPhone device types and sizes
+        run: |
+          xcodebuild -version
+          xcrun simctl list runtimes
+          python3 - <<'PY'
+          import json, subprocess, plistlib, os
+          types = json.loads(subprocess.check_output(["xcrun", "simctl", "list", "devicetypes", "-j"]))["devicetypes"]
+          rows = []
+          for t in types:
+              if t.get("productFamily") != "iPhone":
+                  continue
+              p = os.path.join(t["bundlePath"], "Contents", "Resources", "profile.plist")
+              try:
+                  pl = plistlib.load(open(p, "rb"))
+                  s = pl.get("mainScreenScale", 0)
+                  w, h = pl.get("mainScreenWidth", 0), pl.get("mainScreenHeight", 0)
+                  pts = f"{int(w/s)}x{int(h/s)}" if s else "?"
+              except Exception as e:
+                  pts = f"err {e}"
+                  s = 0
+              rows.append((pts, t["name"], t["identifier"], s, t.get("minRuntimeVersionString", "")))
+          for r in sorted(rows):
+              print("SIZE", *r, sep=" | ")
+              print(f"::notice title={r[1]}::{r[0]} @{r[3]}x min {r[4]}")
+          PY
+          xcrun simctl list devices available | grep -i iphone
