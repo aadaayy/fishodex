@@ -1,0 +1,27 @@
+status 200
+Date: Sat, 07 Nov 2026 17:58:24 GMT
+Content-Type: application/json; charset=utf-8
+Transfer-Encoding: chunked
+Connection: close
+Vary: Accept-Encoding
+Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: *
+Age: 0
+Api-Version: 1.11.2
+Cache-Control: no-cache, no-store, must-revalidate
+Content-Crs: <http://www.opengis.net/def/crs/OGC/1.3/CRS84>
+Content-Language: en-US
+Expires: 0
+Pragma: no-cache
+Referrer-Policy: origin-when-cross-origin
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+Via: 1.1 8f251d23da31b683c3c9d6fad6ca944c.cloudfront.net (CloudFront), https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+X-Amz-Cf-Id: YGzNyRtXOI6t3Ph2vR_6eXf3yUpvkUT8u9dAlsXDU8rXY3GS5eAb0g==
+X-Amz-Cf-Pop: HIO52-P1
+X-Api-Umbrella-Request-Id: d1mskm2p8s6lnkoj399g
+X-Build-Version: 1.11.2-7a153e8a
+X-Cache: Miss from cloudfront
+X-Content-Type-Options: nosniff
+X-Vcap-Request-Id: 4cac4b6d-293d-441c-740d-8efe4a4d5b5e
+X-Xss-Protection: 1; mode=block
+X-Frame-Options: SAMEORIGIN

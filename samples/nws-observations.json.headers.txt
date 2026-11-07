@@ -1,0 +1,18 @@
+status 200
+Server: nginx/1.28.3
+Content-Type: application/geo+json
+Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: X-Correlation-Id, X-Request-Id, X-Server-Id
+X-Request-ID: 01a1b729-586d-7d3a-982c-30cdbf4cb58d
+X-Correlation-ID: 6051448
+X-Server-ID: vm-cprk-api-ops-app6.ncep.noaa.gov
+Server-Timing: dtTrId;desc="508df8790e96492e72b0379c2979262c", dtSInfo;desc="0"
+Vary: Accept-Encoding
+Cache-Control: public, max-age=300, s-maxage=120
+Expires: Sat, 07 Nov 2026 18:03:22 GMT
+Date: Sat, 07 Nov 2026 17:58:22 GMT
+Transfer-Encoding: chunked
+Connection: close
+Set-Cookie: dtCookie1up6hiss=v_4_srv_2_sn_2D90D033D14E04535C563CDC26A1E0FB_perc_100000_ol_0_mul_1_app-3Aea7c4b59f27d43eb_1; Path=/; Domain=.weather.gov
+X-Edge-Request-ID: a89a0eaa
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains ; preload

@@ -1,0 +1,16 @@
+status 200
+Date: Sat, 07 Nov 2026 17:58:19 GMT
+Content-Type: application/json;charset=UTF-8
+Content-Length: 571
+Connection: close
+x-amzn-RequestId: b4c43d0e-5c1e-4a07-8230-1290142c6e84
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: X-Requested-With
+x-amzn-Remapped-Content-Length: 571
+x-amzn-Remapped-Connection: keep-alive
+x-amz-apigw-id: Gez9ZF87oAMEvTQ=
+Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+x-amzn-Remapped-Server: nginx
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Pragma: no-cache
+x-amzn-Remapped-Date: Sat, 07 Nov 2026 17:58:19 GMT
