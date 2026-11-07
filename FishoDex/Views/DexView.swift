@@ -24,6 +24,7 @@ struct DexView: View {
         ScrollView {
             VStack(spacing: 14) {
                 DexHeader()
+                EventBanner()
                 HabitatFilter(selection: $habitat)
                 SearchField(text: $query, prompt: "Search the dex")
                 let list = cards

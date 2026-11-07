@@ -28,6 +28,9 @@ struct LaunchOptions {
     /// The checks pass the photo itself in FISHODEX_SCAN_SAMPLE (base64 JPEG),
     /// because the simulator has no camera.
     var scanSample = false
+    /// Pretend today is this day (yyyy-MM-dd), so the events and the sample
+    /// catches line up the same way in every run, e.g. "-today 2026-11-07".
+    var today: Date?
 
     static let current = LaunchOptions(arguments: ProcessInfo.processInfo.arguments)
 
@@ -45,6 +48,12 @@ struct LaunchOptions {
         showUnlock = value(after: "-showUnlock")
         unlockPounds = value(after: "-unlockPounds").flatMap(Double.init)
         scanSample = arguments.contains("-scanSample")
+        if let text = value(after: "-today") {
+            let parts = text.split(separator: "-").compactMap { Int($0) }
+            if parts.count == 3 {
+                today = Calendar.current.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2], hour: 21))
+            }
+        }
         if arguments.contains("-openDuoPreview") {
             previewSize = CGSize(width: 951, height: 669)
         } else if let text = value(after: "-previewSize") {
@@ -64,4 +73,9 @@ struct LaunchOptions {
         scanSampleTaken = true
         return image
     }
+}
+
+/// What "now" is for the events: the real time, or the day the checks pass.
+enum AppClock {
+    static var now: Date { LaunchOptions.current.today ?? Date() }
 }

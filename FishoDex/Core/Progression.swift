@@ -40,10 +40,13 @@ public struct CatchAward: Hashable, Sendable {
         case repeatCatch(Int)
         case trophyBass(first: Bool, Int)
         case personalBest(Int)
+        /// Finished one of the yearly events (its name and reward).
+        case eventComplete(String, Int)
 
         public var xp: Int {
             switch self {
-            case .newSpecies(_, let xp), .repeatCatch(let xp), .trophyBass(_, let xp), .personalBest(let xp):
+            case .newSpecies(_, let xp), .repeatCatch(let xp), .trophyBass(_, let xp), .personalBest(let xp),
+                 .eventComplete(_, let xp):
                 return xp
             }
         }
@@ -54,6 +57,7 @@ public struct CatchAward: Hashable, Sendable {
             case .repeatCatch: return "Repeat catch"
             case .trophyBass(let first, _): return first ? "Trophy bass unlocked (double)" : "Trophy bass"
             case .personalBest: return "New personal best"
+            case .eventComplete(let name, _): return "\(name) finished"
             }
         }
     }
@@ -62,6 +66,8 @@ public struct CatchAward: Hashable, Sendable {
     public var reasons: [Reason]
     public var isNewSpecies: Bool
     public var unlocksTrophyBass: Bool
+    /// Events this catch finished (their ids), each unlocking its event card.
+    public var completedEvents: [String] = []
 
     public var xp: Int { reasons.reduce(0) { $0 + $1.xp } }
     public var isPersonalBest: Bool { reasons.contains { if case .personalBest = $0 { return true }; return false } }
@@ -79,6 +85,30 @@ public struct DexProgress: Sendable {
     public var bestLength: [String: Double] = [:]
     public var bestWeight: [String: Double] = [:]
     public var firstCaught: [String: Date] = [:]
+    /// Catches that counted toward each year's event, by key like "mulletrun-2026".
+    public var eventCatches: [String: [Catch]] = [:]
+    /// When each year's event was finished, by the same key.
+    public var eventsDone: [String: Date] = [:]
+
+    /// How far along one year's run of an event is.
+    public func eventProgress(_ event: SeasonEvent, startYear: Int) -> Int {
+        event.progress(of: eventCatches[event.key(startYear: startYear)] ?? [])
+    }
+
+    public func eventDone(_ event: SeasonEvent, startYear: Int) -> Bool {
+        eventsDone[event.key(startYear: startYear)] != nil
+    }
+
+    /// The years (start years) an event was finished, newest first.
+    public func yearsDone(_ event: SeasonEvent) -> [Int] {
+        eventsDone.keys.compactMap { key -> Int? in
+            guard key.hasPrefix(event.id + "-") else { return nil }
+            return Int(key.dropFirst(event.id.count + 1))
+        }.sorted(by: >)
+    }
+
+    /// True once any year's run of the event is finished (its card is yours).
+    public func hasEventCard(_ event: SeasonEvent) -> Bool { !yearsDone(event).isEmpty }
 
     public var level: Int { Leveling.level(for: totalXP) }
     public var title: String { Leveling.title(for: level) }
@@ -107,7 +137,8 @@ public enum ProgressEngine {
     }
 
     /// Plays through every catch in date order and adds up the XP.
-    public static func evaluate(_ catches: [Catch], catalog: SpeciesCatalog) -> DexProgress {
+    public static func evaluate(_ catches: [Catch], catalog: SpeciesCatalog,
+                                calendar: Calendar = .current) -> DexProgress {
         var p = DexProgress()
         for c in ordered(catches) {
             guard let species = catalog[c.speciesID] else { continue }
@@ -135,7 +166,21 @@ public enum ProgressEngine {
             if let l = c.lengthInches, l > (p.bestLength[c.speciesID] ?? 0) { p.bestLength[c.speciesID] = l }
             if let w = c.weightPounds, w > (p.bestWeight[c.speciesID] ?? 0) { p.bestWeight[c.speciesID] = w }
 
-            let award = CatchAward(catchID: c.id, reasons: reasons, isNewSpecies: isNew, unlocksTrophyBass: unlocksTrophy)
+            // Yearly events: each finishes once a year and pays its reward once.
+            var finished: [String] = []
+            for event in Seasons.events where event.counts(c, calendar: calendar) {
+                guard let year = event.range.startYear(of: c.date, calendar: calendar) else { continue }
+                let key = event.key(startYear: year)
+                p.eventCatches[key, default: []].append(c)
+                if p.eventsDone[key] == nil, event.progress(of: p.eventCatches[key] ?? []) >= event.goal.count {
+                    p.eventsDone[key] = c.date
+                    reasons.append(.eventComplete(event.name, event.rewardXP))
+                    finished.append(event.id)
+                }
+            }
+
+            var award = CatchAward(catchID: c.id, reasons: reasons, isNewSpecies: isNew, unlocksTrophyBass: unlocksTrophy)
+            award.completedEvents = finished
             p.awards[c.id] = award
             p.totalXP += award.xp
             p.xpBySpecies[c.speciesID, default: 0] += award.xp
@@ -147,7 +192,8 @@ public enum ProgressEngine {
     }
 
     /// What a catch would earn if it were saved now, before saving it.
-    public static func preview(_ draft: Catch, existing: [Catch], catalog: SpeciesCatalog) -> CatchAward? {
-        evaluate(existing + [draft], catalog: catalog).awards[draft.id]
+    public static func preview(_ draft: Catch, existing: [Catch], catalog: SpeciesCatalog,
+                               calendar: Calendar = .current) -> CatchAward? {
+        evaluate(existing + [draft], catalog: catalog, calendar: calendar).awards[draft.id]
     }
 }

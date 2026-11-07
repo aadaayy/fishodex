@@ -270,6 +270,90 @@ final class WalkthroughUITests: XCTestCase {
         XCTAssertTrue(removePhoto.exists, "The photo should come along when picking by name")
     }
 
+    /// Seasons and events in the fall: the Mullet Run on, what's coming up,
+    /// the year at a glance, the limited cards and which fish are closed.
+    @MainActor
+    func testEventsInTheFall() throws {
+        var app = launch(["-demo", "-today", "2026-11-07"])
+        let banner = app.buttons["event-banner"]
+        XCTAssertTrue(banner.waitForExistence(timeout: 20), "The dex should show the event that's on")
+        XCTAssertTrue(banner.label.contains("Mullet Run"), "The Mullet Run is on in November: \(banner.label)")
+        assertTabsOnScreen(app)
+        banner.tap()
+        let mullet = app.descendants(matching: .any)["event-mulletrun"]
+        XCTAssertTrue(mullet.waitForExistence(timeout: 5), "Tapping the banner should open Events")
+        sleep(1)
+        capture("60-events-on-now")
+        let progress = app.descendants(matching: .any)["event-progress-mulletrun"]
+        XCTAssertTrue(progress.exists)
+        XCTAssertTrue(progress.label.contains("2 of 3"), "The sample snook and tarpon make 2 of 3: \(progress.label)")
+        let calendar = app.descendants(matching: .any)["season-calendar"]
+        scrollTo(calendar, in: app)
+        XCTAssertTrue(calendar.exists, "The season calendar is missing")
+        capture("61-events-calendar")
+        let cards = app.descendants(matching: .any)["event-cards"]
+        scrollTo(cards, in: app)
+        capture("62-events-cards")
+        let closed = app.descendants(matching: .any)["closed-now"]
+        scrollTo(closed, in: app)
+        XCTAssertTrue(closed.exists, "The closed-today list is missing")
+        XCTAssertTrue(app.descendants(matching: .any)["closed-hogfish"].exists, "Hogfish is closed from November 1")
+        capture("63-events-closed-now")
+        app.terminate()
+
+        // A closed fish's page says so, and a kept one warns before saving.
+        app = launch(["-demo", "-today", "2026-11-07", "-openSpecies", "hogfish"])
+        XCTAssertTrue(app.descendants(matching: .any)["big-card"].waitForExistence(timeout: 20))
+        let closedToday = app.descendants(matching: .any)["closed-today"]
+        scrollTo(closedToday, in: app)
+        XCTAssertTrue(closedToday.exists, "The hogfish page should say it's closed today")
+        capture("64-fish-closed-season")
+        app.terminate()
+
+        app = launch(["-demo", "-today", "2026-11-07", "-logSpecies", "snook"])
+        let picker = app.segmentedControls["released-picker"]
+        XCTAssertTrue(app.textFields["weight-field"].waitForExistence(timeout: 20))
+        scrollTo(picker, in: app)
+        XCTAssertTrue(app.descendants(matching: .any)["log-counts-mulletrun"].exists, "A released snook counts toward the Mullet Run")
+        capture("65-log-counts-toward-event")
+        app.terminate()
+
+        // Finishing the Mullet Run with a crevalle earns its card.
+        app = launch(["-demo", "-today", "2026-11-07", "-showUnlock", "crevalle"])
+        let next = app.buttons["unlock-continue"]
+        XCTAssertTrue(next.waitForExistence(timeout: 20))
+        sleep(1)
+        let earned = app.descendants(matching: .any)["event-earned-mulletrun"]
+        scrollTo(earned, in: app)
+        XCTAssertTrue(earned.exists, "The third Mullet Run fish should earn the event card")
+        XCTAssertTrue(app.staticTexts["unlock-xp"].label.contains("+110"), "A new Common fish (10) plus the Mullet Run (100)")
+        capture("66-unlock-event-card")
+    }
+
+    /// In January: three winter events at once, and a kept snook in the
+    /// closed season warns and doesn't count.
+    @MainActor
+    func testEventsInWinter() throws {
+        var app = launch(["-demo", "-today", "2027-01-20", "-tab", "events"])
+        let sail = app.descendants(matching: .any)["event-sailfishwinter"]
+        XCTAssertTrue(sail.waitForExistence(timeout: 20), "Sailfish Winter is on in January")
+        XCTAssertTrue(app.descendants(matching: .any)["event-surfrun"].exists, "The Surf Run is on in January")
+        XCTAssertTrue(app.descendants(matching: .any)["event-bassspawn"].exists, "The Bass Spawn is on in January")
+        sleep(1)
+        capture("67-events-winter")
+        app.terminate()
+
+        app = launch(["-demo", "-today", "2027-01-20", "-logSpecies", "snook"])
+        let picker = app.segmentedControls["released-picker"]
+        XCTAssertTrue(app.textFields["weight-field"].waitForExistence(timeout: 20))
+        scrollTo(picker, in: app)
+        picker.buttons["Kept"].tap()
+        let warning = app.descendants(matching: .any)["closed-warning"]
+        XCTAssertTrue(warning.waitForExistence(timeout: 3), "Keeping a snook in January should warn that it's closed")
+        sleep(1)
+        capture("68-log-closed-season-warning")
+    }
+
     /// The sample photo for photo ID, from this test bundle, and the fish it shows.
     private static func scanSample() throws -> (String, String) {
         let bundle = Bundle(for: WalkthroughUITests.self)
@@ -295,6 +379,8 @@ final class WalkthroughUITests: XCTestCase {
             ("44-open-duo-profile", ["-tab", "profile", "-openSpecies", "trophybass"]),
             ("45-open-duo-unlock", ["-showUnlock", "goliath"]),
             ("46-open-duo-photo-id", ["-scanSample", "-openSpecies", "snook"]),
+            ("47-open-duo-events", ["-tab", "events", "-openSpecies", "snook"]),
+            ("48-open-duo-events-winter", ["-tab", "events", "-today", "2027-01-20", "-openSpecies", "sailfish"]),
         ]
         let sample = (try? Self.scanSample())?.0 ?? ""
         for (name, extra) in runs {
@@ -328,7 +414,9 @@ final class WalkthroughUITests: XCTestCase {
     @MainActor
     private func launch(_ arguments: [String], environment: [String: String] = [:]) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-uiTesting", "-still"] + arguments
+        // Pinned to one day, so the events and sample catches match every run.
+        let day = arguments.contains("-today") ? [] : ["-today", "2026-11-07"]
+        app.launchArguments = ["-uiTesting", "-still"] + day + arguments
         app.launchEnvironment = environment
         app.launch()
         return app
@@ -348,7 +436,7 @@ final class WalkthroughUITests: XCTestCase {
     @MainActor
     private func assertTabsOnScreen(_ app: XCUIApplication) {
         let screen = app.windows.firstMatch.frame.insetBy(dx: -1, dy: -1)
-        for id in ["tab-dex", "tab-logbook", "tab-profile", "log-button"] {
+        for id in ["tab-dex", "tab-events", "tab-logbook", "tab-profile", "log-button"] {
             let element = app.buttons[id]
             XCTAssertTrue(element.exists, "\(id) is missing")
             XCTAssertTrue(screen.contains(element.frame), "\(id) is cut off: \(element.frame) on \(screen)")

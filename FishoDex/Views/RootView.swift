@@ -62,6 +62,15 @@ struct TabContent: View {
             } else {
                 NavigationStack { DexView { model.selected = $0 } }
             }
+        case .events:
+            if pushes {
+                NavigationStack(path: $model.eventsPath) {
+                    EventsView { model.eventsPath.append($0) }
+                        .navigationDestination(for: DexCard.self) { SpeciesPage(card: $0) }
+                }
+            } else {
+                NavigationStack { EventsView { model.selected = $0 } }
+            }
         case .logbook:
             NavigationStack { LogbookView() }
         case .profile:
@@ -96,6 +105,7 @@ struct BottomBar: View {
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
             TabButton(tab: .dex)
+            TabButton(tab: .events)
             LogButton(size: 72).offset(y: -14).frame(maxWidth: .infinity)
             TabButton(tab: .logbook)
             TabButton(tab: .profile)
@@ -131,6 +141,7 @@ struct SideBar: View {
     var body: some View {
         VStack(spacing: 10) {
             TabButton(tab: .dex)
+            TabButton(tab: .events)
             LogButton(size: 64).padding(.vertical, 6)
             TabButton(tab: .logbook)
             TabButton(tab: .profile)
@@ -178,6 +189,7 @@ struct Rail: View {
         VStack(spacing: 10) {
             LogButton(size: 60).padding(.bottom, 6)
             TabButton(tab: .dex)
+            TabButton(tab: .events)
             TabButton(tab: .logbook)
             TabButton(tab: .profile)
             Spacer(minLength: 0)
@@ -202,6 +214,7 @@ struct TabButton: View {
         let on = model.tab == tab
         Button {
             if model.tab == tab, tab == .dex { model.dexPath.removeAll() }
+            if model.tab == tab, tab == .events { model.eventsPath.removeAll() }
             model.tab = tab
         } label: {
             VStack(spacing: 3) {

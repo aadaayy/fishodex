@@ -347,7 +347,7 @@ struct CatchDetailsForm: View {
     var onClose: () -> Void
 
     @State private var draftID = UUID()
-    @State private var date = Date()
+    @State private var date = AppClock.now
     @State private var placeName = ""
     @State private var latitude: Double?
     @State private var longitude: Double?
@@ -473,7 +473,7 @@ struct CatchDetailsForm: View {
     private var whenAndWhere: some View {
         InfoPanel(title: "When and where", symbol: "calendar") {
             VStack(alignment: .leading, spacing: 12) {
-                DatePicker("Caught", selection: $date, in: ...Date())
+                DatePicker("Caught", selection: $date, in: ...AppClock.now)
                     .font(Fonts.body(16, .extraBold))
                     .foregroundStyle(Palette.ink)
                     .accessibilityIdentifier("date-picker")
@@ -509,6 +509,27 @@ struct CatchDetailsForm: View {
         }
     }
 
+    /// Where this fish's season is closed on the catch date, like "the Keys and Everglades".
+    private var closedAreas: String {
+        let areas = Seasons.closedOn(date, speciesID: speciesID).map(\.area)
+        var seen: [String] = []
+        for a in areas where !seen.contains(a) { seen.append(a) }
+        return seen.joined(separator: " and ")
+    }
+
+    /// The events on now that this catch, as it stands, would count toward.
+    private var countingEvents: [SeasonEvent] {
+        Seasons.events.filter { $0.counts(draft) }
+    }
+
+    /// Events this catch would count toward if it were released instead of kept.
+    private var releaseOnlyEvents: [SeasonEvent] {
+        guard !released else { return [] }
+        var freed = draft
+        freed.released = true
+        return Seasons.events.filter { $0.counts(freed) && !$0.counts(draft) }
+    }
+
     private func sizeSection(_ s: Species) -> some View {
         InfoPanel(title: "Size and details", symbol: "ruler.fill") {
             VStack(alignment: .leading, spacing: 12) {
@@ -531,6 +552,24 @@ struct CatchDetailsForm: View {
                 if !released, let kind = s.limits?.kind, kind == "release" {
                     Label("Florida says this fish is catch and release only.", systemImage: "exclamationmark.triangle.fill")
                         .font(Fonts.body(14, .black)).foregroundStyle(Palette.orange)
+                } else if !released, !closedAreas.isEmpty {
+                    Label("Harvest is closed on this date in \(closedAreas). Release it there.", systemImage: "exclamationmark.triangle.fill")
+                        .font(Fonts.body(14, .black)).foregroundStyle(Palette.orange)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("closed-warning")
+                }
+                ForEach(countingEvents) { event in
+                    Label("Counts toward \(event.name)", systemImage: event.symbol)
+                        .font(Fonts.body(14, .black)).foregroundStyle(Palette.ink)
+                        .padding(.horizontal, 10).padding(.vertical, 6)
+                        .background(Capsule().fill(event.color.opacity(0.35)))
+                        .overlay(Capsule().strokeBorder(Palette.ink, lineWidth: 2))
+                        .accessibilityIdentifier("log-counts-\(event.id)")
+                }
+                ForEach(releaseOnlyEvents) { event in
+                    Label("Release it to count toward \(event.name)", systemImage: event.symbol)
+                        .font(Fonts.body(14, .black)).foregroundStyle(Palette.muted)
+                        .accessibilityIdentifier("log-release-for-\(event.id)")
                 }
                 TextField("", text: $note, prompt: Text("Note, like the bait you used (optional)").foregroundStyle(Palette.muted), axis: .vertical)
                     .focused($focused, equals: .note)
@@ -567,7 +606,7 @@ struct CatchDetailsForm: View {
                         .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(Palette.ink, lineWidth: 2.5))
                     if let info = photoInfo, info.date != nil || info.latitude != nil {
                         Button {
-                            if let d = info.date { date = min(d, Date()) }
+                            if let d = info.date { date = min(d, AppClock.now) }
                             if let lat = info.latitude, let lon = info.longitude {
                                 latitude = lat
                                 longitude = lon

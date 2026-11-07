@@ -3,7 +3,7 @@ import Foundation
 /// Sample catches for the screenshots: a few weeks of fishing around
 /// South Florida, with sizes and spots, a Trophy bass and a Grand Slam day.
 enum DemoData {
-    static func catches(now: Date = Date()) -> [Catch] {
+    static func catches(now: Date = AppClock.now) -> [Catch] {
         let cal = Calendar.current
         func day(_ daysAgo: Int, _ hour: Int) -> Date {
             let d = cal.date(byAdding: .day, value: -daysAgo, to: now) ?? now

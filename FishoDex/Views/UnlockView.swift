@@ -32,6 +32,7 @@ struct UnlockView: View {
     private var headline: String {
         if result.award.unlocksTrophyBass { return "Trophy bass!" }
         if result.award.isNewSpecies { return "New species!" }
+        if !result.award.completedEvents.isEmpty { return "Event finished!" }
         if result.award.isPersonalBest { return "New personal best!" }
         return "Catch logged"
     }
@@ -56,6 +57,9 @@ struct UnlockView: View {
 
                     card
                     xpPanel
+                    ForEach(result.award.completedEvents, id: \.self) { id in
+                        if let event = Seasons.event(id) { EventEarnedPanel(event: event) }
+                    }
                     if !result.newBadges.isEmpty { patches }
 
                     Button("Continue", action: onClose)
@@ -269,5 +273,40 @@ struct ConfettiView: View {
         }
         .ignoresSafeArea()
         .accessibilityHidden(true)
+    }
+}
+
+/// After a catch finishes an event: its limited card.
+struct EventEarnedPanel: View {
+    var event: SeasonEvent
+
+    var body: some View {
+        HStack(spacing: 14) {
+            Image(event.cardImage)
+                .resizable()
+                .aspectRatio(600 / 780, contentMode: .fit)
+                .frame(width: 96)
+                .shadow(color: .black.opacity(0.3), radius: 0, x: 0, y: 4)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 6) {
+                Text("EVENT CARD EARNED")
+                    .font(Fonts.body(12, .black, relativeTo: .caption))
+                    .foregroundStyle(Palette.muted)
+                Text(event.name)
+                    .font(Fonts.title(24))
+                    .foregroundStyle(Palette.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text("+\(event.rewardXP) XP. It's in your Events tab.")
+                    .font(Fonts.body(14, .extraBold))
+                    .foregroundStyle(Palette.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(14)
+        .frame(maxWidth: 420)
+        .sticker(Palette.paper)
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("event-earned-\(event.id)")
     }
 }

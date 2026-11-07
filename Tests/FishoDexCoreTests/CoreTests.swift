@@ -118,8 +118,13 @@ final class CoreTests: XCTestCase {
     }
 
     func testWholeDexIsAboutLevel16() {
-        let all = catalog.species.enumerated().map { Catch(speciesID: $1.id, date: day(1, hour: $0 % 20)) }
+        // Aug 10: no yearly event can finish with one of each fish, so this is the dex alone.
+        let aug10 = Calendar.current.date(from: DateComponents(year: 2026, month: 8, day: 10))!
+        let all = catalog.species.enumerated().map {
+            Catch(speciesID: $1.id, date: aug10.addingTimeInterval(Double($0) * 600))
+        }
         let p = ProgressEngine.evaluate(all, catalog: catalog)
+        XCTAssertTrue(p.eventsDone.isEmpty)
         XCTAssertEqual(p.caught.count, 63)
         XCTAssertEqual(p.level, 16)
     }

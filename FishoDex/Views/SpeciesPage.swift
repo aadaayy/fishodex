@@ -59,6 +59,8 @@ struct SpeciesPage: View {
             NotCaughtPanel(xp: s.rarity.newSpeciesXP, rarity: s.rarity) { model.startLog(preset: s.id) }
         }
 
+        SeasonNowPanel(species: s)
+
         FunFactPanel(text: s.funFact)
 
         InfoPanel(title: "About", symbol: "book.fill") {

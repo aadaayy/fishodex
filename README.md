@@ -13,7 +13,8 @@ Everything stays on the phone. There are no accounts and nothing goes to a serve
 3. **Log a catch:** Identify from photo (take one or choose one) or pick the fish by name, then details: date, place (typed, your location, or a dropped pin), weight and length (both optional), kept or released, a note and a photo. It shows what the catch is worth in XP before you save.
 4. **Unlock:** a new fish flips its card over, with confetti, the XP, any level up and any new patches.
 5. **Logbook:** every catch, newest first, and a map of your spots that only you can see.
-6. **Profile:** level and title, XP to the next level, each water's ring, the five title patches, the nine badge patches and settings (units, saving photos to Photos, a backup file).
+6. **Events:** South Florida's fishing seasons as yearly events (see below), the year at a glance, the limited event cards and which fish are closed today.
+7. **Profile:** level and title, XP to the next level, each water's ring, the five title patches, the nine badge patches and settings (units, saving photos to Photos, a backup file).
 
 ## XP and levels
 
@@ -21,12 +22,13 @@ Everything stays on the phone. There are no accounts and nothing goes to a serve
 2. A repeat catch earns 2 XP, and a new personal best (longer or heavier) adds 10.
 3. A Florida bass of 10 lb or more earns 120 XP, or 240 the first time, when it unlocks the Trophy bass card.
 4. There are 20 levels. Reaching level n takes 10 × n × (n − 1) XP (level 5 is 200, level 10 is 900, level 20 is 3,800). Title patches come at levels 1, 5, 10, 15 and 20: Deckhand, Weekend Angler, Guide, Captain and Legend.
-5. Badge patches: First Catch, Ten Species, Freshwater, Inshore and Offshore Master, Grand Slam (tarpon, bonefish and permit in one day), Inshore Slam (snook, redfish and seatrout in one day), Invader Hunter (a fish that isn't native to Florida) and Catch and Release (ten fish let go).
+5. Finishing an event adds its XP (75 to 150) once per year.
+6. Badge patches: First Catch, Ten Species, Freshwater, Inshore and Offshore Master, Grand Slam (tarpon, bonefish and permit in one day), Inshore Slam (snook, redfish and seatrout in one day), Invader Hunter (a fish that isn't native to Florida) and Catch and Release (ten fish let go).
 
 ## Layouts
 
-1. **iPhone 18 Pro and Pro Max:** upright, with a bottom bar and a big round Log button.
-2. **Folded iPhone Duo:** the side bar on the right with Dex, Log, Logbook and Profile.
+1. **iPhone 18 Pro and Pro Max:** upright, with a bottom bar (Dex, Events, Log, Logbook, Profile) and a big round Log button.
+2. **Folded iPhone Duo:** the side bar on the right with Dex, Events, Log, Logbook and Profile.
 3. **Open iPhone Duo:** a rail on the left, the tab on the left half and the fish's page (or Log a catch) on the right half.
 
 ## How the code is laid out
@@ -39,6 +41,23 @@ Everything stays on the phone. There are no accounts and nothing goes to a serve
 6. `FishoDexUITests`: the walk-through that uses the app on the simulators and takes the screenshots.
 7. `Tools`: `make_assets.py` builds the image sets from the fish art, and `build_species.py` builds `species.json` from the fact and rules notes.
 8. `Tools/photo_id`: how the photo ID model is built (see below).
+
+## Seasons and events
+
+Eight events come back every year on the same dates, built into the app so they work with no internet (`FishoDex/Core/Seasons.swift`):
+
+1. **Mullet Run** (Sep 15 to Nov 30): catch 3 different of snook, tarpon, crevalle, bluefish, Spanish mackerel or ladyfish. 100 XP.
+2. **Sailfish Winter** (Dec 1 to Mar 31): catch and release a sailfish. 150 XP.
+3. **Surf Run** (Dec 15 to Mar 31): catch all 3 of pompano, Spanish mackerel and bluefish. 100 XP.
+4. **Bass Spawn** (Jan 15 to Apr 15): catch and release 2 Florida bass. 75 XP.
+5. **Silver King** (Apr 1 to Jul 31): catch and release a tarpon. 150 XP.
+6. **Reef Opener** (May 1 to 31): catch 2 different of red grouper, black grouper or hogfish, the month their harvest opens. 100 XP.
+7. **Weed Line** (May 1 to Aug 31): catch 3 mahi. 75 XP.
+8. **Invader Patrol** (Jun 1 to Sep 14): catch 3 lionfish. 75 XP.
+
+Each finished event earns its limited card and its XP once per year. No event ever rewards keeping a fish out of season: a fish caught while its season is closed anywhere in South Florida counts only if it was released, and the log warns before you save a kept one. The closed seasons (snook, permit, greater amberjack, red and black grouper, hogfish) were checked with FWC on November 7, 2026. The event card art is drawn by `art/source/events.py`.
+
+For steady screenshots the app takes `-today yyyy-MM-dd` as the day it is.
 
 ## Photo ID
 

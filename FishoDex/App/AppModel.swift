@@ -2,12 +2,13 @@ import SwiftUI
 import Observation
 
 enum AppTab: String, CaseIterable, Identifiable {
-    case dex, logbook, profile
+    case dex, events, logbook, profile
     var id: String { rawValue }
 
     var title: String {
         switch self {
         case .dex: return "Dex"
+        case .events: return "Events"
         case .logbook: return "Logbook"
         case .profile: return "Profile"
         }
@@ -16,6 +17,7 @@ enum AppTab: String, CaseIterable, Identifiable {
     var symbol: String {
         switch self {
         case .dex: return "square.grid.3x3.fill"
+        case .events: return "calendar"
         case .logbook: return "book.closed.fill"
         case .profile: return "person.crop.circle.fill"
         }
@@ -35,6 +37,8 @@ final class AppModel {
     var selected: DexCard?
     /// Pages pushed on phones and the folded Duo.
     var dexPath: [DexCard] = []
+    /// Fish pages pushed from the Events tab.
+    var eventsPath: [DexCard] = []
     var unlock: SaveResult?
 
     func startLog(preset: String? = nil) {

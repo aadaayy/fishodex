@@ -33,7 +33,7 @@ struct FishoDexApp: App {
                 model.applyLaunchOptions(catalog: store.catalog)
                 let options = LaunchOptions.current
                 if let id = options.showUnlock {
-                    let draft = Catch(speciesID: id, placeName: "Haulover Inlet", lengthInches: 30,
+                    let draft = Catch(speciesID: id, date: AppClock.now, placeName: "Haulover Inlet", lengthInches: 30,
                                       weightPounds: options.unlockPounds, released: true)
                     model.finishLog(store.add(draft, photo: nil))
                 }
