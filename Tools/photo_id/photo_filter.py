@@ -42,7 +42,21 @@ BAD = [
     "a raw fish fillet or steak",
     "a photo of a coral reef with no fish",
     "an x-ray of a fish",
+    "a portrait photo of a person",
+    "a selfie",
+    "a landscape photo",
+    "a beach or shoreline with no fish",
+    "a building or church",
+    "a city street",
+    "a statue, mascot or sculpture",
+    "a car",
+    "a concert or stage",
 ]
+# A second, plainer question: is there a fish in the picture at all? Catches
+# photos of people, places and things that only share a fish's name.
+FISH = ["a photo with a fish in it", "a photo of a fish", "a person holding a fish"]
+NO_FISH = ["a photo with no fish in it", "a photo of a person", "a photo of a place", "a photo of a thing",
+           "a photo of an animal that is not a fish"]
 
 
 
@@ -65,6 +79,9 @@ class PhotoFilter:
             text = self.processor(text=GOOD + BAD, return_tensors="pt", padding=True)
             t = as_tensor(self.model.get_text_features(**text))
             self.text = t / t.norm(dim=-1, keepdim=True)
+            text = self.processor(text=FISH + NO_FISH, return_tensors="pt", padding=True)
+            t = as_tensor(self.model.get_text_features(**text))
+            self.fish_text = t / t.norm(dim=-1, keepdim=True)
         self.cache_path = cache_path
         self.threshold = threshold
         try:
@@ -91,14 +108,21 @@ class PhotoFilter:
                 f = as_tensor(self.model.get_image_features(**pixels))
                 f = f / f.norm(dim=-1, keepdim=True)
                 probs = (100.0 * f @ self.text.T).softmax(dim=-1)
-            for p, row in zip(batch, probs):
+                fish_probs = (100.0 * f @ self.fish_text.T).softmax(dim=-1)
+            for p, row, frow in zip(batch, probs, fish_probs):
                 good = float(row[:len(GOOD)].sum())
+                fish = float(frow[:len(FISH)].sum())
                 top = int(row.argmax())
-                self.scores[os.path.basename(p)] = [round(good, 3), (GOOD + BAD)[top]]
+                label = (GOOD + BAD)[top] if good < self.threshold else "no fish in it"
+                self.scores[os.path.basename(p)] = [round(good, 3), label, round(fish, 3)]
 
-    def keep(self, path):
+    def keep(self, path, strict=False):
+        """strict is for photos found by a name search, which are more often not fish at all."""
         s = self.scores.get(os.path.basename(path))
-        return s is None or s[0] >= self.threshold
+        if s is None:
+            return True
+        fish = s[2] if len(s) > 2 else 1.0
+        return s[0] >= (0.6 if strict else self.threshold) and fish >= (0.7 if strict else 0.5)
 
     def label(self, path):
         s = self.scores.get(os.path.basename(path))

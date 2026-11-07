@@ -432,7 +432,7 @@ def main():
     if not args.no_filter:
         from photo_filter import PhotoFilter
         os.makedirs(images, exist_ok=True)
-        photo_filter = PhotoFilter(os.path.join(images, "filter_scores.json"))
+        photo_filter = PhotoFilter(os.path.join(images, "filter_scores_v2.json"))
     for c in classes:
         log(f"{c['id']} ({c['name']})")
         candidates = []
@@ -444,7 +444,9 @@ def main():
                 found = found[:per_taxon_cap * 2]
             candidates += [dict(p, perTaxonCap=per_taxon_cap) for p in found]
         for query in c.get("search", []):
-            candidates += [dict(p, perTaxonCap=None) for p in from_commons(c["taxa"][0], search=query)]
+            # Only pages that also talk about fish or fishing, so people and places named Snook or Mahi stay out.
+            candidates += [dict(p, perTaxonCap=None, search=query)
+                           for p in from_commons(c["taxa"][0], search=f"{query} (fish OR fishing OR caught OR angler)")]
         candidates = list({p["key"]: p for p in candidates}.values())
         # Commons first (thumbnails are light), then GBIF, in a steady order.
         candidates.sort(key=lambda p: (p["source"] != "Wikimedia Commons", hashlib.sha1(p["key"].encode()).hexdigest()))
@@ -461,7 +463,7 @@ def main():
                 for p in candidates[i:i + 16]:
                     if per_taxon_cap and per_taxon.get(p["taxon"], 0) >= per_taxon_cap:
                         continue
-                    if photo_filter and not photo_filter.keep(p["key"] + ".jpg"):
+                    if photo_filter and not photo_filter.keep(p["key"] + ".jpg", strict=bool(p.get("search"))):
                         reasons["not a fish photo (seen before)"] = reasons.get("not a fish photo (seen before)", 0) + 1
                         continue
                     batch.append((p, pool.submit(fetch, p, folder)))
@@ -474,7 +476,7 @@ def main():
                 if photo_filter:
                     photo_filter.score([path for _, path, _ in fetched])
                 for p, path, h in fetched:
-                    if photo_filter and not photo_filter.keep(path):
+                    if photo_filter and not photo_filter.keep(path, strict=bool(p.get("search"))):
                         os.remove(path)
                         why = "not a fish photo: " + photo_filter.label(path)
                         reasons[why] = reasons.get(why, 0) + 1

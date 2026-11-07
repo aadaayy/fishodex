@@ -10,7 +10,7 @@ import argparse, json, os, shutil
 ap = argparse.ArgumentParser()
 ap.add_argument("--data", default="photo-id-data")
 ap.add_argument("--out", default="photo-id-split")
-ap.add_argument("--min", type=int, default=8)
+ap.add_argument("--min", type=int, default=5)
 args = ap.parse_args()
 
 manifest = json.load(open(os.path.join(args.data, "manifest.json")))
