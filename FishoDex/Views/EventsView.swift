@@ -143,9 +143,10 @@ struct ActiveEventPanel: View {
                     .shadow(color: Palette.ink.opacity(0.35), radius: 0, x: 0, y: 3)
                     .accessibilityLabel("\(event.name) card, \(status.done ? "earned" : "not earned yet")")
                 VStack(alignment: .leading, spacing: 6) {
-                    HStack(spacing: 6) {
-                        Pill(text: event.season.rawValue, fill: event.color, size: 11)
-                        if status.done { Pill(text: "Finished", fill: Palette.good, size: 11) }
+                    // Side by side, or stacked when the column is narrow (folded Duo).
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 6) { pills(status) }
+                        VStack(alignment: .leading, spacing: 4) { pills(status) }
                     }
                     Text(event.name)
                         .font(Fonts.title(layout == .folded ? 20 : 24))
@@ -234,6 +235,12 @@ struct ActiveEventPanel: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("event-\(event.id)")
+    }
+
+    @ViewBuilder
+    private func pills(_ status: EventStatus) -> some View {
+        Pill(text: status.event.season.rawValue, fill: status.event.color, size: 11).fixedSize()
+        if status.done { Pill(text: "Finished", fill: Palette.good, size: 11).fixedSize() }
     }
 
     private func ruleNote(_ event: SeasonEvent) -> String? {
@@ -341,7 +348,9 @@ struct UpcomingRow: View {
 
 /// The year at a glance: one bar per event across twelve months, with a line for today.
 struct SeasonCalendar: View {
+    @Environment(\.layoutShape) private var layout
     var today: Date
+    private var nameWidth: CGFloat { layout == .folded ? 84 : 112 }
     private let months = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
 
     var body: some View {
@@ -367,9 +376,9 @@ struct SeasonCalendar: View {
                         Text(event.name)
                             .font(Fonts.body(12, .black, relativeTo: .caption))
                             .foregroundStyle(Palette.ink)
-                            .lineLimit(1)
+                            .lineLimit(layout == .folded ? 2 : 1)
                             .minimumScaleFactor(0.75)
-                            .frame(width: 112, alignment: .leading)
+                            .frame(width: nameWidth, alignment: .leading)
                         GeometryReader { geo in
                             let w = geo.size.width
                             ZStack(alignment: .leading) {
@@ -393,7 +402,7 @@ struct SeasonCalendar: View {
             .overlay(alignment: .topLeading) {
                 // A line for today across the bars.
                 GeometryReader { geo in
-                    let barStart = 112 + 10.0
+                    let barStart = nameWidth + 10.0
                     let x = barStart + (geo.size.width - barStart) * todayX
                     Rectangle().fill(Palette.orange).frame(width: 3, height: geo.size.height)
                         .offset(x: x - 1.5)

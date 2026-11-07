@@ -438,7 +438,10 @@ final class WalkthroughUITests: XCTestCase {
         let screen = app.windows.firstMatch.frame
         for _ in 0..<tries {
             if element.exists, element.frame.minY > screen.minY + 60, element.frame.minY < screen.midY { break }
-            app.swipeUp(velocity: .slow)
+            // Short drags, so a short screen (the folded Duo) doesn't scroll past it.
+            let window = app.windows.firstMatch
+            window.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.7))
+                .press(forDuration: 0.05, thenDragTo: window.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.45)))
         }
         sleep(1)
     }
