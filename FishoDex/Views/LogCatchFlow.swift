@@ -13,9 +13,9 @@ struct LogCatchFlow: View {
     enum Step: Hashable { case picker, identify, details(String) }
     @State private var path: [Step] = []
     /// The photo from photo ID, carried into the details so it stays with the catch.
-    @State private var scanPhoto: UIImage?
-    @State private var scanPhotoInfo: PhotoInfo?
-    @State private var scanGuesses: [String] = []
+    /// A shared object, so each screen reads the photo as it is now rather than
+    /// a copy from when the screen was set up.
+    @State private var scan = ScanDraft()
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -25,9 +25,9 @@ struct LogCatchFlow: View {
                     path.append(.picker)
                 },
                 onPhoto: { image, info in
-                    scanPhoto = image
-                    scanPhotoInfo = info
-                    scanGuesses = []
+                    scan.photo = image
+                    scan.info = info
+                    scan.guesses = []
                     path.append(.identify)
                 },
                 onClose: { onDone(nil) })
@@ -36,21 +36,21 @@ struct LogCatchFlow: View {
                     case .picker:
                         SpeciesPickerView(onChoose: { path.append(.details($0)) }, onClose: { onDone(nil) })
                     case .identify:
-                        if let scanPhoto {
-                            PhotoIDView(photo: scanPhoto,
+                        if let photo = scan.photo {
+                            PhotoIDView(photo: photo,
                                         onChoose: { id, guesses in
-                                            scanGuesses = guesses
+                                            scan.guesses = guesses
                                             path.append(.details(id))
                                         },
                                         onPickByName: { guesses in
-                                            scanGuesses = guesses
+                                            scan.guesses = guesses
                                             path.append(.picker)
                                         },
                                         onClose: { onDone(nil) })
                         }
                     case .details(let id):
-                        CatchDetailsForm(speciesID: id, initialPhoto: scanPhoto, initialPhotoInfo: scanPhotoInfo,
-                                         scanGuesses: scanPhoto == nil ? [] : scanGuesses,
+                        CatchDetailsForm(speciesID: id, initialPhoto: scan.photo, initialPhotoInfo: scan.info,
+                                         scanGuesses: scan.photo == nil ? [] : scan.guesses,
                                          onSave: onDone, onClose: { onDone(nil) })
                     }
                 }
@@ -60,18 +60,28 @@ struct LogCatchFlow: View {
             if let preset, path.isEmpty {
                 path = [.details(preset)]
             } else if path.isEmpty, let sample = LaunchOptions.takeScanSample() {
-                scanPhoto = sample
-                path = [.identify]
+                scan.photo = sample
+                // Open photo ID on the next turn, once the stack is on screen.
+                Task { @MainActor in path = [.identify] }
             }
         }
     }
 
     private func clearScan() {
-        scanPhoto = nil
-        scanPhotoInfo = nil
-        scanGuesses = []
+        scan.photo = nil
+        scan.info = nil
+        scan.guesses = []
     }
 }
+
+/// The photo being identified, and what photo ID suggested for it.
+@Observable
+final class ScanDraft {
+    var photo: UIImage?
+    var info: PhotoInfo?
+    var guesses: [String] = []
+}
+
 
 struct CloseButton: View {
     var action: () -> Void
