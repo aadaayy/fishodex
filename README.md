@@ -55,7 +55,7 @@ Eight events come back every year on the same dates, built into the app so they 
 7. **Weed Line** (May 1 to Aug 31): catch 3 mahi. 75 XP.
 8. **Invader Patrol** (Jun 1 to Sep 14): catch 3 lionfish. 75 XP.
 
-Each finished event earns its limited card and its XP once per year. No event ever rewards keeping a fish out of season: a fish caught while its season is closed anywhere in South Florida counts only if it was released, and the log warns before you save a kept one. The closed seasons (snook, permit, greater amberjack, red and black grouper, hogfish) were checked with FWC on November 7, 2026. The event card art is drawn by `art/source/events.py`.
+Each finished event earns its limited card and its XP once per year. No event ever rewards keeping a fish out of season: a fish caught while its season is closed anywhere in South Florida, or one Florida says always goes back (like tarpon), counts only if it was released, and the log warns before you save a kept one. The closed seasons (snook, permit, greater amberjack, red and black grouper, hogfish) were checked with FWC on November 7, 2026. The event cards were drawn for the app, like the fish cards.
 
 For steady screenshots the app takes `-today yyyy-MM-dd` as the day it is.
 

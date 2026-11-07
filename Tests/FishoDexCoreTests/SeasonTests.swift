@@ -113,6 +113,11 @@ final class SeasonTests: XCTestCase {
         XCTAssertEqual(empty, 0, "Every day of the year should have an event on")
     }
 
+    func testReleaseOnlyListMatchesTheRules() {
+        let fromRules = Set(catalog.species.filter { $0.limits?.kind == "release" }.map(\.id))
+        XCTAssertEqual(Seasons.releaseOnly, fromRules)
+    }
+
     /// No event ever rewards keeping a fish out of season, or keeping a fish
     /// Florida says must go back.
     func testEventsNeverRewardKeepingAClosedOrReleaseOnlyFish() {
@@ -120,7 +125,11 @@ final class SeasonTests: XCTestCase {
             for id in e.goal.species {
                 let kind = catalog[id]?.limits?.kind
                 if kind == "release" {
-                    XCTAssertTrue(e.goal.releasedOnly, "\(e.name): \(id) is catch and release only, so the event must ask for release")
+                    let day = e.range.dates(startingIn: 2026, calendar: cal).start
+                    XCTAssertFalse(e.counts(Catch(speciesID: id, date: day, released: false), calendar: cal),
+                                   "\(e.name): \(id) is catch and release only, so a kept one must not count")
+                    XCTAssertTrue(e.counts(Catch(speciesID: id, date: day, released: true), calendar: cal),
+                                  "\(e.name): a released \(id) should count")
                 }
             }
             var day = e.range.dates(startingIn: 2026, calendar: cal).start

@@ -100,6 +100,10 @@ public enum Seasons {
         Closure("hogfish", area: "Atlantic waters and the Keys", YearlyRange(11, 1, to: 4, 30)),
     ]
 
+    /// Fish Florida says always go back (harvest not allowed at any time).
+    /// Matches the "release" rules in species.json; a test keeps them in step.
+    public static let releaseOnly: Set<String> = ["tarpon", "bonefish", "goliath"]
+
     public static func closures(for speciesID: String) -> [Closure] {
         closures.filter { $0.speciesID == speciesID }
     }
@@ -220,11 +224,13 @@ public struct SeasonEvent: Identifiable, Hashable, Sendable {
     public func key(startYear: Int) -> String { "\(id)-\(startYear)" }
 
     /// Whether this catch counts toward the event. A fish in a closed season
-    /// anywhere in South Florida on that day counts only if it was released,
-    /// so no event ever rewards keeping a fish out of season.
+    /// anywhere in South Florida on that day, or one that's always catch and
+    /// release, counts only if it was released, so no event ever rewards
+    /// keeping a fish Florida says to let go.
     public func counts(_ c: Catch, calendar: Calendar = .current) -> Bool {
         guard goal.species.contains(c.speciesID), range.contains(c.date, calendar: calendar) else { return false }
         if goal.releasedOnly && !c.released { return false }
+        if !c.released && Seasons.releaseOnly.contains(c.speciesID) { return false }
         if !c.released && Seasons.isClosedSomewhere(c.speciesID, on: c.date, calendar: calendar) { return false }
         return true
     }
