@@ -237,11 +237,8 @@ struct SettingsPanel: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 Text("Units").font(Fonts.body(14, .black)).foregroundStyle(Palette.ink)
-                Picker("Units", selection: $store.units) {
-                    Text("lb and in").tag(UnitSystem.us)
-                    Text("kg and cm").tag(UnitSystem.metric)
-                }
-                .pickerStyle(.segmented)
+                StickerSegmented(title: "Units", selection: $store.units,
+                                 options: [("lb and in", UnitSystem.us), ("kg and cm", UnitSystem.metric)])
                 .accessibilityIdentifier("units-picker")
             }
 

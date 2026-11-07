@@ -23,13 +23,7 @@ struct SpeciesPage: View {
             .frame(maxWidth: .infinity)
         }
         .background(WaterBackground())
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(title).font(Fonts.title(20)).foregroundStyle(Palette.ink)
-            }
-        }
+        .pageHeader(title)
         .tint(Palette.ink)
     }
 

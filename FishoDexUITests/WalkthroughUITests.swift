@@ -176,7 +176,7 @@ final class WalkthroughUITests: XCTestCase {
         scrollToTop(of: panel, in: app)
         XCTAssertTrue(panel.exists, "The catch should show its conditions")
         capture("36-catch-conditions")
-        app.navigationBars.buttons.firstMatch.tap()
+        app.buttons["page-back"].tap()
         let spots = app.buttons["Spots map"]
         XCTAssertTrue(spots.waitForExistence(timeout: 10), "The Spots map button is missing")
         spots.tap()
@@ -336,7 +336,7 @@ final class WalkthroughUITests: XCTestCase {
         app.terminate()
 
         app = launch(["-demo", "-today", "2026-11-07", "-logSpecies", "snook"])
-        let picker = app.segmentedControls["released-picker"]
+        let picker = app.descendants(matching: .any)["released-picker"]
         XCTAssertTrue(app.textFields["weight-field"].waitForExistence(timeout: 20))
         scrollTo(picker, in: app)
         XCTAssertTrue(app.descendants(matching: .any)["log-counts-mulletrun"].exists, "A released snook counts toward the Mullet Run")
@@ -369,10 +369,10 @@ final class WalkthroughUITests: XCTestCase {
         app.terminate()
 
         app = launch(["-demo", "-today", "2027-01-20", "-logSpecies", "snook"])
-        let picker = app.segmentedControls["released-picker"]
+        let picker = app.descendants(matching: .any)["released-picker"]
         XCTAssertTrue(app.textFields["weight-field"].waitForExistence(timeout: 20))
         scrollTo(picker, in: app)
-        picker.buttons["Kept"].tap()
+        app.buttons["Kept"].tap()
         let warning = app.descendants(matching: .any)["closed-warning"]
         XCTAssertTrue(warning.waitForExistence(timeout: 3), "Keeping a snook in January should warn that it's closed")
         sleep(1)

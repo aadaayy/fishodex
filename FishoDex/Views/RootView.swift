@@ -88,6 +88,8 @@ struct PhoneLayout: View {
         @Bindable var model = model
         VStack(spacing: 0) {
             TabContent()
+                .noTopScrollBlur()
+                .statusBarStrip()
             BottomBar()
         }
         // The keyboard covers the bar instead of pushing it up over the dex.
@@ -129,6 +131,8 @@ struct FoldedLayout: View {
         @Bindable var model = model
         HStack(spacing: 0) {
             TabContent()
+                .noTopScrollBlur()
+                .statusBarStrip()
             SideBar()
         }
         .sheet(isPresented: $model.logging) {
@@ -166,6 +170,8 @@ struct OpenLayout: View {
         HStack(spacing: 0) {
             Rail()
             TabContent(pushes: false)
+                .noTopScrollBlur()
+                .statusBarStrip()
                 .frame(maxWidth: .infinity)
             Rectangle().fill(Palette.ink).frame(width: 3).ignoresSafeArea()
             Group {
@@ -179,6 +185,8 @@ struct OpenLayout: View {
                     Color.clear
                 }
             }
+            .noTopScrollBlur()
+            .statusBarStrip()
             .frame(maxWidth: .infinity)
         }
     }

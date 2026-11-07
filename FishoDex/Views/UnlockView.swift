@@ -61,18 +61,31 @@ struct UnlockView: View {
                         if let event = Seasons.event(id) { EventEarnedPanel(event: event) }
                     }
                     if !result.newBadges.isEmpty { patches }
-
-                    Button("Continue", action: onClose)
-                        .buttonStyle(ChunkyButtonStyle(expand: true))
-                        .frame(maxWidth: 360)
-                        .accessibilityIdentifier("unlock-continue")
                 }
                 .padding(.horizontal, 20)
-                .padding(.vertical, 24)
+                .padding(.top, 24)
+                .padding(.bottom, 12)
                 .frame(maxWidth: 520)
                 .frame(maxWidth: .infinity)
             }
             .scrollBounceBehavior(.basedOnSize)
+            // Continue stays in reach on every phone, even when the XP,
+            // events and patches run below the screen.
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                Button("Continue", action: onClose)
+                    .buttonStyle(ChunkyButtonStyle(expand: true))
+                    .frame(maxWidth: 360)
+                    .accessibilityIdentifier("unlock-continue")
+                    .padding(.horizontal, 20)
+                    .padding(.top, 14)
+                    .padding(.bottom, 10)
+                    .frame(maxWidth: .infinity)
+                    .background {
+                        LinearGradient(colors: [Palette.night.opacity(0), Palette.night, Palette.night],
+                                       startPoint: .top, endPoint: .bottom)
+                            .ignoresSafeArea(edges: .bottom)
+                    }
+            }
         }
         .onAppear(perform: play)
         .accessibilityAddTraits(.isModal)

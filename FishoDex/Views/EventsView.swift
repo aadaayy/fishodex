@@ -327,22 +327,39 @@ struct UpcomingRow: View {
                 Image(systemName: event.symbol).font(.system(size: 17, weight: .heavy)).foregroundStyle(Palette.ink)
             }
             .frame(width: 42, height: 42)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(event.name).font(Fonts.title(19)).foregroundStyle(Palette.ink)
-                Text(event.range.text).font(Fonts.body(13, .extraBold)).foregroundStyle(Palette.muted)
+            // Side by side when there's room; on narrow screens (the folded
+            // Duo, big text) the start date goes under the name.
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 4) {
+                    names.fixedSize(horizontal: true, vertical: false)
+                    Spacer(minLength: 8)
+                    Text(status.timeText)
+                        .font(Fonts.body(13, .black))
+                        .foregroundStyle(Palette.ink)
+                        .multilineTextAlignment(.trailing)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: 110, alignment: .trailing)
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    names
+                    Text(status.timeText)
+                        .font(Fonts.body(13, .black))
+                        .foregroundStyle(Palette.ink)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            Spacer(minLength: 4)
-            Text(status.timeText)
-                .font(Fonts.body(13, .black))
-                .foregroundStyle(Palette.ink)
-                .multilineTextAlignment(.trailing)
-                .lineLimit(2)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: 110, alignment: .trailing)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
         .accessibilityElement(children: .combine)
+    }
+
+    private var names: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(status.event.name).font(Fonts.title(19)).foregroundStyle(Palette.ink)
+            Text(status.event.range.text).font(Fonts.body(13, .extraBold)).foregroundStyle(Palette.muted)
+        }
     }
 }
 
@@ -350,6 +367,7 @@ struct UpcomingRow: View {
 struct SeasonCalendar: View {
     @Environment(\.layoutShape) private var layout
     var today: Date
+    @State private var monthRowHeight: CGFloat = 16
     private var nameWidth: CGFloat { layout == .folded ? 84 : 112 }
     private let months = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
 
@@ -366,10 +384,11 @@ struct SeasonCalendar: View {
                         ForEach(Array(months.enumerated()), id: \.offset) { i, m in
                             Text(m)
                                 .font(Fonts.body(11, .black, relativeTo: .caption))
-                                .foregroundStyle(i == cal.component(.month, from: today) - 1 ? Palette.ink : Palette.muted)
+                                .foregroundStyle(i == cal.component(.month, from: today) - 1 ? Palette.orange : Palette.muted)
                                 .frame(maxWidth: .infinity)
                         }
                     }
+                    .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { monthRowHeight = $0 }
                 }
                 ForEach(Seasons.events) { event in
                     GridRow {
@@ -401,18 +420,23 @@ struct SeasonCalendar: View {
             }
             .overlay(alignment: .topLeading) {
                 // A line for today across the bars.
+                // It starts under the month letters, so it never crosses them.
                 GeometryReader { geo in
                     let barStart = nameWidth + 10.0
                     let x = barStart + (geo.size.width - barStart) * todayX
-                    Rectangle().fill(Palette.orange).frame(width: 3, height: geo.size.height)
-                        .offset(x: x - 1.5)
+                    let top = monthRowHeight + 4
+                    Capsule().fill(Palette.orange).frame(width: 3, height: max(0, geo.size.height - top))
+                        .offset(x: x - 1.5, y: top)
                 }
                 .allowsHitTesting(false)
                 .accessibilityHidden(true)
             }
-            Label("Today", systemImage: "line.diagonal")
-                .font(Fonts.body(12, .black, relativeTo: .caption))
-                .foregroundStyle(Palette.orange)
+            HStack(spacing: 6) {
+                Capsule().fill(Palette.orange).frame(width: 3, height: 14)
+                Text("Today")
+                    .font(Fonts.body(12, .black, relativeTo: .caption))
+                    .foregroundStyle(Palette.orange)
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)

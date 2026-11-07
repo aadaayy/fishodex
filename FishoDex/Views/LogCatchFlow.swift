@@ -89,10 +89,13 @@ struct CloseButton: View {
         Button(action: action) {
             Image(systemName: "xmark").font(.system(size: 15, weight: .black))
                 .foregroundStyle(Palette.ink)
-                .frame(width: 34, height: 34)
+                .frame(width: 36, height: 36)
                 .background(Circle().fill(Palette.paper))
                 .overlay(Circle().strokeBorder(Palette.ink, lineWidth: 2.5))
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
         .accessibilityLabel("Close")
         .accessibilityIdentifier("close-log")
     }
@@ -107,15 +110,7 @@ struct FlowHeader: View {
 
     var body: some View {
         HStack {
-            Button { dismiss() } label: {
-                Image(systemName: "chevron.left").font(.system(size: 16, weight: .black))
-                    .foregroundStyle(Palette.ink)
-                    .frame(width: 34, height: 34)
-                    .background(Circle().fill(Palette.paper))
-                    .overlay(Circle().strokeBorder(Palette.ink, lineWidth: 2.5))
-            }
-            .accessibilityLabel("Back")
-            .accessibilityIdentifier("log-back")
+            BackButton(identifier: "log-back") { dismiss() }
             Spacer()
             Text(title).font(Fonts.title(22)).foregroundStyle(Palette.ink)
                 .accessibilityAddTraits(.isHeader)
@@ -294,8 +289,8 @@ struct SpeciesPickerView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
                 .foregroundStyle(Palette.ink)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+                .padding(.horizontal, 8)
+                .frame(maxWidth: .infinity, minHeight: 36)
                 .background(Capsule().fill(on ? color : Palette.paper))
                 .overlay(Capsule().strokeBorder(Palette.ink, lineWidth: 2.5))
         }
@@ -552,12 +547,9 @@ struct CatchDetailsForm: View {
                     Label("10 lb or more unlocks the Trophy bass card.", systemImage: "trophy.fill")
                         .font(Fonts.body(14, .black)).foregroundStyle(Rarity.trophy.color)
                 }
-                Picker("Kept or released", selection: $released) {
-                    Text("Released").tag(true)
-                    Text("Kept").tag(false)
-                }
-                .pickerStyle(.segmented)
-                .accessibilityIdentifier("released-picker")
+                StickerSegmented(title: "Kept or released", selection: $released,
+                                 options: [("Released", true), ("Kept", false)])
+                    .accessibilityIdentifier("released-picker")
                 if !released, let kind = s.limits?.kind, kind == "release" {
                     Label("Florida says this fish is catch and release only.", systemImage: "exclamationmark.triangle.fill")
                         .font(Fonts.body(14, .black)).foregroundStyle(Palette.orange)

@@ -16,11 +16,8 @@ struct LogbookView: View {
             .padding(.horizontal, 16)
             .padding(.top, 8)
 
-            Picker("View", selection: $showMap) {
-                Text("List").tag(false)
-                Text("Spots map").tag(true)
-            }
-            .pickerStyle(.segmented)
+            StickerSegmented(title: "View", selection: $showMap,
+                             options: [("List", false), ("Spots map", true)])
             .padding(.horizontal, 16)
             .accessibilityIdentifier("logbook-view")
 
@@ -247,11 +244,7 @@ struct CatchDetailView: View {
             }
         }
         .background(WaterBackground())
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .principal) { Text("Catch").font(Fonts.title(20)).foregroundStyle(Palette.ink) }
-        }
+        .pageHeader("Catch")
         .tint(Palette.ink)
     }
 }
