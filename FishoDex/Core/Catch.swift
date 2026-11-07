@@ -30,12 +30,14 @@ public struct Catch: Codable, Identifiable, Hashable, Sendable {
     public var addedBy: AddMethod
     public var scanSuggestions: [String]
     public var createdAt: Date
+    /// The tide, moon, wind and water temperature it was caught in.
+    public var conditions: CatchConditions?
 
     public init(id: UUID = UUID(), speciesID: String, date: Date = Date(), placeName: String? = nil,
                 latitude: Double? = nil, longitude: Double? = nil, spotSharing: SpotSharing = .hidden,
                 lengthInches: Double? = nil, weightPounds: Double? = nil, released: Bool = false,
                 note: String? = nil, photoFile: String? = nil, addedBy: AddMethod = .hand,
-                scanSuggestions: [String] = [], createdAt: Date = Date()) {
+                scanSuggestions: [String] = [], createdAt: Date = Date(), conditions: CatchConditions? = nil) {
         self.id = id
         self.speciesID = speciesID
         self.date = date
@@ -51,11 +53,12 @@ public struct Catch: Codable, Identifiable, Hashable, Sendable {
         self.addedBy = addedBy
         self.scanSuggestions = scanSuggestions
         self.createdAt = createdAt
+        self.conditions = conditions
     }
 
     enum CodingKeys: String, CodingKey {
         case id, speciesID, date, placeName, latitude, longitude, spotSharing, lengthInches, weightPounds
-        case released, note, photoFile, addedBy, scanSuggestions, createdAt
+        case released, note, photoFile, addedBy, scanSuggestions, createdAt, conditions
     }
 
     // Lenient reading, so older backups still open after new fields are added.
@@ -76,6 +79,7 @@ public struct Catch: Codable, Identifiable, Hashable, Sendable {
         addedBy = try c.decodeIfPresent(AddMethod.self, forKey: .addedBy) ?? .hand
         scanSuggestions = try c.decodeIfPresent([String].self, forKey: .scanSuggestions) ?? []
         createdAt = try c.decodeIfPresent(Date.self, forKey: .createdAt) ?? date
+        conditions = try? c.decodeIfPresent(CatchConditions.self, forKey: .conditions)
     }
 
     public var hasSpot: Bool { latitude != nil && longitude != nil }
