@@ -153,12 +153,17 @@ def has_bad_word(text, words):
     return any(re.search(r"(?<![a-z])" + re.escape(w.strip()) + r"(?![a-z])", t) for w in words)
 
 
-def from_inaturalist(*texts):
+INAT_FILE_NAME = re.compile(r"^(File:)?[A-Z][a-z]+ [a-z]+( [a-z]+)? \d{6,}\.jpe?g$")
+
+
+def from_inaturalist(*texts, title=""):
     """Copies of iNaturalist photos on other sites are skipped too (see the
-    iNaturalist note at the top). They say "imported from iNaturalist" or use
-    iNaturalist's "(c) Name, some rights reserved" credit line."""
+    iNaturalist note at the top). They say "imported from iNaturalist", link to
+    inaturalist.org, use iNaturalist's "(c) Name, some rights reserved" credit
+    line, or (on Commons) carry the import tool's "Genus species 123456789.jpg"
+    file name, which is the iNaturalist photo number."""
     t = " ".join(texts).lower()
-    return "inaturalist" in t or "some rights reserved" in t
+    return "inaturalist" in t or "some rights reserved" in t or bool(INAT_FILE_NAME.match(title))
 
 
 # ---------- Wikimedia Commons ----------
@@ -261,6 +266,7 @@ def commons_info(titles):
                 "thumb": info.get("thumburl") or info.get("url"), "page": info.get("descriptionurl", ""),
                 "license": m("License") or m("LicenseShortName"), "licenseShort": m("LicenseShortName"),
                 "licenseUrl": m("LicenseUrl"), "author": strip_html(m("Artist")) or strip_html(m("Credit")),
+                "credit": m("Credit") + " " + m("Artist"),
             })
     return out
 
@@ -287,7 +293,7 @@ def from_commons(taxon, search=None):
             continue
         if min(f["width"], f["height"]) < 200:
             continue
-        if from_inaturalist(f["title"], f["author"]):
+        if from_inaturalist(f["title"], f["author"], f["credit"], title=f["title"]):
             continue
         key = "wm-" + hashlib.sha1(f["title"].encode()).hexdigest()[:16]
         photos.append({"key": key, "source": "Wikimedia Commons", "url": f["thumb"], "page": f["page"],

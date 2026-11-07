@@ -14,7 +14,7 @@ name: Photo ID model
 on:
   push:
     branches: ['claude/**']
-    paths: ['Tools/photo_id/**', '.github/workflows/photo-id.yml']
+    paths: ['Tools/photo_id/**', '!Tools/photo_id/**.md', '.github/workflows/photo-id.yml']
   workflow_dispatch:
 
 permissions:
