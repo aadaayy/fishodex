@@ -1,0 +1,212 @@
+[
+ {
+  "id": "snook",
+  "file": "snook.jpg",
+  "title": "TNHC 1932807335",
+  "author": "The University of Texas at Austin",
+  "license": "CC BY 4.0",
+  "page": "https://www.gbif.org/occurrence/1932807335",
+  "guesses": [
+   {
+    "confidence": 0.5380859375,
+    "id": "snook"
+   },
+   {
+    "confidence": 0.2100830078125,
+    "id": "pickerel"
+   },
+   {
+    "confidence": 0.047607421875,
+    "id": "crevalle"
+   },
+   {
+    "confidence": 0.046295166015625,
+    "id": "crappie"
+   },
+   {
+    "confidence": 0.0318603515625,
+    "id": "other"
+   }
+  ]
+ },
+ {
+  "id": "redfish",
+  "file": "redfish.jpg",
+  "title": "University of Kansas Biodiversity Institute Fish Tissue Collection 656962981",
+  "author": "University of Kansas Biodiversity Institute",
+  "license": "CC BY 4.0",
+  "page": "https://www.gbif.org/occurrence/656962981",
+  "guesses": [
+   {
+    "confidence": 0.931640625,
+    "id": "redfish"
+   },
+   {
+    "confidence": 0.028717041015625,
+    "id": "seatrout"
+   },
+   {
+    "confidence": 0.0205230712890625,
+    "id": "bass"
+   },
+   {
+    "confidence": 0.00904083251953125,
+    "id": "sunshine"
+   },
+   {
+    "confidence": 0.0026874542236328125,
+    "id": "snook"
+   }
+  ]
+ },
+ {
+  "id": "mahi",
+  "file": "mahi.jpg",
+  "title": "SAIAB 1230407516",
+  "author": "Eric Kuijt",
+  "license": "CC BY 4.0",
+  "page": "https://www.gbif.org/occurrence/1230407516",
+  "guesses": [
+   {
+    "confidence": 0.97705078125,
+    "id": "mahi"
+   },
+   {
+    "confidence": 0.0192108154296875,
+    "id": "yellowfin"
+   },
+   {
+    "confidence": 0.0014247894287109375,
+    "id": "tarpon"
+   },
+   {
+    "confidence": 0.0012845993041992188,
+    "id": "amberjack"
+   },
+   {
+    "confidence": 0.0005402565002441406,
+    "id": "wahoo"
+   }
+  ]
+ },
+ {
+  "id": "peacock",
+  "file": "peacock.jpg",
+  "title": "Cichla ocellaris Dvur zoo 1.jpg",
+  "author": "Karelj",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Cichla_ocellaris_Dvur_zoo_1.jpg",
+  "guesses": [
+   {
+    "confidence": 0.95361328125,
+    "id": "peacock"
+   },
+   {
+    "confidence": 0.031890869140625,
+    "id": "oscar"
+   },
+   {
+    "confidence": 0.005184173583984375,
+    "id": "bowfin"
+   },
+   {
+    "confidence": 0.003566741943359375,
+    "id": "hogfish"
+   },
+   {
+    "confidence": 0.00347137451171875,
+    "id": "bass"
+   }
+  ]
+ },
+ {
+  "id": "graysnapper",
+  "file": "graysnapper.jpg",
+  "title": "Grey snapper - Lutjanus griseus.jpg",
+  "author": "Clinton & Charles Robertson from Del Rio, Texas & San Marcos, TX, USA",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Grey_snapper_-_Lutjanus_griseus.jpg",
+  "guesses": [
+   {
+    "confidence": 0.998046875,
+    "id": "graysnapper"
+   },
+   {
+    "confidence": 0.0012178421020507812,
+    "id": "muttonsnapper"
+   },
+   {
+    "confidence": 0.0002532005310058594,
+    "id": "yellowtail"
+   },
+   {
+    "confidence": 0.00017702579498291016,
+    "id": "hogfish"
+   },
+   {
+    "confidence": 0.0001456737518310547,
+    "id": "other"
+   }
+  ]
+ },
+ {
+  "id": "tarpon",
+  "file": "tarpon.jpg",
+  "title": "Olympus Digital Camera (181116275).jpeg",
+  "author": "Daniel Aufgang",
+  "license": "CC BY 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Olympus_Digital_Camera_(181116275).jpeg",
+  "guesses": [
+   {
+    "confidence": 0.3427734375,
+    "id": "tarpon"
+   },
+   {
+    "confidence": 0.0970458984375,
+    "id": "barracuda"
+   },
+   {
+    "confidence": 0.090576171875,
+    "id": "mahi"
+   },
+   {
+    "confidence": 0.07806396484375,
+    "id": "trigger"
+   },
+   {
+    "confidence": 0.06689453125,
+    "id": "channelcat"
+   }
+  ]
+ },
+ {
+  "id": "bass",
+  "file": "bass.jpg",
+  "title": "TNHC 1932822381",
+  "author": "The University of Texas at Austin",
+  "license": "CC BY 4.0",
+  "page": "https://www.gbif.org/occurrence/1932822381",
+  "guesses": [
+   {
+    "confidence": 0.89501953125,
+    "id": "bass"
+   },
+   {
+    "confidence": 0.035400390625,
+    "id": "crevalle"
+   },
+   {
+    "confidence": 0.01873779296875,
+    "id": "snook"
+   },
+   {
+    "confidence": 0.01251983642578125,
+    "id": "warmouth"
+   },
+   {
+    "confidence": 0.00861358642578125,
+    "id": "cobia"
+   }
+  ]
+ }
+]

@@ -1,0 +1,823 @@
+{
+  "bytes" : 21956897,
+  "fits" : [
+    {
+      "count" : 265,
+      "fit" : "centerCrop",
+      "milliseconds" : 23.845535854123675,
+      "perClass" : {
+        "africanpompano" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 3
+        },
+        "almaco" : {
+          "count" : 5,
+          "top1" : 2,
+          "top3" : 3
+        },
+        "amberjack" : {
+          "count" : 10,
+          "top1" : 9,
+          "top3" : 10
+        },
+        "barracuda" : {
+          "count" : 9,
+          "top1" : 8,
+          "top3" : 9
+        },
+        "bass" : {
+          "count" : 18,
+          "top1" : 18,
+          "top3" : 18
+        },
+        "blackgrouper" : {
+          "count" : 2,
+          "top1" : 1,
+          "top3" : 2
+        },
+        "bluefish" : {
+          "count" : 4,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "bluegill" : {
+          "count" : 9,
+          "top1" : 7,
+          "top3" : 9
+        },
+        "bluetilapia" : {
+          "count" : 1,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "bowfin" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "channelcat" : {
+          "count" : 10,
+          "top1" : 10,
+          "top3" : 10
+        },
+        "cobia" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 1
+        },
+        "crappie" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "crevalle" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "goliath" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "graysnapper" : {
+          "count" : 3,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "hogfish" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 3
+        },
+        "jaguar" : {
+          "count" : 3,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "lanesnapper" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "lionfish" : {
+          "count" : 27,
+          "top1" : 27,
+          "top3" : 27
+        },
+        "lookdown" : {
+          "count" : 6,
+          "top1" : 6,
+          "top3" : 6
+        },
+        "mahi" : {
+          "count" : 5,
+          "top1" : 3,
+          "top3" : 4
+        },
+        "midas" : {
+          "count" : 4,
+          "top1" : 3,
+          "top3" : 4
+        },
+        "muttonsnapper" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 1
+        },
+        "oscar" : {
+          "count" : 23,
+          "top1" : 22,
+          "top3" : 23
+        },
+        "other" : {
+          "count" : 22,
+          "top1" : 17,
+          "top3" : 19
+        },
+        "peacock" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "permit" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "pickerel" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "pompano" : {
+          "count" : 5,
+          "top1" : 5,
+          "top3" : 5
+        },
+        "redear" : {
+          "count" : 2,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "redfish" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "redgrouper" : {
+          "count" : 3,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "seatrout" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "sheepshead" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "snakehead" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "snook" : {
+          "count" : 2,
+          "top1" : 1,
+          "top3" : 2
+        },
+        "spottedsun" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "spottedtilapia" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 1
+        },
+        "sunshine" : {
+          "count" : 6,
+          "top1" : 5,
+          "top3" : 6
+        },
+        "swordfish" : {
+          "count" : 11,
+          "top1" : 11,
+          "top3" : 11
+        },
+        "tarpon" : {
+          "count" : 3,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "trigger" : {
+          "count" : 8,
+          "top1" : 8,
+          "top3" : 8
+        },
+        "vermilion" : {
+          "count" : 10,
+          "top1" : 10,
+          "top3" : 10
+        },
+        "wahoo" : {
+          "count" : 1,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "walkingcat" : {
+          "count" : 3,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "warmouth" : {
+          "count" : 2,
+          "top1" : 0,
+          "top3" : 2
+        },
+        "yellowfin" : {
+          "count" : 9,
+          "top1" : 9,
+          "top3" : 9
+        },
+        "yellowtail" : {
+          "count" : 5,
+          "top1" : 4,
+          "top3" : 4
+        }
+      },
+      "sureAt" : {
+        "0.30" : {
+          "right" : 0.8544061302681992,
+          "share" : 0.9849056603773585
+        },
+        "0.50" : {
+          "right" : 0.9033613445378151,
+          "share" : 0.8981132075471698
+        },
+        "0.70" : {
+          "right" : 0.9615384615384616,
+          "share" : 0.7849056603773585
+        },
+        "0.85" : {
+          "right" : 0.984375,
+          "share" : 0.7245283018867924
+        }
+      },
+      "top1" : 0.8452830188679246,
+      "top3" : 0.9207547169811321
+    },
+    {
+      "count" : 265,
+      "fit" : "scaleFit",
+      "milliseconds" : 16.4468378390906,
+      "perClass" : {
+        "africanpompano" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 3
+        },
+        "almaco" : {
+          "count" : 5,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "amberjack" : {
+          "count" : 10,
+          "top1" : 9,
+          "top3" : 10
+        },
+        "barracuda" : {
+          "count" : 9,
+          "top1" : 8,
+          "top3" : 9
+        },
+        "bass" : {
+          "count" : 18,
+          "top1" : 18,
+          "top3" : 18
+        },
+        "blackgrouper" : {
+          "count" : 2,
+          "top1" : 1,
+          "top3" : 2
+        },
+        "bluefish" : {
+          "count" : 4,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "bluegill" : {
+          "count" : 9,
+          "top1" : 6,
+          "top3" : 9
+        },
+        "bluetilapia" : {
+          "count" : 1,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "bowfin" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "channelcat" : {
+          "count" : 10,
+          "top1" : 10,
+          "top3" : 10
+        },
+        "cobia" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 1
+        },
+        "crappie" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "crevalle" : {
+          "count" : 3,
+          "top1" : 1,
+          "top3" : 2
+        },
+        "goliath" : {
+          "count" : 2,
+          "top1" : 1,
+          "top3" : 2
+        },
+        "graysnapper" : {
+          "count" : 3,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "hogfish" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 3
+        },
+        "jaguar" : {
+          "count" : 3,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "lanesnapper" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "lionfish" : {
+          "count" : 27,
+          "top1" : 27,
+          "top3" : 27
+        },
+        "lookdown" : {
+          "count" : 6,
+          "top1" : 6,
+          "top3" : 6
+        },
+        "mahi" : {
+          "count" : 5,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "midas" : {
+          "count" : 4,
+          "top1" : 3,
+          "top3" : 4
+        },
+        "muttonsnapper" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "oscar" : {
+          "count" : 23,
+          "top1" : 22,
+          "top3" : 22
+        },
+        "other" : {
+          "count" : 22,
+          "top1" : 14,
+          "top3" : 18
+        },
+        "peacock" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "permit" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "pickerel" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "pompano" : {
+          "count" : 5,
+          "top1" : 5,
+          "top3" : 5
+        },
+        "redear" : {
+          "count" : 2,
+          "top1" : 0,
+          "top3" : 1
+        },
+        "redfish" : {
+          "count" : 3,
+          "top1" : 0,
+          "top3" : 2
+        },
+        "redgrouper" : {
+          "count" : 3,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "seatrout" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "sheepshead" : {
+          "count" : 2,
+          "top1" : 1,
+          "top3" : 2
+        },
+        "snakehead" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "snook" : {
+          "count" : 2,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "spottedsun" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 1
+        },
+        "spottedtilapia" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 1
+        },
+        "sunshine" : {
+          "count" : 6,
+          "top1" : 5,
+          "top3" : 5
+        },
+        "swordfish" : {
+          "count" : 11,
+          "top1" : 11,
+          "top3" : 11
+        },
+        "tarpon" : {
+          "count" : 3,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "trigger" : {
+          "count" : 8,
+          "top1" : 8,
+          "top3" : 8
+        },
+        "vermilion" : {
+          "count" : 10,
+          "top1" : 10,
+          "top3" : 10
+        },
+        "wahoo" : {
+          "count" : 1,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "walkingcat" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 3
+        },
+        "warmouth" : {
+          "count" : 2,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "yellowfin" : {
+          "count" : 9,
+          "top1" : 6,
+          "top3" : 9
+        },
+        "yellowtail" : {
+          "count" : 5,
+          "top1" : 3,
+          "top3" : 4
+        }
+      },
+      "sureAt" : {
+        "0.30" : {
+          "right" : 0.8015267175572519,
+          "share" : 0.9886792452830189
+        },
+        "0.50" : {
+          "right" : 0.8849557522123894,
+          "share" : 0.8528301886792453
+        },
+        "0.70" : {
+          "right" : 0.9526315789473684,
+          "share" : 0.7169811320754716
+        },
+        "0.85" : {
+          "right" : 0.9766081871345029,
+          "share" : 0.6452830188679245
+        }
+      },
+      "top1" : 0.7924528301886793,
+      "top3" : 0.8943396226415095
+    },
+    {
+      "count" : 265,
+      "fit" : "scaleFill",
+      "milliseconds" : 14.478769392337439,
+      "perClass" : {
+        "africanpompano" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 3
+        },
+        "almaco" : {
+          "count" : 5,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "amberjack" : {
+          "count" : 10,
+          "top1" : 9,
+          "top3" : 10
+        },
+        "barracuda" : {
+          "count" : 9,
+          "top1" : 8,
+          "top3" : 9
+        },
+        "bass" : {
+          "count" : 18,
+          "top1" : 17,
+          "top3" : 18
+        },
+        "blackgrouper" : {
+          "count" : 2,
+          "top1" : 1,
+          "top3" : 2
+        },
+        "bluefish" : {
+          "count" : 4,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "bluegill" : {
+          "count" : 9,
+          "top1" : 8,
+          "top3" : 9
+        },
+        "bluetilapia" : {
+          "count" : 1,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "bowfin" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "channelcat" : {
+          "count" : 10,
+          "top1" : 10,
+          "top3" : 10
+        },
+        "cobia" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 1
+        },
+        "crappie" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "crevalle" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "goliath" : {
+          "count" : 2,
+          "top1" : 1,
+          "top3" : 2
+        },
+        "graysnapper" : {
+          "count" : 3,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "hogfish" : {
+          "count" : 3,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "jaguar" : {
+          "count" : 3,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "lanesnapper" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "lionfish" : {
+          "count" : 27,
+          "top1" : 27,
+          "top3" : 27
+        },
+        "lookdown" : {
+          "count" : 6,
+          "top1" : 6,
+          "top3" : 6
+        },
+        "mahi" : {
+          "count" : 5,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "midas" : {
+          "count" : 4,
+          "top1" : 4,
+          "top3" : 4
+        },
+        "muttonsnapper" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 1
+        },
+        "oscar" : {
+          "count" : 23,
+          "top1" : 23,
+          "top3" : 23
+        },
+        "other" : {
+          "count" : 22,
+          "top1" : 13,
+          "top3" : 21
+        },
+        "peacock" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "permit" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "pickerel" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "pompano" : {
+          "count" : 5,
+          "top1" : 5,
+          "top3" : 5
+        },
+        "redear" : {
+          "count" : 2,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "redfish" : {
+          "count" : 3,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "redgrouper" : {
+          "count" : 3,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "seatrout" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "sheepshead" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "snakehead" : {
+          "count" : 2,
+          "top1" : 2,
+          "top3" : 2
+        },
+        "snook" : {
+          "count" : 2,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "spottedsun" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 0
+        },
+        "spottedtilapia" : {
+          "count" : 1,
+          "top1" : 0,
+          "top3" : 1
+        },
+        "sunshine" : {
+          "count" : 6,
+          "top1" : 5,
+          "top3" : 5
+        },
+        "swordfish" : {
+          "count" : 11,
+          "top1" : 11,
+          "top3" : 11
+        },
+        "tarpon" : {
+          "count" : 3,
+          "top1" : 1,
+          "top3" : 2
+        },
+        "trigger" : {
+          "count" : 8,
+          "top1" : 8,
+          "top3" : 8
+        },
+        "vermilion" : {
+          "count" : 10,
+          "top1" : 10,
+          "top3" : 10
+        },
+        "wahoo" : {
+          "count" : 1,
+          "top1" : 1,
+          "top3" : 1
+        },
+        "walkingcat" : {
+          "count" : 3,
+          "top1" : 3,
+          "top3" : 3
+        },
+        "warmouth" : {
+          "count" : 2,
+          "top1" : 0,
+          "top3" : 2
+        },
+        "yellowfin" : {
+          "count" : 9,
+          "top1" : 8,
+          "top3" : 9
+        },
+        "yellowtail" : {
+          "count" : 5,
+          "top1" : 3,
+          "top3" : 4
+        }
+      },
+      "sureAt" : {
+        "0.30" : {
+          "right" : 0.8443579766536965,
+          "share" : 0.969811320754717
+        },
+        "0.50" : {
+          "right" : 0.8974358974358975,
+          "share" : 0.8830188679245283
+        },
+        "0.70" : {
+          "right" : 0.9285714285714286,
+          "share" : 0.7924528301886793
+        },
+        "0.85" : {
+          "right" : 0.9572192513368984,
+          "share" : 0.7056603773584905
+        }
+      },
+      "top1" : 0.8339622641509434,
+      "top3" : 0.9207547169811321
+    }
+  ],
+  "model" : "FishIDProbe.mlpackage",
+  "seconds" : 15.623637914657593
+}
