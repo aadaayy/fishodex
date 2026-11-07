@@ -127,6 +127,7 @@ struct SectionLabel: View {
 struct ActiveEventPanel: View {
     @Environment(CatchStore.self) private var store
     @Environment(AppModel.self) private var model
+    @Environment(\.layoutShape) private var layout
     var status: EventStatus
     var onSelect: (DexCard) -> Void
 
@@ -138,7 +139,7 @@ struct ActiveEventPanel: View {
                 Image(status.done ? event.cardImage : event.lockedImage)
                     .resizable()
                     .aspectRatio(600 / 780, contentMode: .fit)
-                    .frame(width: 92)
+                    .frame(width: layout == .folded ? 64 : 92)
                     .shadow(color: Palette.ink.opacity(0.35), radius: 0, x: 0, y: 3)
                     .accessibilityLabel("\(event.name) card, \(status.done ? "earned" : "not earned yet")")
                 VStack(alignment: .leading, spacing: 6) {
@@ -147,8 +148,10 @@ struct ActiveEventPanel: View {
                         if status.done { Pill(text: "Finished", fill: Palette.good, size: 11) }
                     }
                     Text(event.name)
-                        .font(Fonts.title(24))
+                        .font(Fonts.title(layout == .folded ? 20 : 24))
                         .foregroundStyle(Palette.ink)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.8)
                         .fixedSize(horizontal: false, vertical: true)
                     Text(event.range.text)
                         .font(Fonts.body(14, .extraBold))
@@ -235,10 +238,17 @@ struct ActiveEventPanel: View {
 
     private func ruleNote(_ event: SeasonEvent) -> String? {
         if event.goal.releasedOnly { return "Only released fish count." }
-        let closable = event.goal.species.filter { !Seasons.closures(for: $0).isEmpty }
-        guard !closable.isEmpty else { return nil }
-        let names = closable.compactMap { store.catalog[$0]?.name }.joined(separator: " and ")
-        return "\(names) caught in a closed season count only when released."
+        func list(_ ids: [String]) -> String {
+            let names = ids.compactMap { store.catalog[$0]?.name }
+            guard names.count > 1 else { return names.first ?? "" }
+            return names.dropLast().joined(separator: ", ") + " and " + names.last!
+        }
+        var notes: [String] = []
+        let closable = event.goal.species.filter { !Seasons.closures(for: $0).isEmpty && !Seasons.releaseOnly.contains($0) }
+        if !closable.isEmpty { notes.append("A kept \(list(closable)) doesn't count while its season is closed.") }
+        let alwaysBack = event.goal.species.filter { Seasons.releaseOnly.contains($0) }
+        if !alwaysBack.isEmpty { notes.append("\(list(alwaysBack)) always go back, so only released ones count.") }
+        return notes.isEmpty ? nil : notes.joined(separator: " ")
     }
 }
 
@@ -249,24 +259,29 @@ struct FishChip: View {
     var color: Color
 
     var body: some View {
-        HStack(spacing: 6) {
+        VStack(spacing: 2) {
             Image("fish-\(species.id)")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 34, height: 26)
+                .frame(width: 46, height: 30)
             Text(species.name)
                 .font(Fonts.body(12, .black, relativeTo: .caption))
                 .foregroundStyle(Palette.ink)
                 .lineLimit(2)
-                .minimumScaleFactor(0.8)
-                .multilineTextAlignment(.leading)
-            Spacer(minLength: 0)
+                .minimumScaleFactor(0.85)
+                .multilineTextAlignment(.center)
+                .frame(maxHeight: .infinity, alignment: .top)
+        }
+        .padding(.horizontal, 6)
+        .padding(.top, 6)
+        .padding(.bottom, 5)
+        .frame(maxWidth: .infinity, minHeight: 78)
+        .overlay(alignment: .topTrailing) {
             Image(systemName: counted ? "checkmark.circle.fill" : "circle")
                 .font(.system(size: 15, weight: .heavy))
                 .foregroundStyle(counted ? Palette.good : Palette.muted.opacity(0.5))
+                .padding(5)
         }
-        .padding(.horizontal, 8)
-        .frame(maxWidth: .infinity, minHeight: 44)
         .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(counted ? color.opacity(0.28) : Palette.paperShade))
         .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(Palette.ink, lineWidth: 2))
         .accessibilityElement(children: .ignore)

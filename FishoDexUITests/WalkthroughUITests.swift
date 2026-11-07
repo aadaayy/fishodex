@@ -33,8 +33,7 @@ final class WalkthroughUITests: XCTestCase {
 
         let search = app.textFields["species-search"]
         XCTAssertTrue(search.waitForExistence(timeout: 5), "The fish picker didn't open")
-        search.tap()
-        search.typeText("snook")
+        type("snook", into: search, in: app)
         let row = app.buttons["species-row-snook"]
         XCTAssertTrue(row.waitForExistence(timeout: 5), "Searching snook should find it")
         sleep(1)
@@ -259,8 +258,7 @@ final class WalkthroughUITests: XCTestCase {
         pick.tap()
         let search = app.textFields["species-search"]
         XCTAssertTrue(search.waitForExistence(timeout: 5), "The fish picker didn't open")
-        search.tap()
-        search.typeText("tarpon")
+        type("tarpon", into: search, in: app)
         let row = app.buttons["species-row-tarpon"]
         XCTAssertTrue(row.waitForExistence(timeout: 5))
         row.tap()
@@ -288,11 +286,11 @@ final class WalkthroughUITests: XCTestCase {
         XCTAssertTrue(progress.exists)
         XCTAssertTrue(progress.label.contains("2 of 3"), "The sample snook and tarpon make 2 of 3: \(progress.label)")
         let calendar = app.descendants(matching: .any)["season-calendar"]
-        scrollTo(calendar, in: app)
+        scrollToTop(of: calendar, in: app)
         XCTAssertTrue(calendar.exists, "The season calendar is missing")
         capture("61-events-calendar")
         let cards = app.descendants(matching: .any)["event-cards"]
-        scrollTo(cards, in: app)
+        scrollToTop(of: cards, in: app)
         capture("62-events-cards")
         let closed = app.descendants(matching: .any)["closed-now"]
         scrollTo(closed, in: app)
@@ -431,6 +429,28 @@ final class WalkthroughUITests: XCTestCase {
             app.swipeUp(velocity: .slow)
         }
         sleep(1)
+    }
+
+    /// Swipes up until the element's top is in the upper part of the screen,
+    /// for panels too tall to fit whole.
+    @MainActor
+    private func scrollToTop(of element: XCUIElement, in app: XCUIApplication, tries: Int = 10) {
+        let screen = app.windows.firstMatch.frame
+        for _ in 0..<tries {
+            if element.exists, element.frame.minY > screen.minY + 60, element.frame.minY < screen.midY { break }
+            app.swipeUp(velocity: .slow)
+        }
+        sleep(1)
+    }
+
+    /// Taps a text field and types, tapping again if the keyboard didn't come up.
+    @MainActor
+    private func type(_ text: String, into field: XCUIElement, in app: XCUIApplication) {
+        for _ in 0..<3 {
+            field.tap()
+            if app.keyboards.firstMatch.waitForExistence(timeout: 3) { break }
+        }
+        field.typeText(text)
     }
 
     @MainActor

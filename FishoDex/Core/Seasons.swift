@@ -121,7 +121,7 @@ public enum Seasons {
     public static let events: [SeasonEvent] = [
         SeasonEvent(
             id: "mulletrun", name: "Fall Mullet Run", season: .fall, range: YearlyRange(9, 15, to: 11, 30),
-            featured: "snook", colorHex: 0xE8553D, symbol: "arrow.down.right.circle.fill", rewardXP: 100,
+            featured: "snook", colorHex: 0xE8553D, symbol: "fish.fill", rewardXP: 100,
             about: "Huge schools of mullet push south along the Atlantic beaches every fall, and snook, tarpon, jacks, bluefish and Spanish mackerel follow them. October is the peak.",
             goal: EventGoal(species: ["snook", "tarpon", "crevalle", "bluefish", "spanishmack", "ladyfish"], count: 3, distinct: true)),
         SeasonEvent(

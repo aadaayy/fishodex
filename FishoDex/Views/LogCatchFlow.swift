@@ -514,7 +514,7 @@ struct CatchDetailsForm: View {
         let areas = Seasons.closedOn(date, speciesID: speciesID).map(\.area)
         var seen: [String] = []
         for a in areas where !seen.contains(a) { seen.append(a) }
-        return seen.joined(separator: " and ")
+        return seen.joined(separator: ", and in ")
     }
 
     /// The events on now that this catch, as it stands, would count toward.
