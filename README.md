@@ -2,7 +2,7 @@
 
 A fishing dex for South Florida. Every fish you catch fills in its card: 63 freshwater, inshore and offshore fish, plus a bonus Trophy Florida bass card for a bass of 10 lb or more. Fish you haven't caught yet show as silhouettes. Each fish's page has a fun fact, what it is and where to find it, and Florida's size and bag limits.
 
-Version 1 adds catches by hand. You pick the fish by name (nicknames like mangrove snapper work too), then the date, the place, and the weight and length if you have them. Identifying a fish from a photo comes later; the route for it is kept open in the code (`Catch.addedBy` and `Catch.scanSuggestions`).
+You add a catch by name (nicknames like mangrove snapper work too) or from a photo. Photo ID looks at the photo right on the phone and shows the three fish it looks most like, with how sure it is. You tap the right one, or pick it by name, then add the date, the place, and the weight and length if you have them. Nothing unlocks until you save, so a wrong guess never unlocks the wrong fish.
 
 Everything stays on the phone. There are no accounts and nothing goes to a server.
 
@@ -10,7 +10,7 @@ Everything stays on the phone. There are no accounts and nothing goes to a serve
 
 1. **Dex:** all 64 cards in number order, rings to filter by water, a search box, your level and XP.
 2. **Fish page:** the card (with a sunburst once caught), your stats, a fun fact, about the fish, Florida's rules with a link to FWC, and your catches of it.
-3. **Log a catch:** Pick the fish (Identify from photo shows as Coming later), then details: date, place (typed, your location, or a dropped pin), weight and length (both optional), kept or released, a note and a photo. It shows what the catch is worth in XP before you save.
+3. **Log a catch:** Identify from photo (take one or choose one) or pick the fish by name, then details: date, place (typed, your location, or a dropped pin), weight and length (both optional), kept or released, a note and a photo. It shows what the catch is worth in XP before you save.
 4. **Unlock:** a new fish flips its card over, with confetti, the XP, any level up and any new patches.
 5. **Logbook:** every catch, newest first, and a map of your spots that only you can see.
 6. **Profile:** level and title, XP to the next level, each water's ring, the five title patches, the nine badge patches and settings (units, saving photos to Photos, a backup file).
@@ -38,6 +38,16 @@ Everything stays on the phone. There are no accounts and nothing goes to a serve
 5. `Tests/FishoDexCoreTests`: the logic tests.
 6. `FishoDexUITests`: the walk-through that uses the app on the simulators and takes the screenshots.
 7. `Tools`: `make_assets.py` builds the image sets from the fish art, and `build_species.py` builds `species.json` from the fact and rules notes.
+8. `Tools/photo_id`: how the photo ID model is built (see below).
+
+## Photo ID
+
+1. The model is `FishoDex/Resources/FishID.mlpackage` (about 22 MB). It runs on the phone with no internet, and the photo never leaves the phone.
+2. It is Meta's DINOv2 small image model (Apache 2.0 license) with a FishoDex layer trained on top. It beat Apple's built-in Create ML image model on the same test photos; both results are in `Tools/photo_id/REPORT.md`.
+3. It learned from openly licensed photos only: CC0, public domain, CC BY and CC BY-SA, from Wikimedia Commons and from museum and survey records on GBIF. iNaturalist photos are left out, including copies posted elsewhere, because iNaturalist's terms don't allow training AI on its data. Every photo and its photographer is listed in `Tools/photo_id/CREDITS.md`. The photos themselves are not in the app.
+4. A few fish had too few photos to learn from yet. They don't come up as guesses, but you can always pick them by name.
+5. The **Photo ID model** workflow on GitHub Actions rebuilds it: `collect.py` gathers and checks the photos, `probe.py` builds the DINOv2 model, `Train.swift` builds the Create ML model and tests both through Vision on a Mac, and `report.py` writes the report. Settings for a run are in `Tools/photo_id/run.json`.
+6. The UI test photo `FishoDexUITests/scan-sample-bass.jpg` is "Largemouth bass 01.jpg" by the U.S. Fish and Wildlife Service, public domain, from Wikimedia Commons.
 
 Every push runs the checks on GitHub Actions. Screenshots from `main` go to the `screenshots` branch, and from other branches to `screenshots-<branch>`.
 

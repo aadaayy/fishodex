@@ -14,8 +14,9 @@ actor FishIdentifier {
         case badPhoto
     }
 
-    /// How the photo is fitted to the model's square, from the test report.
-    static let fit: VNImageCropAndScaleOption = .scaleFit
+    /// How the photo is fitted to the model's square: the middle of the photo,
+    /// cropped square. It tested best (Tools/photo_id/REPORT.md).
+    static let fit: VNImageCropAndScaleOption = .centerCrop
 
     private var model: VNCoreMLModel?
 
