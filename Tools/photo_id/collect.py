@@ -8,6 +8,8 @@ Sources, and only these:
   2. GBIF: photos attached to records from museum and survey datasets, each
      photo's own license. Records from iNaturalist are skipped, because
      iNaturalist's terms of use don't allow its data to train AI models.
+     Copies of iNaturalist photos posted on Commons or in other datasets are
+     skipped as well.
 
 Licenses kept: CC0, public domain, CC BY and CC BY-SA (any version). Anything
 NonCommercial (NC) or NoDerivatives (ND), or with no clear license, is skipped.
@@ -151,6 +153,14 @@ def has_bad_word(text, words):
     return any(re.search(r"(?<![a-z])" + re.escape(w.strip()) + r"(?![a-z])", t) for w in words)
 
 
+def from_inaturalist(*texts):
+    """Copies of iNaturalist photos on other sites are skipped too (see the
+    iNaturalist note at the top). They say "imported from iNaturalist" or use
+    iNaturalist's "(c) Name, some rights reserved" credit line."""
+    t = " ".join(texts).lower()
+    return "inaturalist" in t or "some rights reserved" in t
+
+
 # ---------- Wikimedia Commons ----------
 
 def wikidata_item(taxon):
@@ -277,6 +287,8 @@ def from_commons(taxon, search=None):
             continue
         if min(f["width"], f["height"]) < 200:
             continue
+        if from_inaturalist(f["title"], f["author"]):
+            continue
         key = "wm-" + hashlib.sha1(f["title"].encode()).hexdigest()[:16]
         photos.append({"key": key, "source": "Wikimedia Commons", "url": f["thumb"], "page": f["page"],
                        "title": f["title"].removeprefix("File:"), "license": license_name(f["licenseShort"] or lic),
@@ -318,6 +330,9 @@ def from_gbif(taxon, limit=250):
                     if media.get("type") != "StillImage" or not url.startswith("http") or "inaturalist" in url.lower():
                         continue
                     lic = media.get("license") or rec.get("license", "")
+                    if from_inaturalist(str(media.get("creator") or ""), str(media.get("rightsHolder") or ""),
+                                        str(media.get("references") or ""), str(media.get("source") or "")):
+                        continue
                     if not license_ok(lic):
                         continue
                     author = media.get("creator") or media.get("rightsHolder") or rec.get("recordedBy") or rec.get("institutionCode") or "Unknown"
