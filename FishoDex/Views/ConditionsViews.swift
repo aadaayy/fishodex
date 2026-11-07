@@ -74,20 +74,8 @@ struct ConditionChips: View {
     }
 
     var body: some View {
-        let all = chips
-        ViewThatFits(in: .horizontal) {
-            row(all)
-            row(Array(all.prefix(3)))
-            row(Array(all.prefix(2)))
-            row(Array(all.prefix(1)))
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityIdentifier("condition-chips")
-    }
-
-    private func row(_ list: [Chip]) -> some View {
-        HStack(spacing: 5) {
-            ForEach(list) { chip in
+        WrapLayout(spacing: 5, lineSpacing: 5) {
+            ForEach(chips) { chip in
                 HStack(spacing: 3) {
                     Image(systemName: chip.symbol).font(.system(size: 10, weight: .heavy))
                     Text(chip.text).font(Fonts.body(12, .black, relativeTo: .caption))
@@ -101,6 +89,55 @@ struct ConditionChips: View {
                 .overlay(Capsule().strokeBorder(Palette.ink, lineWidth: 1.5))
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("condition-chips")
+    }
+}
+
+/// Lays its views out in rows, starting a new row when the next one doesn't fit.
+struct WrapLayout: Layout {
+    var spacing: CGFloat = 6
+    var lineSpacing: CGFloat = 6
+
+    private func rows(_ sizes: [CGSize], width: CGFloat) -> [[Int]] {
+        var rows: [[Int]] = [[]]
+        var x: CGFloat = 0
+        for (i, size) in sizes.enumerated() {
+            if !rows[rows.count - 1].isEmpty, x + spacing + size.width > width {
+                rows.append([])
+                x = 0
+            }
+            x += (rows[rows.count - 1].isEmpty ? 0 : spacing) + size.width
+            rows[rows.count - 1].append(i)
+        }
+        return rows
+    }
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        let width = proposal.width ?? .infinity
+        let lines = rows(sizes, width: width)
+        var height: CGFloat = 0, widest: CGFloat = 0
+        for (n, line) in lines.enumerated() {
+            let w = line.map { sizes[$0].width }.reduce(0, +) + spacing * CGFloat(max(line.count - 1, 0))
+            widest = max(widest, w)
+            height += (line.map { sizes[$0].height }.max() ?? 0) + (n > 0 ? lineSpacing : 0)
+        }
+        return CGSize(width: proposal.width.map { min($0, widest) } ?? widest, height: height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        var y = bounds.minY
+        for line in rows(sizes, width: bounds.width) {
+            var x = bounds.minX
+            let h = line.map { sizes[$0].height }.max() ?? 0
+            for i in line {
+                subviews[i].place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(sizes[i]))
+                x += sizes[i].width + spacing
+            }
+            y += h + lineSpacing
+        }
     }
 }
 
@@ -113,6 +150,12 @@ struct ConditionsPanel: View {
         let cond = item.conditions ?? CatchConditions.offline(for: item, habitat: store.catalog[item.speciesID]?.habitat)
         InfoPanel(title: "Conditions", symbol: "water.waves") {
             VStack(alignment: .leading, spacing: 12) {
+                if item.hasSpot && cond.waiting {
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "clock.fill").foregroundStyle(Palette.orange)
+                        BodyText("The rest fills in by itself once the phone is online and the stations have posted their readings.")
+                    }
+                }
                 if !item.hasSpot {
                     note("No spot was saved with this catch, so only the moon and time of day are here. Add your location or a pin next time and FishoDex saves the tide, wind and water temperature too.")
                 }
@@ -141,10 +184,6 @@ struct ConditionsPanel: View {
         }
     }
 
-    private var waitingDetail: String {
-        "Fills in by itself once the phone is online and the station has posted its reading."
-    }
-
     private func miles(_ m: Double) -> String {
         let value = store.units == .us ? m : m * 1.609344
         let unit = store.units == .us ? "mi" : "km"
@@ -165,12 +204,14 @@ struct ConditionsPanel: View {
         switch cond.tideState {
         case .done:
             if let t = cond.tide {
-                let turn = { (x: TideTurn) in "\(x.isHigh ? "High" : "Low") \(store.units.tideHeight(x.feet)) at \(time(x.time))" }
+                let turn = { (x: TideTurn, lead: Bool) in
+                    "\(x.isHigh ? (lead ? "High" : "high") : (lead ? "Low" : "low")) \(store.units.tideHeight(x.feet)) at \(time(x.time))"
+                }
                 ConditionLine(symbol: t.stage.symbol, title: "Tide", value: t.stage.label,
-                              detail: "\(turn(t.previous)), then \(turn(t.next).lowercased()). \(ConditionStation(id: t.stationID, name: t.stationName, lat: 0, lon: 0).shortName) tide station, \(miles(t.miles)).")
+                              detail: "\(turn(t.previous, true)), then \(turn(t.next, false)). \(ConditionStation(id: t.stationID, name: t.stationName, lat: 0, lon: 0).shortName) tide station, \(miles(t.miles)).")
             }
         case .waiting:
-            ConditionLine(symbol: "clock.fill", title: "Tide", value: "Coming soon", detail: waitingDetail)
+            ConditionLine(symbol: "clock.fill", title: "Tide", value: "Coming soon", detail: nil)
         case .none:
             ConditionLine(symbol: "water.waves", title: "Tide", value: "No tide station close by", detail: nil)
         case .skipped:
@@ -189,7 +230,7 @@ struct ConditionsPanel: View {
                               detail: "\(gust)\(w.source), \(miles(w.miles)).")
             }
         case .waiting:
-            ConditionLine(symbol: "clock.fill", title: "Wind", value: "Coming soon", detail: waitingDetail)
+            ConditionLine(symbol: "clock.fill", title: "Wind", value: "Coming soon", detail: nil)
         case .none, .skipped:
             ConditionLine(symbol: "wind", title: "Wind", value: "No reading close by", detail: nil)
         }
@@ -204,7 +245,7 @@ struct ConditionsPanel: View {
                               detail: "\(w.source), \(miles(w.miles)).")
             }
         case .waiting:
-            ConditionLine(symbol: "clock.fill", title: "Water temperature", value: "Coming soon", detail: waitingDetail)
+            ConditionLine(symbol: "clock.fill", title: "Water temperature", value: "Coming soon", detail: nil)
         case .none, .skipped:
             ConditionLine(symbol: "thermometer.medium", title: "Water temperature", value: "No gauge close by", detail: nil)
         }
