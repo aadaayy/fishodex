@@ -97,6 +97,7 @@ struct PhoneLayout: View {
         .sheet(isPresented: $model.logging) {
             LogCatchFlow(preset: model.logPreset) { model.finishLog($0) }
                 .presentationDragIndicator(.visible)
+                .modifier(TextSizeOverride(size: LaunchOptions.current.textSize))
         }
     }
 }
@@ -112,6 +113,8 @@ struct BottomBar: View {
             TabButton(tab: .logbook)
             TabButton(tab: .profile)
         }
+        // Five tabs share the bar, so their labels stop growing at xxLarge.
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .padding(.horizontal, 8)
         .padding(.top, 6)
         .background {
@@ -137,6 +140,7 @@ struct FoldedLayout: View {
         }
         .sheet(isPresented: $model.logging) {
             LogCatchFlow(preset: model.logPreset) { model.finishLog($0) }
+                .modifier(TextSizeOverride(size: LaunchOptions.current.textSize))
         }
     }
 }
@@ -151,6 +155,7 @@ struct SideBar: View {
             TabButton(tab: .profile)
             Spacer(minLength: 0)
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .padding(.top, 14)
         .frame(width: 96)
         .background {
@@ -202,6 +207,7 @@ struct Rail: View {
             TabButton(tab: .profile)
             Spacer(minLength: 0)
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .padding(.top, 14)
         .frame(width: 84)
         .background {

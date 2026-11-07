@@ -181,8 +181,9 @@ struct StatTile: View {
             Text(title.uppercased())
                 .font(Fonts.body(11, .black, relativeTo: .caption))
                 .foregroundStyle(Palette.muted)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .minimumScaleFactor(0.6)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)

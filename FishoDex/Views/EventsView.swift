@@ -60,7 +60,7 @@ struct EventsView: View {
         ScrollView {
             VStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Events").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink)
+                    Text("Events").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink).lineLimit(1).minimumScaleFactor(0.6)
                     Text("South Florida's fishing seasons. They come back every year.")
                         .font(Fonts.body(15, .extraBold))
                         .foregroundStyle(Palette.ink.opacity(0.8))

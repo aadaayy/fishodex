@@ -9,7 +9,7 @@ struct ProfileView: View {
         ScrollView {
             VStack(spacing: 16) {
                 HStack {
-                    Text("Profile").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink)
+                    Text("Profile").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink).lineLimit(1).minimumScaleFactor(0.6)
                     Spacer()
                 }
                 LevelCard()

@@ -6,12 +6,27 @@ struct LogbookView: View {
     @Environment(CatchStore.self) private var store
     @State private var showMap = false
 
+    private var header: some View {
+        Text("Logbook").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink)
+    }
+
+    private var countText: some View {
+        Text(store.catches.count == 1 ? "1 catch" : "\(store.catches.count) catches").font(Fonts.body(15, .black)).foregroundStyle(Palette.ink)
+    }
+
     var body: some View {
         VStack(spacing: 12) {
-            HStack {
-                Text("Logbook").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink)
-                Spacer()
-                Text(store.catches.count == 1 ? "1 catch" : "\(store.catches.count) catches").font(Fonts.body(15, .black)).foregroundStyle(Palette.ink)
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .firstTextBaseline) {
+                    header.fixedSize()
+                    Spacer(minLength: 8)
+                    countText.fixedSize()
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    header.lineLimit(1).minimumScaleFactor(0.6)
+                    countText
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.horizontal, 16)
             .padding(.top, 8)
@@ -87,7 +102,7 @@ struct CatchRow: View {
                     // On a fish's own page the name is already at the top, so the date leads.
                     Text(showFish ? (species?.name ?? item.speciesID) : item.date.formatted(date: .abbreviated, time: .omitted))
                         .font(Fonts.title(18)).foregroundStyle(Palette.ink)
-                        .lineLimit(2)
+                        .lineLimit(3)
                         .fixedSize(horizontal: false, vertical: true)
                     Spacer(minLength: 4)
                     if let xp = store.progress.awards[item.id]?.xp {
@@ -115,7 +130,7 @@ struct CatchRow: View {
                 }
                 if let place = item.placeName, !place.isEmpty {
                     Label(place, systemImage: "mappin")
-                        .font(Fonts.body(13, .bold)).foregroundStyle(Palette.muted).lineLimit(1)
+                        .font(Fonts.body(13, .bold)).foregroundStyle(Palette.muted).lineLimit(2)
                 }
                 if let cond = item.conditions {
                     ConditionChips(conditions: cond, hasSpot: item.hasSpot).padding(.top, 3)

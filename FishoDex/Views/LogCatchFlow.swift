@@ -137,7 +137,7 @@ struct ChooseMethodView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
-                    Text("Log a catch").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink)
+                    Text("Log a catch").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink).lineLimit(1).minimumScaleFactor(0.6)
                     Spacer()
                     CloseButton(action: onClose)
                 }
