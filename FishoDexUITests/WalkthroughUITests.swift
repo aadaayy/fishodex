@@ -531,11 +531,17 @@ final class WalkthroughUITests: XCTestCase {
         XCTAssertTrue(delete.exists, "Cancelling should keep the catch")
     }
 
-    /// The main screens at the biggest regular text size and at a large
+    /// The main screens at the biggest regular text size, and at a large
     /// accessibility size, as if set in Settings.
     @MainActor
-    func testLargeText() throws {
-        for (size, tag) in [("xxxLarge", "90"), ("accessibility3", "95")] {
+    func testLargeTextBiggestRegular() throws { try walkLargeText("xxxLarge", tag: "90") }
+
+    @MainActor
+    func testLargeTextAccessibility() throws { try walkLargeText("accessibility3", tag: "95") }
+
+    @MainActor
+    private func walkLargeText(_ size: String, tag: String) throws {
+        do {
             var app = launch(["-demo", "-textSize", size])
             XCTAssertTrue(app.buttons["card-bass"].waitForExistence(timeout: 20))
             sleep(1)
