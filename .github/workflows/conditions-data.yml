@@ -6,7 +6,7 @@ on:
     branches: ['claude/**']
     paths: ['Tools/conditions/**', '.github/workflows/conditions-data.yml']
 permissions:
-  contents: read
+  contents: write  # only to publish the output to its own branch
 jobs:
   fetch:
     runs-on: ubuntu-latest
@@ -14,8 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 Tools/conditions/fetch_reference.py out
-      - uses: actions/upload-artifact@v4
-        with:
-          name: conditions-data
-          path: out
-          retention-days: 7
+      - name: Publish to the conditions-data branch
+        run: |
+          cd out
+          git init -q -b conditions-data
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Conditions data from ${GITHUB_SHA::7}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" conditions-data

@@ -46,15 +46,19 @@ APP = "&application=FishoDex"
 
 # 1. Stations
 stations = {}
-for kind in ["tidepredictions", "watertemp", "wind"]:
-    data = get(f"{MD}?type={kind}", f"mdapi-{kind}-all.json" if kind == "watertemp" else None) or {}
+for kind in ["tidepredictions", "watertemp", "met"]:
+    data = get(f"{MD}?type={kind}" + ("&expand=sensors" if kind == "met" else ""), f"mdapi-{kind}-fl-sample.json" if kind == "met" else None) or {}
     for s in data.get("stations", []):
         if s.get("state") != "FL":
             continue
         sid = str(s["id"])
         e = stations.setdefault(sid, {"id": sid, "name": s.get("name", "").strip(), "lat": round(float(s["lat"]), 4),
                                       "lon": round(float(s["lng"]), 4), "tide": False, "waterTemp": False, "wind": False})
-        e[{"tidepredictions": "tide", "watertemp": "waterTemp", "wind": "wind"}[kind]] = True
+        e[{"tidepredictions": "tide", "watertemp": "waterTemp", "met": "wind"}[kind]] = True
+        if kind == "met":
+            sensors = [x.get("name", "") for x in (s.get("sensors") or {}).get("sensors", [])] if isinstance(s.get("sensors"), dict) else []
+            if sensors:
+                e["sensors"] = sensors
         if kind == "tidepredictions":
             e["tideType"] = s.get("type")
 rows = sorted(stations.values(), key=lambda s: s["id"])
