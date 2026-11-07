@@ -37,7 +37,7 @@ public struct ScanResult: Hashable, Sendable {
     public static let shown = 3
     /// The first guess counts as sure at or above this. Set from the test
     /// report (Tools/photo_id/REPORT.md): when the model was at least 70% sure,
-    /// its first guess was right about 95% of the time.
+    /// its first guess was right 96% of the time.
     public static let sureLevel = 0.7
 
     public var guesses: [ScanGuess]

@@ -45,7 +45,7 @@ Everything stays on the phone. There are no accounts and nothing goes to a serve
 1. The model is `FishoDex/Resources/FishID.mlpackage` (about 22 MB). It runs on the phone with no internet, and the photo never leaves the phone.
 2. It is Meta's DINOv2 small image model (Apache 2.0 license) with a FishoDex layer trained on top. It beat Apple's built-in Create ML image model on the same test photos; both results are in `Tools/photo_id/REPORT.md`.
 3. It learned from openly licensed photos only: CC0, public domain, CC BY and CC BY-SA, from Wikimedia Commons and from museum and survey records on GBIF. iNaturalist photos are left out, including copies posted elsewhere, because iNaturalist's terms don't allow training AI on its data. Every photo and its photographer is listed in `Tools/photo_id/CREDITS.md`. The photos themselves are not in the app.
-4. A few fish had too few photos to learn from yet. They don't come up as guesses, but you can always pick them by name.
+4. 15 fish had too few openly licensed photos to learn from yet (listed at the top of `Tools/photo_id/REPORT.md`). They don't come up as guesses, but you can always pick them by name.
 5. The **Photo ID model** workflow on GitHub Actions rebuilds it: `collect.py` gathers and checks the photos, `probe.py` builds the DINOv2 model, `Train.swift` builds the Create ML model and tests both through Vision on a Mac, and `report.py` writes the report. Settings for a run are in `Tools/photo_id/run.json`.
 6. The UI test photo `FishoDexUITests/scan-sample-bass.jpg` is "Largemouth bass 01.jpg" by the U.S. Fish and Wildlife Service, public domain, from Wikimedia Commons.
 
