@@ -25,7 +25,7 @@ final class StarterTourUITests: XCTestCase {
     @MainActor
     func testStarterTourOpenDuo() throws {
         try XCTSkipUnless(Self.isDuo, "Shown on the Duo simulator")
-        try playTour(["-openDuoPreview"], tag: "49", profile: false)
+        try playTour(["-openDuoPreview"], tag: "49", profile: false, suffix: "-open-duo")
     }
 
     /// Skipping closes the tour at once, gives no XP, and Profile offers to finish it.
@@ -56,8 +56,13 @@ final class StarterTourUITests: XCTestCase {
     // MARK: - The tour
 
     @MainActor
-    private func playTour(_ extra: [String], tag: String, profile: Bool = true) throws {
+    private func playTour(_ extra: [String], tag: String, profile: Bool = true, suffix: String = "") throws {
         let app = launch(["-walkthrough"] + extra)
+        // "49a-open-duo-tour-welcome": the open Duo's pictures are cropped by name.
+        func capture(_ name: String) {
+            let parts = name.split(separator: "-", maxSplits: 1)
+            self.capture(parts.count == 2 ? "\(parts[0])\(suffix)-\(parts[1])" : name)
+        }
         let xp = app.staticTexts["wt-xp"]
         let next = app.buttons["wt-next"]
 

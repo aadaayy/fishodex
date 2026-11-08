@@ -32,7 +32,11 @@ struct WalkthroughView: View {
     @State private var rulesPick: Bool?
     @State private var shake = 0
 
+    @Environment(\.layoutShape) private var shape
+
     private var still: Bool { reduceMotion || LaunchOptions.current.still }
+    /// The open Duo: wide and short, so the pages go side by side.
+    private var wide: Bool { shape == .open }
     private var water: Habitat { store.homeWater ?? .inshore }
 
     var body: some View {
@@ -46,16 +50,25 @@ struct WalkthroughView: View {
                         .padding(.horizontal, 18)
                         .padding(.top, page == .finale ? 26 : 14)
                         .padding(.bottom, 16)
-                        .frame(maxWidth: 560)
+                        .frame(maxWidth: wide ? 900 : 560)
                         .frame(maxWidth: .infinity)
-                        .id(page)
                 }
+                // A new scroll view for each page, so each one starts at its top.
+                .id(page)
                 .scrollBounceBehavior(.basedOnSize)
+                .noTopScrollBlur()
                 .safeAreaInset(edge: .bottom, spacing: 0) { bottomBar }
             }
             if confetti > 0 && !still {
                 ConfettiView().id(confetti).allowsHitTesting(false)
             }
+        }
+        .overlay(alignment: .top) {
+            // A solid strip behind the status bar, so pages scrolling up don't show through it.
+            Color.clear.frame(height: 0)
+                .background((page == .finale ? Palette.night : Palette.water).ignoresSafeArea(edges: .top))
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
         }
         .overlay(alignment: .top) { xpToast }
         .onAppear {
@@ -112,7 +125,7 @@ struct WalkthroughView: View {
         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
-        .frame(maxWidth: 560)
+        .frame(maxWidth: wide ? 900 : 560)
         .sticker(radius: 18, lift: 4)
         .padding(.horizontal, 12)
         .padding(.top, 6)
@@ -148,10 +161,27 @@ struct WalkthroughView: View {
         }
     }
 
+    /// Two columns side by side on the open Duo; stacked everywhere else.
+    @ViewBuilder
+    private func columns<L: View, R: View>(@ViewBuilder _ left: () -> L, @ViewBuilder _ right: () -> R) -> some View {
+        if wide {
+            HStack(alignment: .top, spacing: 18) {
+                VStack(spacing: 14) { left() }.frame(maxWidth: .infinity)
+                VStack(spacing: 14) { right() }.frame(maxWidth: .infinity)
+            }
+        } else {
+            VStack(spacing: 14) {
+                left()
+                right()
+            }
+        }
+    }
+
     private var welcome: some View {
-        VStack(spacing: 16) {
+        columns {
             CardFan()
-                .padding(.top, 4)
+                .padding(.top, wide ? 40 : 4)
+        } _: {
             VStack(alignment: .leading, spacing: 10) {
                 Pill(text: "Starter quests", fill: Palette.orange, textColor: .white)
                 Text("Welcome aboard, angler!")
@@ -176,13 +206,14 @@ struct WalkthroughView: View {
     }
 
     private var homeWaterPage: some View {
-        VStack(spacing: 14) {
+        columns {
             QuestHeader(number: 1, quest: .homeWater, done: store.starterQuests.contains(.homeWater),
                         title: "Where do you fish most?",
                         text: "Pick your home water. You can still catch fish in all three.")
+        } _: {
             ForEach(Habitat.allCases) { h in
                 WaterTile(habitat: h, count: store.catalog.species(in: h).count,
-                          examples: Starter.shadows(for: h).compactMap { store.catalog[$0]?.name },
+                          examples: Starter.examples(for: h),
                           picked: store.homeWater == h) {
                     store.homeWater = h
                     earn(.homeWater)
@@ -192,9 +223,8 @@ struct WalkthroughView: View {
     }
 
     private var starterCardPage: some View {
-        let done = store.starterQuests.contains(.starterCard)
-        return VStack(spacing: 14) {
-            QuestHeader(number: 2, quest: .starterCard, done: done,
+        columns {
+            QuestHeader(number: 2, quest: .starterCard, done: store.starterQuests.contains(.starterCard),
                         title: "Every fish starts as a shadow",
                         text: "Log a real catch and that fish's card flips over. Try it on your starter card.")
             HStack(spacing: 10) {
@@ -208,6 +238,7 @@ struct WalkthroughView: View {
                 }
             }
             .frame(maxWidth: .infinity)
+        } _: {
             Button(action: flip) {
                 ZStack {
                     CardBack().opacity(flipped ? 0 : 1)
@@ -215,7 +246,7 @@ struct WalkthroughView: View {
                         .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                         .opacity(flipped ? 1 : 0)
                 }
-                .frame(width: 200, height: 260)
+                .frame(width: wide ? 170 : 200, height: wide ? 221 : 260)
                 .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0), perspective: 0.5)
                 .shadow(color: .black.opacity(0.3), radius: 0, x: 0, y: 6)
             }
@@ -241,16 +272,17 @@ struct WalkthroughView: View {
         let quiz = Starter.quiz(for: water)
         let done = store.starterQuests.contains(.practiceLog)
         let answerName = store.catalog[quiz.answer]?.name ?? ""
-        return VStack(spacing: 14) {
+        return columns {
             QuestHeader(number: 3, quest: .practiceLog, done: done,
                         title: "Two ways to log a catch",
                         text: "Tap the big orange Log button after every fish.")
             VStack(spacing: 10) {
                 HowRow(symbol: "camera.viewfinder", title: "Photo ID",
                        text: "Take or choose a photo and FishoDex guesses the fish, right on your phone. You check it before saving.")
-                HowRow(symbol: "character.cursor.ibeam", title: "By name",
+                HowRow(symbol: "keyboard", title: "By name",
                        text: "Type the fish's name, or the nickname you call it at the dock.")
             }
+        } _: {
             VStack(alignment: .leading, spacing: 10) {
                 Text("PRACTICE")
                     .font(Fonts.body(12, .black, relativeTo: .caption))
@@ -259,6 +291,9 @@ struct WalkthroughView: View {
                     .font(Fonts.title(21, relativeTo: .headline))
                     .foregroundStyle(Palette.ink)
                     .fixedSize(horizontal: false, vertical: true)
+                if let pick = quizPick, pick != quiz.answer, !done {
+                    TryAgain(text: "Not that one. Try again!", shake: shake, still: still)
+                }
                 ForEach(Array(quiz.choices.enumerated()), id: \.element) { i, id in
                     let right = id == quiz.answer
                     let picked = quizPick == id || (done && right && quizPick == nil)
@@ -268,12 +303,6 @@ struct WalkthroughView: View {
                         if right { earn(.practiceLog) } else { nudge() }
                     }
                     .accessibilityIdentifier(right ? "wt-quiz-right" : "wt-quiz-wrong-\(i)")
-                }
-                if let pick = quizPick, pick != quiz.answer, !done {
-                    Text("Not that one. Try again!")
-                        .font(Fonts.body(15, .black))
-                        .foregroundStyle(Color(hex: 0xC2362F))
-                        .modifier(Shake(amount: still ? 0 : 6, shakes: CGFloat(shake)))
                 }
                 if done {
                     Text("Got it! Typing \u{201C}\(quiz.nickname)\u{201D} in Log finds the \(answerName.lowercased()).")
@@ -289,11 +318,12 @@ struct WalkthroughView: View {
 
     private var rulesPage: some View {
         let done = store.starterQuests.contains(.rules)
-        return VStack(spacing: 14) {
+        return columns {
             QuestHeader(number: 4, quest: .rules, done: done,
                         title: "Seasons, events and limits",
                         text: "Events come back every year. Finish one for bonus XP and a limited card in the Events tab.")
             EventTeaser()
+        } _: {
             VStack(alignment: .leading, spacing: 10) {
                 Text("QUICK QUIZ")
                     .font(Fonts.body(12, .black, relativeTo: .caption))
@@ -302,6 +332,9 @@ struct WalkthroughView: View {
                     .font(Fonts.title(21, relativeTo: .headline))
                     .foregroundStyle(Palette.ink)
                     .fixedSize(horizontal: false, vertical: true)
+                if rulesPick == false && !done {
+                    TryAgain(text: "Not quite. Try the other one!", shake: shake, still: still)
+                }
                 ChoiceButton(label: "When I keep it", symbol: "bag.fill",
                              state: rulesPick == false ? .wrong : .plain) {
                     rulesPick = false
@@ -314,12 +347,6 @@ struct WalkthroughView: View {
                     earn(.rules)
                 }
                 .accessibilityIdentifier("wt-rules-right")
-                if rulesPick == false && !done {
-                    Text("Not quite. Try the other one!")
-                        .font(Fonts.body(15, .black))
-                        .foregroundStyle(Color(hex: 0xC2362F))
-                        .modifier(Shake(amount: still ? 0 : 6, shakes: CGFloat(shake)))
-                }
                 if done {
                     Text("Right! A fish in a closed season only counts if you release it. Every fish's page shows Florida's size and bag limits too.")
                         .bodyText()
@@ -345,52 +372,59 @@ struct WalkthroughView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityIdentifier("wt-finale-title")
-
-            VStack(spacing: 12) {
-                Text("+\(p.starterXP) starter XP")
-                    .font(Fonts.title(34))
-                    .foregroundStyle(Palette.ink)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Text("Level \(p.level)").font(Fonts.body(14, .black))
-                        Spacer()
-                        Text(p.title).font(Fonts.body(14, .black))
+            columns {
+                VStack(spacing: 12) {
+                    Text("+\(p.starterXP) starter XP")
+                        .font(Fonts.title(34))
+                        .foregroundStyle(Palette.ink)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text("Level \(p.level)").font(Fonts.body(14, .black))
+                            Spacer()
+                            Text(p.title).font(Fonts.body(14, .black))
+                        }
+                        .foregroundStyle(Palette.ink)
+                        XPBar(fraction: Leveling.fraction(for: p.totalXP), height: 18)
+                        if p.level < Leveling.maxLevel {
+                            Text("\(Leveling.xpToReach(p.level + 1) - p.totalXP) more XP to level \(p.level + 1). One new fish can get you most of the way.")
+                                .font(Fonts.body(13, .extraBold))
+                                .foregroundStyle(Palette.muted)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
                     }
-                    .foregroundStyle(Palette.ink)
-                    XPBar(fraction: Leveling.fraction(for: p.totalXP), height: 18)
-                }
-                if leveledUp {
-                    FinaleRow(patch: PatchView(shape: .shield, text: "\(p.level)", earned: true, color: Palette.sun, size: 54),
-                              title: "Level up!", titleColor: Palette.orange,
-                              text: "You're level \(p.level), \(p.title).")
-                        .accessibilityIdentifier("wt-level-up")
-                }
-                if let rookie, rookie.earned {
-                    FinaleRow(patch: PatchView(shape: rookie.shape, symbol: rookie.symbol, earned: true, color: Palette.orange, size: 54),
-                              title: "Rookie patch", titleColor: Palette.ink,
-                              text: "It's on your profile with your starter card.")
-                        .accessibilityIdentifier("wt-rookie")
-                }
-            }
-            .padding(16)
-            .frame(maxWidth: .infinity)
-            .sticker()
-
-            VStack(alignment: .leading, spacing: 10) {
-                PanelTitle(text: "Real fish earn way more", symbol: "bolt.fill")
-                WrapLayout(spacing: 6) {
-                    ForEach(Rarity.allCases) { r in
-                        Pill(text: "\(r.rawValue) +\(r.newSpeciesXP)", fill: r.color, size: 12)
+                    if leveledUp {
+                        FinaleRow(patch: PatchView(shape: .shield, text: "\(p.level)", earned: true, color: Palette.sun, size: 54),
+                                  title: "Level up!", titleColor: Palette.orange,
+                                  text: "You're level \(p.level), \(p.title).")
+                            .accessibilityIdentifier("wt-level-up")
+                    }
+                    if let rookie, rookie.earned {
+                        FinaleRow(patch: PatchView(shape: rookie.shape, symbol: rookie.symbol, earned: true, color: Palette.orange, size: 54),
+                                  title: "Rookie patch", titleColor: Palette.ink,
+                                  text: "It's on your profile with your starter card.")
+                            .accessibilityIdentifier("wt-rookie")
                     }
                 }
-                Text("A repeat catch is +\(ProgressEngine.repeatXP) and a new personal best is +\(ProgressEngine.personalBestXP). New title patches come at levels 5, 10, 15 and 20.")
-                    .bodyText()
+                .padding(16)
+                .frame(maxWidth: .infinity)
+                .sticker()
+            } _: {
+                VStack(alignment: .leading, spacing: 10) {
+                    PanelTitle(text: "Real fish earn way more", symbol: "bolt.fill")
+                    WrapLayout(spacing: 6) {
+                        ForEach(Rarity.allCases) { r in
+                            Pill(text: "\(r.rawValue) +\(r.newSpeciesXP)", fill: r.color, size: 12)
+                        }
+                    }
+                    Text("A repeat catch is +\(ProgressEngine.repeatXP) and a new personal best is +\(ProgressEngine.personalBestXP). New title patches come at levels 5, 10, 15 and 20.")
+                        .bodyText()
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .sticker()
             }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .sticker()
         }
     }
 
@@ -400,7 +434,7 @@ struct WalkthroughView: View {
         VStack(spacing: 8) {
             switch page {
             case .welcome:
-                Button("Start the quests") { go(.homeWater) }
+                Button(Starter.allDone(store.starterQuests) ? "Play the quests again" : "Start the quests") { go(.homeWater) }
                     .buttonStyle(ChunkyButtonStyle(expand: true))
                     .accessibilityIdentifier("wt-start")
                 Button("Skip for now", action: close)
@@ -444,6 +478,8 @@ struct WalkthroughView: View {
                 .accessibilityIdentifier("wt-next")
             }
         }
+        // Big text stops growing at xxLarge here, so the buttons leave room for the page.
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .frame(maxWidth: 420)
         .padding(.horizontal, 20)
         .padding(.top, 24)
@@ -533,12 +569,11 @@ private struct QuestHeader: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
+            WrapLayout(spacing: 8) {
                 Pill(text: "Quest \(number) of \(StarterQuest.allCases.count)", fill: Palette.paperShade)
                 Pill(text: done ? "Earned +\(quest.xp) XP" : "+\(quest.xp) XP",
                      fill: done ? Palette.good : Palette.sun)
                     .accessibilityIdentifier("wt-reward")
-                Spacer(minLength: 0)
             }
             Text(title)
                 .font(Fonts.title(28, relativeTo: .title))
@@ -580,39 +615,36 @@ private struct QuestRow: View {
     }
 }
 
-/// A big tile for one water.
+/// A big tile for one water. At the biggest text sizes the circle sits
+/// above the words, so the water's name keeps the whole width.
 private struct WaterTile: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
     var habitat: Habitat
     var count: Int
-    var examples: [String]
+    var examples: String
     var picked: Bool
     var action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 14) {
-                ZStack {
-                    Circle().fill(habitat.color)
-                    Circle().strokeBorder(Palette.ink, lineWidth: 3)
-                    Image(systemName: habitat.symbol)
-                        .font(.system(size: 24, weight: .heavy))
-                        .foregroundStyle(Palette.ink)
+            Group {
+                if typeSize.isAccessibilitySize {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            badge(size: 44)
+                            Spacer()
+                            check
+                        }
+                        words
+                    }
+                } else {
+                    HStack(spacing: 14) {
+                        badge(size: 58)
+                        words
+                        Spacer(minLength: 4)
+                        check
+                    }
                 }
-                .frame(width: 58, height: 58)
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(habitat.rawValue)
-                        .font(Fonts.title(24, relativeTo: .title3))
-                        .foregroundStyle(Palette.ink)
-                    Text("\(count) fish, like \(examples.joined(separator: ", ").lowercased())")
-                        .font(Fonts.body(14, .bold))
-                        .foregroundStyle(Palette.ink.opacity(0.8))
-                        .multilineTextAlignment(.leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                Spacer(minLength: 4)
-                Image(systemName: picked ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 28, weight: .heavy))
-                    .foregroundStyle(picked ? Palette.ink : Palette.muted.opacity(0.6))
             }
             .padding(14)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -624,6 +656,54 @@ private struct WaterTile: View {
         .accessibilityLabel("\(habitat.rawValue), \(count) fish")
         .accessibilityAddTraits(picked ? .isSelected : [])
         .accessibilityIdentifier("wt-water-\(habitat.rawValue.lowercased())")
+    }
+
+    private func badge(size: CGFloat) -> some View {
+        ZStack {
+            Circle().fill(habitat.color)
+            Circle().strokeBorder(Palette.ink, lineWidth: 3)
+            Image(systemName: habitat.symbol)
+                .font(.system(size: size * 0.42, weight: .heavy))
+                .foregroundStyle(Palette.ink)
+        }
+        .frame(width: size, height: size)
+    }
+
+    private var words: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(habitat.rawValue)
+                .font(Fonts.title(24, relativeTo: .title3))
+                .foregroundStyle(Palette.ink)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+            Text("\(count) fish, like \(examples)")
+                .font(Fonts.body(14, .bold))
+                .foregroundStyle(Palette.ink.opacity(0.8))
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private var check: some View {
+        Image(systemName: picked ? "checkmark.circle.fill" : "circle")
+            .font(.system(size: 28, weight: .heavy))
+            .foregroundStyle(picked ? Palette.ink : Palette.muted.opacity(0.6))
+    }
+}
+
+/// "Try again" over the answers, with a little wobble.
+private struct TryAgain: View {
+    var text: String
+    var shake: Int
+    var still: Bool
+
+    var body: some View {
+        Text(text)
+            .font(Fonts.body(15, .black))
+            .foregroundStyle(Color(hex: 0xC2362F))
+            .fixedSize(horizontal: false, vertical: true)
+            .modifier(Shake(amount: still ? 0 : 6, shakes: CGFloat(shake)))
+            .accessibilityIdentifier("wt-try-again")
     }
 }
 

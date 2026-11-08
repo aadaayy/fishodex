@@ -252,6 +252,8 @@ struct CardBack: View {
                     .foregroundStyle(Palette.sun)
                     .padding(.bottom, 22)
             }
+            // Art, not reading text: it keeps its size with big text on.
+            .dynamicTypeSize(.large)
     }
 }
 

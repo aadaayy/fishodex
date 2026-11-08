@@ -152,6 +152,9 @@ struct StarterPanel: View {
                         CardBack()
                     }
                 }
+                // Drawn at full size, then shrunk, so it looks like the big card.
+                .frame(width: 200, height: 260)
+                .scaleEffect(0.36)
                 .frame(width: 72, height: 94)
                 .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 6) {

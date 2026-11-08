@@ -64,6 +64,15 @@ public enum Starter {
         }
     }
 
+    /// A few of each water's fish, in the words anglers use.
+    public static func examples(for water: Habitat) -> String {
+        switch water {
+        case .freshwater: return "Florida bass, peacock bass and bluegill"
+        case .inshore: return "snook, tarpon and redfish"
+        case .offshore: return "mahi, sailfish and kingfish"
+        }
+    }
+
     /// Three fish to show as shadows for each home water.
     public static func shadows(for water: Habitat) -> [String] {
         switch water {
