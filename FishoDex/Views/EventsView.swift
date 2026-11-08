@@ -585,14 +585,14 @@ struct EventBanner: View {
                     .frame(width: 44, height: 44)
                     VStack(alignment: .leading, spacing: 3) {
                         HStack(spacing: 6) {
-                            Text(event.name).font(Fonts.title(19)).foregroundStyle(Palette.ink).lineLimit(1).minimumScaleFactor(0.7)
+                            Text(event.name).font(Fonts.title(19)).foregroundStyle(Palette.ink).lineLimit(2).minimumScaleFactor(0.8)
                             if active.count > 1 { Pill(text: "+\(active.count - 1) more", fill: Palette.paperShade, size: 10) }
                         }
                         Text(status.done ? "Finished. Card earned." : "\(status.progress) of \(event.goal.count) · \(status.timeText)")
                             .font(Fonts.body(13, .extraBold))
                             .foregroundStyle(Palette.muted)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.8)
+                            .lineLimit(3)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                     Spacer(minLength: 0)
                     Image(systemName: "chevron.right").font(.system(size: 15, weight: .heavy)).foregroundStyle(Palette.ink)

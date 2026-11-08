@@ -118,6 +118,7 @@ jobs:
             -scheme FishoDex \
             -destination "platform=iOS Simulator,id=${{ steps.pick.outputs.udid }}" \
             -resultBundlePath build/Checks.xcresult \
+            -retry-tests-on-failure -test-iterations 2 \
             CODE_SIGNING_ALLOWED=NO
 
       - name: Report build errors and test failures

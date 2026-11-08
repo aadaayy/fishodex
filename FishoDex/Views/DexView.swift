@@ -108,14 +108,25 @@ struct DexHeader: View {
     }
 
     private func levelLine(_ p: DexProgress) -> some View {
-        HStack(spacing: 8) {
-            Pill(text: "Lv \(p.level)", fill: Palette.sun).fixedSize()
-            Text(p.title)
-                .font(Fonts.body(15, .black))
-                .foregroundStyle(Palette.ink)
-                .lineLimit(2)
-                .fixedSize(horizontal: false, vertical: true)
+        // The title sits beside the level pill, or under it when big text won't fit both.
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) {
+                Pill(text: "Lv \(p.level)", fill: Palette.sun).fixedSize()
+                levelTitle(p).fixedSize()
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Pill(text: "Lv \(p.level)", fill: Palette.sun).fixedSize()
+                levelTitle(p)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
+    }
+
+    private func levelTitle(_ p: DexProgress) -> some View {
+        Text(p.title)
+            .font(Fonts.body(15, .black))
+            .foregroundStyle(Palette.ink)
     }
 
     private func xpLine(_ p: DexProgress) -> some View {
@@ -146,8 +157,8 @@ struct HabitatFilter: View {
                      caught: store.progress.caughtCount(in: list), total: list.count)
             }
         }
-        // Four chips share one row, so they stop growing past the first accessibility size.
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+        // Four chips share one row, so they stop growing past xxxLarge.
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     private func chip(_ h: Habitat?, title: String, color: Color, caught: Int, total: Int) -> some View {

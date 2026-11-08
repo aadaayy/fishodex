@@ -601,6 +601,11 @@ final class WalkthroughUITests: XCTestCase {
         app.launchArguments = ["-uiTesting", "-still"] + day + arguments
         // Miami time, so the sample catches' times of day match every run.
         app.launchEnvironment = ["TZ": "America/New_York"].merging(environment) { _, new in new }
+        // The simulator can be slow to let the last run go; wait for it so launch doesn't trip on it.
+        if app.state != .notRunning {
+            app.terminate()
+            _ = app.wait(for: .notRunning, timeout: 15)
+        }
         app.launch()
         return app
     }

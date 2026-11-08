@@ -189,6 +189,8 @@ struct StatTile: View {
         .padding(.vertical, 12)
         .padding(.horizontal, 6)
         .sticker(radius: 14, lift: 4)
+        // Three tiles share a row, so they stop growing at xxxLarge and never split a word.
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .accessibilityElement(children: .combine)
     }
 }

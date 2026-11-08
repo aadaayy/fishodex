@@ -259,9 +259,10 @@ struct PanelTitle: View {
     var symbol: String?
 
     var body: some View {
-        HStack(spacing: 6) {
-            if let symbol { Image(systemName: symbol).font(.system(size: 15, weight: .heavy)) }
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+            if let symbol { Image(systemName: symbol).font(.system(.subheadline, weight: .heavy)) }
             Text(text).font(Fonts.title(20, relativeTo: .headline))
+                .fixedSize(horizontal: false, vertical: true)
         }
         .foregroundStyle(Palette.ink)
         .accessibilityAddTraits(.isHeader)

@@ -465,29 +465,58 @@ struct CatchDetailsForm: View {
         .sticker()
     }
 
+    private var caughtLabel: some View {
+        Text("Caught").font(Fonts.body(16, .extraBold)).foregroundStyle(Palette.ink).fixedSize()
+    }
+
+    private var datePicker: some View {
+        DatePicker("Caught", selection: $date, in: ...AppClock.now)
+            .labelsHidden()
+            .font(Fonts.body(16, .extraBold))
+            .foregroundStyle(Palette.ink)
+            .accessibilityIdentifier("date-picker")
+    }
+
+    private var locationButton: some View {
+        Button {
+            locator.request()
+        } label: {
+            Label(locator.busy ? "Finding…" : "Use my location", systemImage: "location.fill")
+        }
+        .buttonStyle(ChunkyButtonStyle(fill: Palette.paper, text: Palette.ink, size: 15, expand: true))
+    }
+
+    private var pinButton: some View {
+        Button { showPin = true } label: {
+            Label("Drop a pin", systemImage: "mappin.and.ellipse")
+        }
+        .buttonStyle(ChunkyButtonStyle(fill: Palette.paper, text: Palette.ink, size: 15, expand: true))
+    }
+
     private var whenAndWhere: some View {
         InfoPanel(title: "When and where", symbol: "calendar") {
             VStack(alignment: .leading, spacing: 12) {
-                DatePicker("Caught", selection: $date, in: ...AppClock.now)
-                    .font(Fonts.body(16, .extraBold))
-                    .foregroundStyle(Palette.ink)
-                    .accessibilityIdentifier("date-picker")
+                // The date and time sit beside the label, or under it when big text won't fit both.
+                ViewThatFits(in: .horizontal) {
+                    HStack {
+                        caughtLabel
+                        Spacer(minLength: 8)
+                        datePicker
+                    }
+                    VStack(alignment: .leading, spacing: 6) {
+                        caughtLabel
+                        datePicker
+                    }
+                }
                 TextField("", text: $placeName, prompt: Text("Place, like Haulover Inlet (optional)").foregroundStyle(Palette.muted))
                     .focused($focused, equals: .place)
                     .submitLabel(.done)
                     .stickerField()
                     .accessibilityIdentifier("place-field")
-                HStack(spacing: 8) {
-                    Button {
-                        locator.request()
-                    } label: {
-                        Label(locator.busy ? "Finding…" : "Use my location", systemImage: "location.fill")
-                    }
-                    .buttonStyle(ChunkyButtonStyle(fill: Palette.paper, text: Palette.ink, size: 15, expand: true))
-                    Button { showPin = true } label: {
-                        Label("Drop a pin", systemImage: "mappin.and.ellipse")
-                    }
-                    .buttonStyle(ChunkyButtonStyle(fill: Palette.paper, text: Palette.ink, size: 15, expand: true))
+                // Side by side, or one above the other when big text won't fit both.
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 8) { locationButton; pinButton }
+                    VStack(spacing: 8) { locationButton; pinButton }
                 }
                 if latitude != nil {
                     HStack {
