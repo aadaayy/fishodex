@@ -77,11 +77,14 @@ struct UnlockView: View {
                     .frame(maxWidth: 360)
                     .accessibilityIdentifier("unlock-continue")
                     .padding(.horizontal, 20)
-                    .padding(.top, 14)
+                    .padding(.top, 30)
                     .padding(.bottom, 10)
                     .frame(maxWidth: .infinity)
                     .background {
-                        LinearGradient(colors: [Palette.night.opacity(0), Palette.night, Palette.night],
+                        // A deeper fade, so what scrolls under the button reads as more below, not cut off.
+                        LinearGradient(stops: [.init(color: Palette.night.opacity(0), location: 0),
+                                               .init(color: Palette.night, location: 0.4),
+                                               .init(color: Palette.night, location: 1)],
                                        startPoint: .top, endPoint: .bottom)
                             .ignoresSafeArea(edges: .bottom)
                     }
