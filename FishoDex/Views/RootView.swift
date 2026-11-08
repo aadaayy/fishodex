@@ -26,6 +26,11 @@ struct RootView: View {
                         .transition(.opacity)
                         .zIndex(2)
                 }
+                if model.walkthrough {
+                    WalkthroughView()
+                        .transition(.opacity)
+                        .zIndex(3)
+                }
             }
             .environment(\.layoutShape, shape)
         }

@@ -76,6 +76,8 @@ public struct CatchAward: Hashable, Sendable {
 /// Everything the catches add up to: XP, level, what's caught and the biggest of each.
 public struct DexProgress: Sendable {
     public var totalXP = 0
+    /// The part of totalXP from the starter quests.
+    public var starterXP = 0
     public var awards: [UUID: CatchAward] = [:]
     public var caught: Set<String> = []
     public var hasTrophyBass = false
@@ -137,9 +139,12 @@ public enum ProgressEngine {
     }
 
     /// Plays through every catch in date order and adds up the XP.
-    public static func evaluate(_ catches: [Catch], catalog: SpeciesCatalog,
+    /// Starter XP from the first-launch tour counts toward the level too.
+    public static func evaluate(_ catches: [Catch], catalog: SpeciesCatalog, starterXP: Int = 0,
                                 calendar: Calendar = .current) -> DexProgress {
         var p = DexProgress()
+        p.starterXP = starterXP
+        p.totalXP = starterXP
         for c in ordered(catches) {
             guard let species = catalog[c.speciesID] else { continue }
             var reasons: [CatchAward.Reason] = []

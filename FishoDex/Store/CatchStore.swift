@@ -33,6 +33,19 @@ final class CatchStore {
         didSet { defaults.set(saveToPhotos, forKey: "saveToPhotos") }
     }
 
+    // MARK: Starter tour
+
+    /// The starter quests finished in the first-launch tour.
+    private(set) var starterQuests: Set<StarterQuest> = []
+    /// The water picked in the tour as the one fished most.
+    var homeWater: Habitat? {
+        didSet { if persists { defaults.set(homeWater?.rawValue, forKey: "homeWater") } }
+    }
+    /// True once the tour has been finished or skipped, so it shows only on first launch.
+    var seenWalkthrough = false {
+        didSet { if persists { defaults.set(seenWalkthrough, forKey: "seenWalkthrough") } }
+    }
+
     private let folder: URL
     private let persists: Bool
     private let defaults: UserDefaults
@@ -78,7 +91,12 @@ final class CatchStore {
                 return cond
             }
         }
-        if persists { load() }
+        if persists {
+            load()
+            starterQuests = Set((defaults.stringArray(forKey: "starterQuests") ?? []).compactMap(StarterQuest.init(rawValue:)))
+            homeWater = defaults.string(forKey: "homeWater").flatMap(Habitat.init(rawValue:))
+            seenWalkthrough = defaults.bool(forKey: "seenWalkthrough")
+        }
         addMissingConditions()
         refresh()
         if mode == .live { watchForSignal() }
@@ -173,6 +191,24 @@ final class CatchStore {
         guard let award = progress.awards[c.id] else { return nil }
         return SaveResult(savedCatch: c, species: species, award: award, levelBefore: levelBefore,
                           levelAfter: progress.level, xpAfter: progress.totalXP, newBadges: newBadges)
+    }
+
+    /// Finishes a starter quest. Returns false if it was already done, so
+    /// replaying the tour never pays twice.
+    @discardableResult
+    func complete(_ quest: StarterQuest) -> Bool {
+        guard !starterQuests.contains(quest) else { return false }
+        starterQuests.insert(quest)
+        if persists { defaults.set(starterQuests.map(\.rawValue).sorted(), forKey: "starterQuests") }
+        refresh()
+        return true
+    }
+
+    /// For the screenshots: the tour already played, with inshore as home water.
+    func finishStarterForChecks() {
+        starterQuests = Set(StarterQuest.allCases)
+        homeWater = .inshore
+        refresh()
     }
 
     // MARK: Conditions
@@ -288,8 +324,8 @@ final class CatchStore {
     }
 
     private func refresh() {
-        progress = ProgressEngine.evaluate(catches, catalog: catalog)
-        badges = Badges.evaluate(catches, catalog: catalog)
+        progress = ProgressEngine.evaluate(catches, catalog: catalog, starterXP: Starter.xp(for: starterQuests))
+        badges = Badges.evaluate(catches, catalog: catalog, starterDone: Starter.allDone(starterQuests))
     }
 
     private static func copyToPhotosApp(_ image: UIImage) {

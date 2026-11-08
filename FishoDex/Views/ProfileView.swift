@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Your angler card: level and title, XP, how much of each water you've
-/// caught, the title patches, the nine badge patches and the settings.
+/// caught, the title patches, the ten badge patches (Rookie included) and the settings.
 struct ProfileView: View {
     @Environment(CatchStore.self) private var store
 
@@ -17,6 +17,7 @@ struct ProfileView: View {
                 WatersPanel()
                 TitlesPanel()
                 BadgesPanel()
+                StarterPanel()
                 SettingsPanel()
             }
             .padding(.horizontal, 16)
@@ -107,6 +108,10 @@ struct WatersPanel: View {
                             .foregroundStyle(Palette.ink)
                             .lineLimit(1)
                             .minimumScaleFactor(0.7)
+                        if store.homeWater == h {
+                            Pill(text: "Home", fill: Palette.sun, size: 10)
+                                .accessibilityLabel("Home water")
+                        }
                         Text("\(caught) of \(all.count)")
                             .font(Fonts.body(13, .bold))
                             .foregroundStyle(Palette.muted)
@@ -119,6 +124,58 @@ struct WatersPanel: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .sticker()
+    }
+}
+
+/// The starter quests from the first-launch tour: the starter card once
+/// it's flipped, the quests done, and a button to play the tour again.
+struct StarterPanel: View {
+    @Environment(CatchStore.self) private var store
+    @Environment(AppModel.self) private var model
+
+    var body: some View {
+        let done = store.starterQuests.count
+        let all = StarterQuest.allCases.count
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                PanelTitle(text: "Starter quests", symbol: "flag.checkered")
+                Spacer()
+                Text("\(done) of \(all)")
+                    .font(Fonts.body(14, .black))
+                    .foregroundStyle(Palette.ink)
+            }
+            HStack(alignment: .center, spacing: 14) {
+                Group {
+                    if store.starterQuests.contains(.starterCard) {
+                        StarterCardFace()
+                    } else {
+                        CardBack()
+                    }
+                }
+                .frame(width: 72, height: 94)
+                .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(done == all ? "All done. You earned \(Starter.totalXP) starter XP and the Rookie patch."
+                                     : "\(Starter.xp(for: store.starterQuests)) of \(Starter.totalXP) starter XP earned. Finish the tour for the rest and the Rookie patch.")
+                        .font(Fonts.body(14, .bold))
+                        .foregroundStyle(Palette.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Button {
+                        model.walkthrough = true
+                    } label: {
+                        Label(done == all ? "Replay the tour" : "Finish the tour", systemImage: "play.fill")
+                    }
+                    .buttonStyle(ChunkyButtonStyle(fill: done == all ? Palette.sun : Palette.orange,
+                                                   text: done == all ? Palette.ink : .white, size: 16))
+                    .accessibilityIdentifier("replay-walkthrough")
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .sticker()
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("starter-panel")
     }
 }
 
@@ -156,7 +213,7 @@ struct TitlesPanel: View {
     }
 }
 
-/// The nine badge patches with how close you are to each.
+/// The ten badge patches with how close you are to each.
 struct BadgesPanel: View {
     @Environment(CatchStore.self) private var store
 

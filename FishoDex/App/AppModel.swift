@@ -40,6 +40,8 @@ final class AppModel {
     /// Fish pages pushed from the Events tab.
     var eventsPath: [DexCard] = []
     var unlock: SaveResult?
+    /// The starter tour, shown over everything.
+    var walkthrough = false
 
     func startLog(preset: String? = nil) {
         logPreset = preset
