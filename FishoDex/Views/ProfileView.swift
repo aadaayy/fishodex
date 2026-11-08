@@ -9,7 +9,7 @@ struct ProfileView: View {
         ScrollView {
             VStack(spacing: 16) {
                 HStack {
-                    Text("Profile").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink)
+                    Text("Profile").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink).lineLimit(1).minimumScaleFactor(0.6)
                     Spacer()
                 }
                 LevelCard()
@@ -47,8 +47,9 @@ struct LevelCard: View {
                 Text(p.title)
                     .font(Fonts.title(28))
                     .foregroundStyle(Palette.ink)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.7)
+                    .fixedSize(horizontal: false, vertical: true)
                 XPBar(fraction: Leveling.fraction(for: p.totalXP))
                 Text(nextText(xp: p.totalXP, level: level))
                     .font(Fonts.body(13, .extraBold))
@@ -237,11 +238,8 @@ struct SettingsPanel: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 Text("Units").font(Fonts.body(14, .black)).foregroundStyle(Palette.ink)
-                Picker("Units", selection: $store.units) {
-                    Text("lb and in").tag(UnitSystem.us)
-                    Text("kg and cm").tag(UnitSystem.metric)
-                }
-                .pickerStyle(.segmented)
+                StickerSegmented(title: "Units", selection: $store.units,
+                                 options: [("lb and in", UnitSystem.us), ("kg and cm", UnitSystem.metric)])
                 .accessibilityIdentifier("units-picker")
             }
 

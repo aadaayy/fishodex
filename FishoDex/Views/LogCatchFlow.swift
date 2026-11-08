@@ -89,10 +89,13 @@ struct CloseButton: View {
         Button(action: action) {
             Image(systemName: "xmark").font(.system(size: 15, weight: .black))
                 .foregroundStyle(Palette.ink)
-                .frame(width: 34, height: 34)
+                .frame(width: 36, height: 36)
                 .background(Circle().fill(Palette.paper))
                 .overlay(Circle().strokeBorder(Palette.ink, lineWidth: 2.5))
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
         .accessibilityLabel("Close")
         .accessibilityIdentifier("close-log")
     }
@@ -107,15 +110,7 @@ struct FlowHeader: View {
 
     var body: some View {
         HStack {
-            Button { dismiss() } label: {
-                Image(systemName: "chevron.left").font(.system(size: 16, weight: .black))
-                    .foregroundStyle(Palette.ink)
-                    .frame(width: 34, height: 34)
-                    .background(Circle().fill(Palette.paper))
-                    .overlay(Circle().strokeBorder(Palette.ink, lineWidth: 2.5))
-            }
-            .accessibilityLabel("Back")
-            .accessibilityIdentifier("log-back")
+            BackButton(identifier: "log-back") { dismiss() }
             Spacer()
             Text(title).font(Fonts.title(22)).foregroundStyle(Palette.ink)
                 .accessibilityAddTraits(.isHeader)
@@ -142,7 +137,7 @@ struct ChooseMethodView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
-                    Text("Log a catch").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink)
+                    Text("Log a catch").font(Fonts.title(32, relativeTo: .largeTitle)).foregroundStyle(Palette.ink).lineLimit(1).minimumScaleFactor(0.6)
                     Spacer()
                     CloseButton(action: onClose)
                 }
@@ -294,8 +289,8 @@ struct SpeciesPickerView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
                 .foregroundStyle(Palette.ink)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+                .padding(.horizontal, 8)
+                .frame(maxWidth: .infinity, minHeight: 36)
                 .background(Capsule().fill(on ? color : Palette.paper))
                 .overlay(Capsule().strokeBorder(Palette.ink, lineWidth: 2.5))
         }
@@ -470,29 +465,58 @@ struct CatchDetailsForm: View {
         .sticker()
     }
 
+    private var caughtLabel: some View {
+        Text("Caught").font(Fonts.body(16, .extraBold)).foregroundStyle(Palette.ink).fixedSize()
+    }
+
+    private var datePicker: some View {
+        DatePicker("Caught", selection: $date, in: ...AppClock.now)
+            .labelsHidden()
+            .font(Fonts.body(16, .extraBold))
+            .foregroundStyle(Palette.ink)
+            .accessibilityIdentifier("date-picker")
+    }
+
+    private var locationButton: some View {
+        Button {
+            locator.request()
+        } label: {
+            Label(locator.busy ? "Finding…" : "Use my location", systemImage: "location.fill")
+        }
+        .buttonStyle(ChunkyButtonStyle(fill: Palette.paper, text: Palette.ink, size: 15, expand: true))
+    }
+
+    private var pinButton: some View {
+        Button { showPin = true } label: {
+            Label("Drop a pin", systemImage: "mappin.and.ellipse")
+        }
+        .buttonStyle(ChunkyButtonStyle(fill: Palette.paper, text: Palette.ink, size: 15, expand: true))
+    }
+
     private var whenAndWhere: some View {
         InfoPanel(title: "When and where", symbol: "calendar") {
             VStack(alignment: .leading, spacing: 12) {
-                DatePicker("Caught", selection: $date, in: ...AppClock.now)
-                    .font(Fonts.body(16, .extraBold))
-                    .foregroundStyle(Palette.ink)
-                    .accessibilityIdentifier("date-picker")
+                // The date and time sit beside the label, or under it when big text won't fit both.
+                ViewThatFits(in: .horizontal) {
+                    HStack {
+                        caughtLabel
+                        Spacer(minLength: 8)
+                        datePicker
+                    }
+                    VStack(alignment: .leading, spacing: 6) {
+                        caughtLabel
+                        datePicker
+                    }
+                }
                 TextField("", text: $placeName, prompt: Text("Place, like Haulover Inlet (optional)").foregroundStyle(Palette.muted))
                     .focused($focused, equals: .place)
                     .submitLabel(.done)
                     .stickerField()
                     .accessibilityIdentifier("place-field")
-                HStack(spacing: 8) {
-                    Button {
-                        locator.request()
-                    } label: {
-                        Label(locator.busy ? "Finding…" : "Use my location", systemImage: "location.fill")
-                    }
-                    .buttonStyle(ChunkyButtonStyle(fill: Palette.paper, text: Palette.ink, size: 15, expand: true))
-                    Button { showPin = true } label: {
-                        Label("Drop a pin", systemImage: "mappin.and.ellipse")
-                    }
-                    .buttonStyle(ChunkyButtonStyle(fill: Palette.paper, text: Palette.ink, size: 15, expand: true))
+                // Side by side, or one above the other when big text won't fit both.
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 8) { locationButton; pinButton }
+                    VStack(spacing: 8) { locationButton; pinButton }
                 }
                 if latitude != nil {
                     HStack {
@@ -552,12 +576,9 @@ struct CatchDetailsForm: View {
                     Label("10 lb or more unlocks the Trophy bass card.", systemImage: "trophy.fill")
                         .font(Fonts.body(14, .black)).foregroundStyle(Rarity.trophy.color)
                 }
-                Picker("Kept or released", selection: $released) {
-                    Text("Released").tag(true)
-                    Text("Kept").tag(false)
-                }
-                .pickerStyle(.segmented)
-                .accessibilityIdentifier("released-picker")
+                StickerSegmented(title: "Kept or released", selection: $released,
+                                 options: [("Released", true), ("Kept", false)])
+                    .accessibilityIdentifier("released-picker")
                 if !released, let kind = s.limits?.kind, kind == "release" {
                     Label("Florida says this fish is catch and release only.", systemImage: "exclamationmark.triangle.fill")
                         .font(Fonts.body(14, .black)).foregroundStyle(Palette.orange)
@@ -801,27 +822,31 @@ struct PinDropView: View {
                     .sticker(radius: 12, lift: 3)
                     .padding(.top, 6)
             }
-            .navigationTitle("Drop a pin")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        if let pin {
-                            latitude = pin.latitude
-                            longitude = pin.longitude
-                            if placeName.isEmpty {
-                                Task {
-                                    let name = await Locator.areaName(for: CLLocation(latitude: pin.latitude, longitude: pin.longitude))
-                                    if placeName.isEmpty, let name { placeName = name }
-                                }
-                            }
-                        }
-                        dismiss()
-                    }
-                    .disabled(pin == nil)
+            // The app's own header, so the sheet matches the rest of the Log flow.
+            .safeAreaInset(edge: .top, spacing: 0) {
+                HStack(spacing: 10) {
+                    Button("Cancel") { dismiss() }
+                        .buttonStyle(ChunkyButtonStyle(fill: Palette.paper, text: Palette.ink, radius: 12, size: 15, lift: 3))
+                    Spacer(minLength: 4)
+                    Text("Drop a pin")
+                        .font(Fonts.title(20, relativeTo: .title3))
+                        .foregroundStyle(Palette.ink)
+                        .lineLimit(1).minimumScaleFactor(0.7)
+                    Spacer(minLength: 4)
+                    Button("Save") { save() }
+                        .buttonStyle(ChunkyButtonStyle(fill: pin == nil ? Palette.paperShade : Palette.orange,
+                                                       text: pin == nil ? Palette.muted : .white, radius: 12, size: 15, lift: 3))
+                        .disabled(pin == nil)
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+                .background {
+                    Palette.water
+                        .overlay(alignment: .bottom) { Rectangle().fill(Palette.waterDeep).frame(height: 2) }
+                        .ignoresSafeArea(edges: .top)
                 }
             }
+            .toolbar(.hidden, for: .navigationBar)
             .onAppear {
                 if let latitude, let longitude {
                     let c = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -830,6 +855,20 @@ struct PinDropView: View {
                 }
             }
         }
+    }
+
+    private func save() {
+        if let pin {
+            latitude = pin.latitude
+            longitude = pin.longitude
+            if placeName.isEmpty {
+                Task {
+                    let name = await Locator.areaName(for: CLLocation(latitude: pin.latitude, longitude: pin.longitude))
+                    if placeName.isEmpty, let name { placeName = name }
+                }
+            }
+        }
+        dismiss()
     }
 }
 

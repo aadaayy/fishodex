@@ -1,5 +1,6 @@
 import CoreGraphics
 import Foundation
+import SwiftUI
 import UIKit
 
 /// Settings the automatic checks pass when they launch the app, so the
@@ -33,6 +34,9 @@ struct LaunchOptions {
     var today: Date?
     /// Act as if there's no signal: tide, wind and water temperature wait.
     var offline = false
+    /// Draw at a bigger text size, as if set in Settings, e.g.
+    /// "-textSize xxxLarge" or "-textSize accessibility3".
+    var textSize: DynamicTypeSize?
 
     static let current = LaunchOptions(arguments: ProcessInfo.processInfo.arguments)
 
@@ -51,6 +55,17 @@ struct LaunchOptions {
         unlockPounds = value(after: "-unlockPounds").flatMap(Double.init)
         scanSample = arguments.contains("-scanSample")
         offline = arguments.contains("-offline")
+        switch value(after: "-textSize") {
+        case "xLarge": textSize = .xLarge
+        case "xxLarge": textSize = .xxLarge
+        case "xxxLarge": textSize = .xxxLarge
+        case "accessibility1": textSize = .accessibility1
+        case "accessibility2": textSize = .accessibility2
+        case "accessibility3": textSize = .accessibility3
+        case "accessibility4": textSize = .accessibility4
+        case "accessibility5": textSize = .accessibility5
+        default: textSize = nil
+        }
         if let text = value(after: "-today") {
             let parts = text.split(separator: "-").compactMap { Int($0) }
             if parts.count == 3 {

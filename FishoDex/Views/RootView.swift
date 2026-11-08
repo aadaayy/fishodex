@@ -88,6 +88,8 @@ struct PhoneLayout: View {
         @Bindable var model = model
         VStack(spacing: 0) {
             TabContent()
+                .noTopScrollBlur()
+                .statusBarStrip()
             BottomBar()
         }
         // The keyboard covers the bar instead of pushing it up over the dex.
@@ -95,6 +97,7 @@ struct PhoneLayout: View {
         .sheet(isPresented: $model.logging) {
             LogCatchFlow(preset: model.logPreset) { model.finishLog($0) }
                 .presentationDragIndicator(.visible)
+                .modifier(TextSizeOverride(size: LaunchOptions.current.textSize))
         }
     }
 }
@@ -110,6 +113,8 @@ struct BottomBar: View {
             TabButton(tab: .logbook)
             TabButton(tab: .profile)
         }
+        // Five tabs share the bar, so their labels stop growing at xxLarge.
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .padding(.horizontal, 8)
         .padding(.top, 6)
         .background {
@@ -129,10 +134,13 @@ struct FoldedLayout: View {
         @Bindable var model = model
         HStack(spacing: 0) {
             TabContent()
+                .noTopScrollBlur()
+                .statusBarStrip()
             SideBar()
         }
         .sheet(isPresented: $model.logging) {
             LogCatchFlow(preset: model.logPreset) { model.finishLog($0) }
+                .modifier(TextSizeOverride(size: LaunchOptions.current.textSize))
         }
     }
 }
@@ -147,6 +155,7 @@ struct SideBar: View {
             TabButton(tab: .profile)
             Spacer(minLength: 0)
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .padding(.top, 14)
         .frame(width: 96)
         .background {
@@ -166,6 +175,8 @@ struct OpenLayout: View {
         HStack(spacing: 0) {
             Rail()
             TabContent(pushes: false)
+                .noTopScrollBlur()
+                .statusBarStrip()
                 .frame(maxWidth: .infinity)
             Rectangle().fill(Palette.ink).frame(width: 3).ignoresSafeArea()
             Group {
@@ -179,6 +190,8 @@ struct OpenLayout: View {
                     Color.clear
                 }
             }
+            .noTopScrollBlur()
+            .statusBarStrip()
             .frame(maxWidth: .infinity)
         }
     }
@@ -194,6 +207,7 @@ struct Rail: View {
             TabButton(tab: .profile)
             Spacer(minLength: 0)
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .padding(.top, 14)
         .frame(width: 84)
         .background {

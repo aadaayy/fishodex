@@ -63,15 +63,17 @@ struct DexHeader: View {
         let p = store.progress
         let total = store.catalog.species.count
         VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .firstTextBaseline) {
-                Text("FishoDex")
-                    .font(Fonts.title(32, relativeTo: .largeTitle))
-                    .foregroundStyle(Palette.ink)
-                Spacer()
-                Text("\(p.caught.count) / \(total)")
-                    .font(Fonts.title(22))
-                    .foregroundStyle(Palette.ink)
-                    .accessibilityLabel("\(p.caught.count) of \(total) fish caught")
+            // Title and count side by side, the count under it when big text won't fit both.
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .firstTextBaseline) {
+                    title.fixedSize()
+                    Spacer(minLength: 8)
+                    count(p, total).fixedSize()
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    title.lineLimit(1).minimumScaleFactor(0.6)
+                    count(p, total)
+                }
             }
             // Side by side when there's room, the XP on its own line when not.
             ViewThatFits(in: .horizontal) {
@@ -92,15 +94,39 @@ struct DexHeader: View {
         .accessibilityElement(children: .combine)
     }
 
+    private var title: some View {
+        Text("FishoDex")
+            .font(Fonts.title(32, relativeTo: .largeTitle))
+            .foregroundStyle(Palette.ink)
+    }
+
+    private func count(_ p: DexProgress, _ total: Int) -> some View {
+        Text("\(p.caught.count) / \(total)")
+            .font(Fonts.title(22))
+            .foregroundStyle(Palette.ink)
+            .accessibilityLabel("\(p.caught.count) of \(total) fish caught")
+    }
+
     private func levelLine(_ p: DexProgress) -> some View {
-        HStack(spacing: 8) {
-            Pill(text: "Lv \(p.level)", fill: Palette.sun)
-            Text(p.title)
-                .font(Fonts.body(15, .black))
-                .foregroundStyle(Palette.ink)
-                .lineLimit(1)
-                .fixedSize()
+        // The title sits beside the level pill, or under it when big text won't fit both.
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) {
+                Pill(text: "Lv \(p.level)", fill: Palette.sun).fixedSize()
+                levelTitle(p).fixedSize()
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Pill(text: "Lv \(p.level)", fill: Palette.sun).fixedSize()
+                levelTitle(p)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
+    }
+
+    private func levelTitle(_ p: DexProgress) -> some View {
+        Text(p.title)
+            .font(Fonts.body(15, .black))
+            .foregroundStyle(Palette.ink)
     }
 
     private func xpLine(_ p: DexProgress) -> some View {
@@ -131,6 +157,8 @@ struct HabitatFilter: View {
                      caught: store.progress.caughtCount(in: list), total: list.count)
             }
         }
+        // Four chips share one row, so they stop growing past xxxLarge.
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     private func chip(_ h: Habitat?, title: String, color: Color, caught: Int, total: Int) -> some View {

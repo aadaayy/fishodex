@@ -38,6 +38,7 @@ struct FishoDexApp: App {
                     RootView()
                 }
             }
+            .modifier(TextSizeOverride(size: LaunchOptions.current.textSize))
             .environment(store)
             .environment(model)
             .preferredColorScheme(.light)
@@ -61,6 +62,15 @@ struct FishoDexApp: App {
                 }
             }
         }
+    }
+}
+
+/// The checks' bigger text size, when they pass one; otherwise the phone's own.
+struct TextSizeOverride: ViewModifier {
+    let size: DynamicTypeSize?
+
+    func body(content: Content) -> some View {
+        if let size { content.dynamicTypeSize(size) } else { content }
     }
 }
 

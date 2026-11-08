@@ -259,11 +259,58 @@ struct PanelTitle: View {
     var symbol: String?
 
     var body: some View {
-        HStack(spacing: 6) {
-            if let symbol { Image(systemName: symbol).font(.system(size: 15, weight: .heavy)) }
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+            if let symbol { Image(systemName: symbol).font(.system(.subheadline, weight: .heavy)) }
             Text(text).font(Fonts.title(20, relativeTo: .headline))
+                .fixedSize(horizontal: false, vertical: true)
         }
         .foregroundStyle(Palette.ink)
         .accessibilityAddTraits(.isHeader)
+    }
+}
+
+/// A two or three way switch in the sticker look (sun yellow for the one
+/// that's on), in place of the system's grey segmented control.
+struct StickerSegmented<Value: Hashable>: View {
+    var title: String
+    @Binding var selection: Value
+    var options: [(label: String, value: Value)]
+
+    var body: some View {
+        HStack(spacing: 4) {
+            ForEach(options.indices, id: \.self) { i in
+                let option = options[i]
+                let on = option.value == selection
+                Button {
+                    selection = option.value
+                } label: {
+                    Text(option.label)
+                        .font(Fonts.body(15, .black, relativeTo: .subheadline))
+                        .foregroundStyle(on ? Palette.ink : Palette.muted)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
+                        .frame(maxWidth: .infinity, minHeight: 36)
+                        .padding(.horizontal, 6)
+                        .background {
+                            if on {
+                                RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Palette.sun)
+                                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .strokeBorder(Palette.ink, lineWidth: 2.5))
+                            }
+                        }
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(option.label)
+                .accessibilityAddTraits(on ? .isSelected : [])
+            }
+        }
+        .padding(4)
+        .background {
+            RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Palette.paperShade)
+                .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(Palette.ink, lineWidth: 2.5))
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(title)
     }
 }

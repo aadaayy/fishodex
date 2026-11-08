@@ -23,13 +23,7 @@ struct SpeciesPage: View {
             .frame(maxWidth: .infinity)
         }
         .background(WaterBackground())
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(title).font(Fonts.title(20)).foregroundStyle(Palette.ink)
-            }
-        }
+        .pageHeader(title)
         .tint(Palette.ink)
     }
 
@@ -187,13 +181,16 @@ struct StatTile: View {
             Text(title.uppercased())
                 .font(Fonts.body(11, .black, relativeTo: .caption))
                 .foregroundStyle(Palette.muted)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .minimumScaleFactor(0.6)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
         .padding(.horizontal, 6)
         .sticker(radius: 14, lift: 4)
+        // Three tiles share a row, so they stop growing at xxxLarge and never split a word.
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .accessibilityElement(children: .combine)
     }
 }

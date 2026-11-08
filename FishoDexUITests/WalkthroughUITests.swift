@@ -176,7 +176,7 @@ final class WalkthroughUITests: XCTestCase {
         scrollToTop(of: panel, in: app)
         XCTAssertTrue(panel.exists, "The catch should show its conditions")
         capture("36-catch-conditions")
-        app.navigationBars.buttons.firstMatch.tap()
+        app.buttons["page-back"].tap()
         let spots = app.buttons["Spots map"]
         XCTAssertTrue(spots.waitForExistence(timeout: 10), "The Spots map button is missing")
         spots.tap()
@@ -336,7 +336,7 @@ final class WalkthroughUITests: XCTestCase {
         app.terminate()
 
         app = launch(["-demo", "-today", "2026-11-07", "-logSpecies", "snook"])
-        let picker = app.segmentedControls["released-picker"]
+        let picker = app.descendants(matching: .any)["released-picker"]
         XCTAssertTrue(app.textFields["weight-field"].waitForExistence(timeout: 20))
         scrollTo(picker, in: app)
         XCTAssertTrue(app.descendants(matching: .any)["log-counts-mulletrun"].exists, "A released snook counts toward the Mullet Run")
@@ -369,10 +369,10 @@ final class WalkthroughUITests: XCTestCase {
         app.terminate()
 
         app = launch(["-demo", "-today", "2027-01-20", "-logSpecies", "snook"])
-        let picker = app.segmentedControls["released-picker"]
+        let picker = app.descendants(matching: .any)["released-picker"]
         XCTAssertTrue(app.textFields["weight-field"].waitForExistence(timeout: 20))
         scrollTo(picker, in: app)
-        picker.buttons["Kept"].tap()
+        app.buttons["Kept"].tap()
         let warning = app.descendants(matching: .any)["closed-warning"]
         XCTAssertTrue(warning.waitForExistence(timeout: 3), "Keeping a snook in January should warn that it's closed")
         sleep(1)
@@ -434,6 +434,163 @@ final class WalkthroughUITests: XCTestCase {
         XCUIDevice.shared.orientation = .portrait
     }
 
+    // MARK: - Every other screen and state
+
+    /// A new phone with nothing logged: each tab's empty state, and a search
+    /// that finds nothing.
+    @MainActor
+    func testEmptyStates() throws {
+        var app = launch(["-tab", "logbook"])
+        XCTAssertTrue(app.descendants(matching: .any)["logbook-view"].waitForExistence(timeout: 20))
+        sleep(1)
+        capture("70-logbook-empty")
+        app.terminate()
+
+        app = launch(["-tab", "profile"])
+        XCTAssertTrue(app.descendants(matching: .any)["level-card"].waitForExistence(timeout: 20))
+        sleep(1)
+        capture("71-profile-empty")
+        let badges = app.descendants(matching: .any)["badges-panel"]
+        scrollToTop(of: badges, in: app)
+        capture("72-profile-empty-patches")
+        app.terminate()
+
+        app = launch(["-tab", "events"])
+        XCTAssertTrue(app.descendants(matching: .any)["event-mulletrun"].waitForExistence(timeout: 20))
+        sleep(1)
+        capture("73-events-no-catches")
+        app.terminate()
+
+        app = launch([])
+        let search = app.textFields["search-field"]
+        XCTAssertTrue(search.waitForExistence(timeout: 20))
+        type("zzz", into: search, in: app)
+        sleep(1)
+        capture("74-dex-no-match")
+    }
+
+    /// The other dex filters and the end of the dex.
+    @MainActor
+    func testDexFiltersAndEnd() throws {
+        let app = launch(["-demo"])
+        XCTAssertTrue(app.buttons["card-bass"].waitForExistence(timeout: 20))
+        app.buttons["filter-freshwater"].tap()
+        sleep(1)
+        capture("75-dex-freshwater")
+        app.buttons["filter-inshore"].tap()
+        sleep(1)
+        capture("76-dex-inshore")
+        app.buttons["filter-all"].tap()
+        for _ in 0..<12 { app.swipeUp() }
+        sleep(1)
+        capture("77-dex-end")
+    }
+
+    /// The rest of the Log a catch form: the spot buttons, the pin sheet,
+    /// and the note and save button at the bottom.
+    @MainActor
+    func testLogFormSpotAndBottom() throws {
+        let app = launch(["-demo", "-logSpecies", "redfish"])
+        XCTAssertTrue(app.textFields["weight-field"].waitForExistence(timeout: 20))
+        let pin = app.buttons["Drop a pin"]
+        scrollTo(pin, in: app)
+        XCTAssertTrue(pin.exists, "The Drop a pin button is missing")
+        capture("78-log-spot-buttons")
+        pin.tap()
+        sleep(3)
+        capture("79-log-drop-a-pin")
+        let cancel = app.buttons["Cancel"]
+        if cancel.waitForExistence(timeout: 5) { cancel.tap() }
+        sleep(1)
+        let save = app.buttons["save-catch"]
+        scrollTo(save, in: app)
+        XCTAssertTrue(save.exists)
+        capture("80-log-form-bottom")
+    }
+
+    /// Deleting a catch asks first.
+    @MainActor
+    func testDeleteAsksFirst() throws {
+        let app = launch(["-demo", "-tab", "logbook"])
+        let row = app.buttons["logbook-row"].firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 20))
+        row.tap()
+        let delete = app.buttons["Delete this catch"]
+        XCTAssertTrue(delete.waitForExistence(timeout: 5))
+        scrollTo(delete, in: app, tries: 12)
+        capture("81-catch-delete-button")
+        delete.tap()
+        let confirm = app.buttons["Delete"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5), "Deleting should ask first")
+        sleep(1)
+        capture("82-catch-delete-confirm")
+        // Leave it: tap Cancel where the dialog has one, otherwise tap outside.
+        let cancel = app.buttons["Cancel"]
+        if cancel.exists { cancel.tap() } else { app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1)).tap() }
+        XCTAssertTrue(confirm.waitForNonExistence(timeout: 5))
+        XCTAssertTrue(delete.exists, "Cancelling should keep the catch")
+    }
+
+    /// The main screens at the biggest regular text size, and at a large
+    /// accessibility size, as if set in Settings.
+    @MainActor
+    func testLargeTextBiggestRegular() throws { try walkLargeText("xxxLarge", tag: "90") }
+
+    @MainActor
+    func testLargeTextAccessibility() throws { try walkLargeText("accessibility3", tag: "95") }
+
+    @MainActor
+    private func walkLargeText(_ size: String, tag: String) throws {
+        do {
+            var app = launch(["-demo", "-textSize", size])
+            XCTAssertTrue(app.buttons["card-bass"].waitForExistence(timeout: 20))
+            sleep(1)
+            capture("\(tag)a-large-text-dex-\(size)")
+            assertTabsOnScreen(app)
+            app.terminate()
+
+            app = launch(["-demo", "-textSize", size, "-openSpecies", "snook"])
+            XCTAssertTrue(app.descendants(matching: .any)["big-card"].waitForExistence(timeout: 20))
+            sleep(1)
+            capture("\(tag)b-large-text-fish-\(size)")
+            let rules = app.descendants(matching: .any)["rules-panel"]
+            scrollToTop(of: rules, in: app, tries: 16)
+            capture("\(tag)c-large-text-fish-rules-\(size)")
+            app.terminate()
+
+            app = launch(["-demo", "-textSize", size, "-logSpecies", "snook"])
+            XCTAssertTrue(app.textFields["weight-field"].waitForExistence(timeout: 20))
+            sleep(1)
+            capture("\(tag)d-large-text-log-\(size)")
+            app.terminate()
+
+            app = launch(["-demo", "-textSize", size, "-tab", "logbook"])
+            let row = app.buttons["logbook-row"].firstMatch
+            XCTAssertTrue(row.waitForExistence(timeout: 20))
+            sleep(1)
+            capture("\(tag)e-large-text-logbook-\(size)")
+            app.terminate()
+
+            app = launch(["-demo", "-textSize", size, "-tab", "events"])
+            XCTAssertTrue(app.descendants(matching: .any)["event-mulletrun"].waitForExistence(timeout: 20))
+            sleep(1)
+            capture("\(tag)f-large-text-events-\(size)")
+            app.terminate()
+
+            app = launch(["-demo", "-textSize", size, "-tab", "profile"])
+            XCTAssertTrue(app.descendants(matching: .any)["level-card"].waitForExistence(timeout: 20))
+            sleep(1)
+            capture("\(tag)g-large-text-profile-\(size)")
+            app.terminate()
+
+            app = launch(["-demo", "-textSize", size, "-showUnlock", "bass", "-unlockPounds", "10.6"])
+            XCTAssertTrue(app.buttons["unlock-continue"].waitForExistence(timeout: 20))
+            sleep(1)
+            capture("\(tag)h-large-text-unlock-\(size)")
+            app.terminate()
+        }
+    }
+
     // MARK: - Helpers
 
     @MainActor
@@ -444,6 +601,11 @@ final class WalkthroughUITests: XCTestCase {
         app.launchArguments = ["-uiTesting", "-still"] + day + arguments
         // Miami time, so the sample catches' times of day match every run.
         app.launchEnvironment = ["TZ": "America/New_York"].merging(environment) { _, new in new }
+        // The simulator can be slow to let the last run go; wait for it so launch doesn't trip on it.
+        if app.state != .notRunning {
+            app.terminate()
+            _ = app.wait(for: .notRunning, timeout: 15)
+        }
         app.launch()
         return app
     }
