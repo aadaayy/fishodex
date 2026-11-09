@@ -8,13 +8,14 @@ Everything stays on the phone. There are no accounts and nothing goes to a serve
 
 ## What's in it
 
-1. **Dex:** all 64 cards in number order, rings to filter by water, a search box, your level and XP.
-2. **Fish page:** the card (with a sunburst once caught), your stats, your best bite times once you've logged 5 of it, a fun fact, about the fish, Florida's rules with a link to FWC, and your catches of it.
-3. **Log a catch:** Identify from photo (take one or choose one) or pick the fish by name, then details: date, place (typed, your location, or a dropped pin), weight and length (both optional), kept or released, a note and a photo. It shows what the catch is worth in XP before you save.
-4. **Unlock:** a new fish flips its card over, with confetti, the XP, any level up and any new patches.
-5. **Logbook:** every catch, newest first, with its tide, moon, wind and water temperature, and a map of your spots that only you can see.
-6. **Events:** South Florida's fishing seasons as yearly events (see below), the year at a glance, the limited event cards and which fish are closed today.
-7. **Profile:** level and title, XP to the next level, each water's ring, the five title patches, the nine badge patches and settings (units, saving photos to Photos, a backup file).
+1. **Starter tour:** on first launch, four quick starter quests teach how the dex fills: pick your home water, flip a starter card, practice finding a fish by its nickname, and a quiz on closed seasons. Each pays 5 XP once (20 in all, exactly level 2) and the end gives the Rookie patch. Skip it any time; Profile plays it again (no XP twice). It asks for no permissions.
+2. **Dex:** all 64 cards in number order, rings to filter by water, a search box, your level and XP.
+3. **Fish page:** the card (with a sunburst once caught), your stats, your best bite times once you've logged 5 of it, a fun fact, about the fish, Florida's rules with a link to FWC, and your catches of it.
+4. **Log a catch:** Identify from photo (take one or choose one) or pick the fish by name, then details: date, place (typed, your location, or a dropped pin), weight and length (both optional), kept or released, a note and a photo. It shows what the catch is worth in XP before you save.
+5. **Unlock:** a new fish flips its card over, with confetti, the XP, any level up and any new patches.
+6. **Logbook:** every catch, newest first, with its tide, moon, wind and water temperature, and a map of your spots that only you can see.
+7. **Events:** South Florida's fishing seasons as yearly events (see below), the year at a glance, the limited event cards and which fish are closed today.
+8. **Profile:** level and title, XP to the next level, each water's ring, the five title patches, the ten badge patches (Rookie included) and settings (units, saving photos to Photos, a backup file).
 
 ## XP and levels
 
@@ -23,7 +24,8 @@ Everything stays on the phone. There are no accounts and nothing goes to a serve
 3. A Florida bass of 10 lb or more earns 120 XP, or 240 the first time, when it unlocks the Trophy bass card.
 4. There are 20 levels. Reaching level n takes 10 × n × (n − 1) XP (level 5 is 200, level 10 is 900, level 20 is 3,800). Title patches come at levels 1, 5, 10, 15 and 20: Deckhand, Weekend Angler, Guide, Captain and Legend.
 5. Finishing an event adds its XP (75 to 150) once per year.
-6. Badge patches: First Catch, Ten Species, Freshwater, Inshore and Offshore Master, Grand Slam (tarpon, bonefish and permit in one day), Inshore Slam (snook, redfish and seatrout in one day), Invader Hunter (a fish that isn't native to Florida) and Catch and Release (ten fish let go).
+6. The starter tour's four quests add 5 XP each, once (20 in all).
+7. Badge patches: Rookie (finish the starter tour), First Catch, Ten Species, Freshwater, Inshore and Offshore Master, Grand Slam (tarpon, bonefish and permit in one day), Inshore Slam (snook, redfish and seatrout in one day), Invader Hunter (a fish that isn't native to Florida) and Catch and Release (ten fish let go).
 
 ## Layouts
 

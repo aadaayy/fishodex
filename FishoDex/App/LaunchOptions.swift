@@ -38,6 +38,11 @@ struct LaunchOptions {
     /// "-textSize xxxLarge" or "-textSize accessibility3".
     var textSize: DynamicTypeSize?
 
+    /// Show the first-launch tour (the checks skip it unless they pass this).
+    var walkthrough = false
+    /// Start with the starter quests already done (inshore home water).
+    var starterDone = false
+
     static let current = LaunchOptions(arguments: ProcessInfo.processInfo.arguments)
 
     init(arguments: [String] = []) {
@@ -55,6 +60,8 @@ struct LaunchOptions {
         unlockPounds = value(after: "-unlockPounds").flatMap(Double.init)
         scanSample = arguments.contains("-scanSample")
         offline = arguments.contains("-offline")
+        walkthrough = arguments.contains("-walkthrough")
+        starterDone = arguments.contains("-starterDone")
         switch value(after: "-textSize") {
         case "xLarge": textSize = .xLarge
         case "xxLarge": textSize = .xxLarge

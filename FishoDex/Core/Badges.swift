@@ -5,7 +5,7 @@ public enum PatchShape: String, Sendable {
     case circle, hexagon, shield, star
 }
 
-/// One of the nine badge patches, earned or not, with progress.
+/// One of the ten badge patches, earned or not, with progress.
 public struct Badge: Identifiable, Hashable, Sendable {
     public var id: String
     public var name: String
@@ -29,7 +29,13 @@ public enum Badges {
     public static let grandSlam = ["tarpon", "bonefish", "permit"]
     public static let inshoreSlam = ["snook", "redfish", "seatrout"]
 
-    public static func evaluate(_ catches: [Catch], catalog: SpeciesCatalog,
+    /// The Rookie patch, for finishing the starter quests.
+    public static func rookie(done: Bool) -> Badge {
+        Badge(id: "rookie", name: "Rookie", detail: "Finish the starter quests.",
+              shape: .star, symbol: "graduationcap.fill", progress: done ? 1 : 0, goal: 1)
+    }
+
+    public static func evaluate(_ catches: [Catch], catalog: SpeciesCatalog, starterDone: Bool = false,
                                 calendar: Calendar = .current) -> [Badge] {
         let progress = ProgressEngine.evaluate(catches, catalog: catalog)
         func caught(_ habitat: Habitat) -> Int { progress.caughtCount(in: catalog.species(in: habitat)) }
@@ -45,6 +51,7 @@ public enum Badges {
         }
 
         return [
+            rookie(done: starterDone),
             Badge(id: "first", name: "First Catch", detail: "Log your first fish.",
                   shape: .circle, symbol: "fish.fill", progress: catches.count, goal: 1),
             Badge(id: "ten", name: "Ten Species", detail: "Catch ten different fish.",

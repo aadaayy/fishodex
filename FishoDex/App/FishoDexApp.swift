@@ -25,6 +25,11 @@ struct FishoDexApp: App {
             }
             store.replaceAll(with: catches)
         }
+        if options.testing {
+            // The checks start fresh each launch: no tour unless asked for.
+            if options.starterDone { store.finishStarterForChecks() }
+            store.seenWalkthrough = !options.walkthrough
+        }
         _store = State(initialValue: store)
         if options.still { UIView.setAnimationsEnabled(false) }
     }
@@ -55,6 +60,8 @@ struct FishoDexApp: App {
             .onAppear {
                 model.applyLaunchOptions(catalog: store.catalog)
                 let options = LaunchOptions.current
+                // The starter tour, once, on first launch.
+                if !store.seenWalkthrough && options.showUnlock == nil { model.walkthrough = true }
                 if let id = options.showUnlock {
                     let draft = Catch(speciesID: id, date: AppClock.now, placeName: "Haulover Inlet", lengthInches: 30,
                                       weightPounds: options.unlockPounds, released: true)
